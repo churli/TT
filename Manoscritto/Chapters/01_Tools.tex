@@ -14,10 +14,36 @@ A \N-way tensor \ttensor{X} has elements $x_{i1,\ldots,iN}$
 
 From this definition follows that vectors are tensors of order \emph{one}, matrices are tensors of order \emph{two}.
 
+\begin{Def}
+  The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \ttensor{X} is the vector of elements given by fixing all the indices but the i-th.
+\end{Def}
 
+\begin{Def}
+  Two-dimensional sections of a tensor are called \emph{slices}. A \emph{slice} is the matrix obtained by fixing all but two indices.
+\end{Def}
+
+\begin{Def}
+  We can define the \emph{norm} of a tensor as a general form of the matrix Frobenius norm:
+  \[
+  \|\tensor{X}\| = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_N = 1}^{I_N}x^2_{i_1 i_2 \cdots i_N}}
+  \]
+\end{Def}
+
+\marginnote{Inserire anche il prodotto scalare?}
+
+\begin{Def}
+  An N-way tensor \ttensor{X} is \emph{rank one} if it can be written as the outer product of N vectors:
+  \[
+  \tensor{X} = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(N)}}
+  \]
+  This can be written elementwise as:
+  \[
+  x_{i_1 i_2 \cdots i_N} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_N}^{(N)}
+  \]
+\end{Def}
 
 \section{Unfoldings}
-
+An important concept in the tensor world, that will be heavily used in the tensor train decomposition, is the operation of \emph{unfolding} \footnote{also called \emph{matricization} or \emph{flattening}}
 
 \section{Tensor products}
 
