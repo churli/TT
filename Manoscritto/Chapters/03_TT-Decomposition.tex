@@ -18,7 +18,12 @@ Since, for each $k$, $G_k$ is a third order tensor, each $G_k(i_k)$ is a matrix 
 
 As we can see from \ref{def:TT}, the result is a $r_0 \times r_d$ matrix. Since we want to have a scalar result (i.e. the tensor element we are considering), we have to set $r_0 = r_d = 0$ as boundary condition.
 
+The ranks $r_k$ are called \emph{compression ranks} or \emph{TT-ranks}. We will see how compression ranks can be computed and what their role is in aproximate representations.
+
 We can now write the TT-decomposition of \A in the indexed form as:
 \begin{equation} \label{def:TTindex}
   A(i_1,\dots,i_d) = \sum_{\alpha_0,\dots,\alpha_d} G_1(\alpha_0,i_1,\alpha_1) \cdots G_1(\alpha_{d-1},i_d,\alpha_d)
 \end{equation}
+
+\section{Theorical results}
+We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \ref{def:TT}
