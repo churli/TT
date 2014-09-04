@@ -1,17 +1,20 @@
 %%% Packages
 \usepackage{amsfonts}
 \usepackage{marginnote}
+\usepackage{xspace}
 
 %%% Commands
 \renewcommand{\phi}{\varphi}
 \newcommand{\eps}{\varepsilon}
 
-\newcommand{\ttensor}[1]{$\mathcal{#1}$}
-\newcommand{\tensor}[1]{\mathcal{#1}}
-\newcommand{\tvett}[1]{\textbf{#1}}
-\newcommand{\vett}[1]{\mathbf{#1}}
-%matrices have to be uppercase
-\newcommand{\tmat}[1]{\textbf{#1}}
-\newcommand{\mat}[1]{\textbf{#1}}
+\newcommand{\tensor}[1]{\ensuremath{\mathcal{#1}}\xspace}
+\newcommand{\vett}[1]{\ensuremath{\mathbf{#1}}\xspace}
+%%matrices have to be uppercase
+\newcommand{\mat}[1]{\emph{#1}\xspace}
 
 \newcommand{\N}{\emph{N}}
+\renewcommand{\k}{\emph{k}\xspace}
+\newcommand{\A}{\tensor{A}}
+\newcommand{\X}{\tensor{X}}
+
+%%%EOF

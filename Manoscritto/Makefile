@@ -8,6 +8,11 @@ BASEDIR=/home/tommaso/Repo/Tesi_triennale
 
 compile:
 	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+bibcompile:
+	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+	bibtex tesi.aux
+	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
 push:
 	git push --mirror #Ricordati di settare --mirror=push anche per il repo PHC
 	#git push casa #Quando hai fatto il salvataggio anche sul server di casa
