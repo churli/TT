@@ -3,6 +3,10 @@
 \usepackage{marginnote}
 \usepackage{xspace}
 
+\usepackage{eulervm}
+%%\usepackage{eucal} %%% usare \mathcal{}
+%%\usepackage[mathscr]{eucal} %%%usare \mathscr{testo}
+
 %%% Commands
 \renewcommand{\phi}{\varphi}
 \newcommand{\eps}{\varepsilon}
@@ -10,11 +14,15 @@
 \newcommand{\tensor}[1]{\ensuremath{\mathcal{#1}}\xspace}
 \newcommand{\vett}[1]{\ensuremath{\mathbf{#1}}\xspace}
 %%matrices have to be uppercase
-\newcommand{\mat}[1]{\emph{#1}\xspace}
+\newcommand{\mate}[1]{\ensuremath{#1}\xspace}
 
-\newcommand{\N}{\emph{N}}
-\renewcommand{\k}{\emph{k}\xspace}
+\newcommand{\N}{\mate{N}}
+\renewcommand{\k}{\mate{k}}
 \newcommand{\A}{\tensor{A}}
 \newcommand{\X}{\tensor{X}}
+
+%sets of numbers
+\newcommand{\NAT}{\mathbb{N}}
+\newcommand{\REAL}{\mathbb{R}}
 
 %%%EOF

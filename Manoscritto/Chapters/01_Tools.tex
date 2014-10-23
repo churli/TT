@@ -29,7 +29,7 @@ From this definition follows that vectors are tensors of order \emph{one}, matri
   \]
 \end{Def}
 
-\marginnote{Inserire anche il prodotto scalare?}
+\todo{Inserire anche il prodotto scalare?}
 
 \begin{Def}
   An \N-way tensor \X is \emph{rank one} if it can be written as the outer product of N vectors:
@@ -59,6 +59,20 @@ where the first $k$ indices enumerate the rows of $X_k$, while the last $N - k$ 
 \end{Def}
 
 \section{Tensor products}
+\todo{Here talk only about products that are instersting to the TT format and construction, e.g. elementwise and boh}
 
+\section{Rank-one tensor}
+An \N-way tensor \X is said to be \emph{rank-one} if it can be written as the outer product of \N vectors:
+\begin{equation}
+  \X = a^{(1)} \circ a^{(2)} \circ \cdots \circ a^{(N)}
+\end{equation}
+Elementwise this translates to:
+\begin{equation}
+  x_{i_1,i_2,\ldots,i_n} = a_{i_1}^{(1)} a_{i_2}^{(2)} \cdots a_{i_N}^{(N)}
+\end{equation}
+This can be seen as a generalization of the fact that
+\begin{equation*}
+  M = u v^t
+\end{equation*}
+is a rank-one matrix.
 
-\section{Rank of a tensor}
