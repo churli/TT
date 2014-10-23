@@ -6,6 +6,7 @@
 \usepackage{eulervm}
 %%\usepackage{eucal} %%% usare \mathcal{}
 %%\usepackage[mathscr]{eucal} %%%usare \mathscr{testo}
+\usepackage{stmaryrd}
 
 %%% Commands
 \renewcommand{\phi}{\varphi}
@@ -22,7 +23,10 @@
 \newcommand{\X}{\tensor{X}}
 
 %sets of numbers
-\newcommand{\NAT}{\mathbb{N}}
-\newcommand{\REAL}{\mathbb{R}}
+\newcommand{\ensuremathbb}[1]{\ensuremath{\mathbb{#1}}\xspace}
+
+\newcommand{\NN}{\ensuremathbb{N}}
+\newcommand{\RR}{\ensuremathbb{R}}
+\newcommand{\CC}{\ensuremathbb{C}}
 
 %%%EOF

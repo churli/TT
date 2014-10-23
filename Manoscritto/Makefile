@@ -17,7 +17,7 @@ push:
 	git push --mirror #Ricordati di settare --mirror=push anche per il repo PHC
 	#git push casa #Quando hai fatto il salvataggio anche sul server di casa
 	git push --mirror dropbox
-	git push -u dropbox master
+	git push -u github master
 sync:
 	push
 # test:

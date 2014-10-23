@@ -6,10 +6,24 @@ The core idea behind the Canonical Decomposition\footnote{also called Parallel F
 \begin{equation}
   \X \approx \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
 \end{equation}
-where $R \in \NAT$ and $a^{(i)} \in \REAL^{I^i}$
+where $R \in \NN$ and $a_r^{(i)} \in \RR^{I_i}$. So each of the rank-one components is built as outer product of \N vectors.
+
+We can also express the CP decomposition in a more concise matricized form.
+Let's group the vectors used in the CP to form a matrix for each mode \mate{i} as follows:
+\begin{equation*}
+  A^{(i)} = [ a^{(i)}_1 a^{(i)}_2 \cdots a^{(i)}_R ]
+\end{equation*}
+We can then use the following notation to express the CP decomposition:
+\begin{equation*}
+  \X \approx \llbracket A^{(1)}, A^{(2)}, \ldots, A^{(N)} \rrbracket = \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
+\end{equation*}
+
 
 \subsection{Tensor Rank}
-Given a tensor \X we can define its \emph{rank} as \emph{the smallest number of rank-one tensors that generates \X as their sum}.
+Given a tensor \X we can define its \emph{rank} as \emph{the smallest number of rank-one tensors that generates \X as their sum}. We can see the rank as the minimum number of components in an exact CP decomposition.
+
+The definition of rank for tensors is an analogue of the matrix rank. However there are some major differences in their properties.
+The first difference is that the rank of a real-valued tensor can be different over \RR and \CC \todo{Add the example as in Kolda-Bader, here or in appendix}. Another difference is that there is no general and straightforward agorithm to determine the tensor rank\footnote{Actually it is proven in \cite{rankNP} that computing the rank of a three-dimensional tensor over any finite field is NP-complete. Over the rational numbers the problem is NP-hard.}.
 
 \section{Tucker decomposition}
 wwwww
