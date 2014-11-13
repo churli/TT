@@ -18,12 +18,23 @@ We can then use the following notation to express the CP decomposition:
   \X \approx \llbracket A^{(1)}, A^{(2)}, \ldots, A^{(N)} \rrbracket = \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
 \end{equation*}
 
-
 \subsection{Tensor Rank}
 Given a tensor \X we can define its \emph{rank} as \emph{the smallest number of rank-one tensors that generates \X as their sum}. We can see the rank as the minimum number of components in an exact CP decomposition.
 
 The definition of rank for tensors is an analogue of the matrix rank. However there are some major differences in their properties.
 The first difference is that the rank of a real-valued tensor can be different over \RR and \CC \todo{Add the example as in Kolda-Bader, here or in appendix}. Another difference is that there is no general and straightforward agorithm to determine the tensor rank\footnote{Actually it is proven in \cite{rankNP} that computing the rank of a three-dimensional tensor over any finite field is NP-complete. Over the rational numbers the problem is NP-hard.}.
 
+\paragraph{Low-rank aproximation}
+Another interesting difference between matrices and higher order tensors involves the approximation of a tensor by lower rank elements.
+A well known result for matrices \cite{SVDbestapprox} shows that a best rank-k approximation is given by the leading k factors of the SVD\footnote{Here we assume the standard definition of SVD having the singular values ordered in descending magnitude}.
+
+This does not hold for higher order tensors. For instance consider a third-order tensor of rank \R having the following CP decomposition:
+\begin{equation*}
+  \X = \sum_{r=1}^R a_r \circ b_r \circ c_r
+\end{equation*}
+We would like to be able to get a best rank-k approximation of \X by summing k factors of the CP decomposition. However this is not possible and it was shown by an example \cite{kolda2001orthogonal} where the best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
+
+Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor. \todo{Qui rivedi bene, perchè forse è meglio metterla solo sulla storia delle successioni che convergono ad altri ranghi} \todo{Inoltre questa roba l'ha scoperta Bini, quindi vedi un po' il suo articolo}
+
 \section{Tucker decomposition}
-wwwww
+wwww

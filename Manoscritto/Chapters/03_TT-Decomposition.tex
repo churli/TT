@@ -22,8 +22,51 @@ The ranks $r_k$ are called \emph{compression ranks} or \emph{TT-ranks}. We will 
 
 We can now write the TT-decomposition of \A in the indexed form as:
 \begin{equation} \label{def:TTindex}
-  A(i_1,\dots,i_d) = \sum_{\alpha_0,\dots,\alpha_d} G_1(\alpha_0,i_1,\alpha_1) \cdots G_1(\alpha_{d-1},i_d,\alpha_d)
+  A(i_1,\dots,i_d) = \sum_{\alpha_0,\dots,\alpha_d} G_1(\alpha_0,i_1,\alpha_1) \cdots G_d(\alpha_{d-1},i_d,\alpha_d)
 \end{equation}
 
 \section{Theorical results}
-We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \ref{def:TT}
+We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \ref{def:TT}.
+
+\begin{Teo} \label{teo:ttsvd}
+  Let \A a $d$-dimensional tensor and let, for each $k$, $A_k$ its standard $k$-th unfolding matrix defined in \ref{def:unfolding}.
+
+  If
+
+  \[
+  \forall k \quad rank(A_k) = r_k
+  \]
+  
+  then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
+
+  \begin{proof}
+    Dimostrazione\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
+  \end{proof}
+\end{Teo}
+
+The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices\footnote{The SVD is used to compute the dyadic decomposition of $A_k$}. This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
+
+Since the SVD is used, we can make advantage of its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure:
+
+\begin{Teo}
+  Suppose that the unfoldings $A_k$ of the tensor \A are rank-$k$ only approximately, i.e. they satisfy
+
+  \[
+  A_k = R_k + E_k, \quad rank(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1
+  \]
+
+  Then the TT-SVD yields a tensor \tensor{B} in the TT format with TT-ranks $r_k$ and
+
+  \begin{equation}
+    ||\A - \tensor{B} ||_F \le \sqrt{\sum_{k=1}^{d-1} \epsilon_k^2}
+  \end{equation}
+  
+  \begin{proof}
+    This proof proceeds by induction. For $d=2$ it follows directly from the properties of the SVD. If we now consider an arbitrary $d > 2$, then the first unfolding $A_1$ can be decomposed as
+    \[
+    A_1 = U_1 \Sigma V_1 + E_1 = U_1 B_1 + E_1
+    \]
+
+    Now $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\tensor{B}_1$
+  \end{proof}
+\end{Teo}
