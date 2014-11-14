@@ -40,7 +40,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
 
   \begin{proof}
-    Dimostrazione\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
+    TODO\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
   \end{proof}
 \end{Teo}
 
@@ -48,17 +48,17 @@ The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for comp
 
 Since the SVD is used, we can make advantage of its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure:
 
-\begin{Teo}
+\begin{Teo} \label{teo:ttsvd_approx}
   Suppose that the unfoldings $A_k$ of the tensor \A are rank-$k$ only approximately, i.e. they satisfy
 
-  \[
+  \begin{equation} \label{teo:ttsvd_approx:ip:1}
   A_k = R_k + E_k, \quad rank(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1
-  \]
+  \end{equation}
 
-  Then the TT-SVD yields a tensor \tensor{B} in the TT format with TT-ranks $r_k$ and
+  Then the TT-SVD yields a tensor \B in the TT format with TT-ranks $r_k$ and
 
   \begin{equation}
-    ||\A - \tensor{B} ||_F \le \sqrt{\sum_{k=1}^{d-1} \epsilon_k^2}
+    ||\A - \B ||_F \le \sqrt{\sum_{k=1}^{d-1} \epsilon_k^2}
   \end{equation}
   
   \begin{proof}
@@ -67,6 +67,71 @@ Since the SVD is used, we can make advantage of its properties: at each step, we
     A_1 = U_1 \Sigma V_1 + E_1 = U_1 B_1 + E_1
     \]
 
-    Now $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\tensor{B}_1$
+    Now $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\B_1$ having elements $B_1(\alpha_1i_2,i_3,\ldots,i_d)$. This tensor $\B_1$ will be further decomposed in the TT-SVD algorithm: $B_1$ will be approximated by matrix $\hat{B}_1$.
+
+    From the properties of the SVD we have $U_1^\top E_1 = 0$ \todo{Perchè? Devi approfondire e capire perchè vale questo} , thus
+    \begin{equation*}
+      \begin{split}
+        ||\A-\B||_F^2 &= ||A_1 - U_1\hat{B}_1||_F^2 = ||A_1 - U_1(\hat{B}_1 + B_1 - B_1)||_F^2 \\
+         &= ||A_1 - U_1 B_1||_F^2 + ||U_1(B_1 - \hat{B}_1)||_F^2
+      \end{split}
+    \end{equation*}
+    and since, from the SVD definition, $U_1$ has orthonormal columns, we have
+    \begin{equation} \label{teo:ttsvd_approx:proof:bound}
+      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2
+    \end{equation}
+
+    The matrix $B_1$ is obtained from $A_1$ as
+    \[
+    B_1 = U_1^\top A_1
+    \]
+
+    If we now consider $B_{1,k}$ the $k$-th unfolding of the $(d-1)$-dimensional tensor $\B_1$, from the orthonormality of $U_1$, for each $k=2,\ldots,d-1$ we have\footnote{It's useful to recall here that the Frobenius norm is invariant under unfolding}
+    \begin{equation*}
+      \begin{split}
+        ||B_{1,k} - R_k||_F^2 &= ||U_1^\top A_1 - R_k||_F^2 = ||A_k - R_k||_F^2\\
+         &= \eps_k^2
+      \end{split}
+    \end{equation*}
+    so the $B_{1,k}$ unfoldings satisfy \ref{teo:ttsvd_approx:ip:1} and by induction we have
+    \begin{equation*}
+      ||B_1 - \hat{B}_1 ||_F^2 \le \sum_{k=2}^{d-1} \eps_k^2
+    \end{equation*}
+
+    If we put this together with \ref{teo:ttsvd_approx:proof:bound} we have
+    \begin{equation*}
+      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2 = \sum_{k=1}^{d-1} \eps_k^2
+    \end{equation*}
   \end{proof}
 \end{Teo}
+
+Two important corollaries follow from this theorem:
+\begin{Cor}
+  If \A admits a canonical approximation with $R$ terms \todo{Che minchia è, una CP con R addendi?} and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
+\end{Cor}
+\begin{Cor}
+  Given a tensor \A and a set of rank bounds $r_k$, the best approximation\footnote{In the Frobenius norm} $\A^{best}$ of \A with TT-ranks bounded by $r_k$ always exists and the approximation $\B$ computed by the TT-SVD agorithm is \e{quasi-optimal}, i.e.
+  \begin{equation*}
+    ||\A - \B||_F \le \sqrt{d-1} ||\A - \A^{best}||_F
+  \end{equation*}
+
+  \begin{proof}
+    Let
+    \begin{equation*}
+     \eps = \inf_{\tensor{C} \in TT(r_k)} ||\A - \tensor{C}||_F
+    \end{equation*}
+    where $TT(r_k)$ is the set of all the tensor trains with TT-ranks bounded by $r_k$. By definition of infimum there exists a sequence of tensor trains $\B^{(s)} : s \in \NN$ such that $lim_{s\to\infty} ||\A - \B||_F = \eps$.
+
+    The elements of $\B^{(s)}$ are bounded and \todo{Perchè averli bounded ci serve?} there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
+    \begin{equation*}
+      rank(\B^{(s_t)}_k) \le r_k \quad \forall k
+    \end{equation*}
+    and thus
+    \begin{equation*}
+      rank(\B^{min}_k) \le r_k \quad \forall k
+    \end{equation*}
+    Moreover, $||\A - \B^{min}||_F = \eps$, \todo{Perchè questo, bisogna controllare!} so $\B^{min}$ is the minimum.
+
+    Finally, we note that $\eps_k \le \eps$, since each unfolding can be approximated at least with accuracy $\eps$, and the quasi-optimality bound follows directly from \ref{teo:ttsvd_approx}
+  \end{proof}
+\end{Cor}

@@ -9,8 +9,11 @@
 \usepackage{stmaryrd}
 
 %%% Commands
-\renewcommand{\phi}{\varphi}
-\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\ensuremath{\varphi}\xspace}
+\newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
+
+%Widehat is better than hat
+\renewcommand{\hat}{\widehat}
 
 %Emph made easier
 \newcommand{\e}[1]{\emph{#1}}
@@ -23,6 +26,7 @@
 \newcommand{\N}{\mate{N}}
 \renewcommand{\k}{\mate{k}}
 \newcommand{\A}{\tensor{A}}
+\newcommand{\B}{\tensor{B}}
 \newcommand{\X}{\tensor{X}}
 \newcommand{\R}{\mate{R}}
 

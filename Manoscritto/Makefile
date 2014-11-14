@@ -13,6 +13,13 @@ bibcompile:
 	bibtex tesi.aux
 	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
 	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+autocompile:
+	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
+autobibcompile:
+	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
+	bibtex tesi.aux
+	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
 push:
 	git push --mirror #Ricordati di settare --mirror=push anche per il repo PHC
 	#git push casa #Quando hai fatto il salvataggio anche sul server di casa
