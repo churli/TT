@@ -4,15 +4,18 @@ In this chapter we will go through the basic definitions and notation about tens
 
 \section{Definitions and notation}
 
-A \emph{tensor} is a multidimensional array. More formally, a \N-order tensor is an element of the tensor product of \N vector spaces. The idea of tensor generalizes those of \emph{matrix} and \emph{vector}, making possible to naturally represent data having a multi-way origin.
-
-A \N-way tensor \X has elements $x_{i_1,\dots,i_N}$
+A \emph{tensor} is a multidimensional array. Following this simple definition, the elements of a tensor are indexed by several indices.
+%%%More formally, a \N-order tensor is an element of the tensor product of \N vector spaces.
+The idea of tensor generalizes those of \emph{matrix} and \emph{vector}, making possible to naturally represent data having a multi-way origin.
 
 \begin{Def}
   The \emph{order}, or number of \emph{ways} or \emph{modes}, of a tensor is its number of dimensions, i.e. its number of indices.
 \end{Def}
-
-From this definition follows that vectors are tensors of order \emph{one}, matrices are tensors of order \emph{two}.
+So if we have a $d$-way tensor \X, we can refer to its elements as
+\begin{equation*}
+  \X(i_1,\ldots,i_d)
+\end{equation*}
+From this definition also follows that vectors are tensors of order \emph{one}, matrices are tensors of order \emph{two}.
 
 \begin{Def}
   The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \X is the vector of elements given by fixing all the indices but the i-th.
@@ -25,50 +28,65 @@ From this definition follows that vectors are tensors of order \emph{one}, matri
 \begin{Def}
   We can define the \emph{norm} of a tensor as a general form of the matrix Frobenius norm:
   \[
-  \|\X\| = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_N = 1}^{I_N}x^2_{i_1 i_2 \cdots i_N}}
+  \|\X\| = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_d = 1}^{I_d}\X^2(i_1 i_2 \cdots i_d)}
   \]
 \end{Def}
 
 \todo{Inserire anche il prodotto scalare?}
 
 \begin{Def}
-  An \N-way tensor \X is \emph{rank one} if it can be written as the outer product of N vectors:
+  An $d$-way tensor \X is \emph{rank one} if it can be written as the outer product of d vectors:
   \[
-  \X = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(N)}}
+  \X = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(d)}}
   \]
   This can be written elementwise as:
   \[
-  x_{i_1 i_2 \cdots i_N} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_N}^{(N)}
+  \X(i_1,i_2,\cdots,i_d) = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
   \]
 \end{Def}
 
 \section{Unfoldings}
 An important concept in the tensor world, that will be heavily used in the tensor train decomposition, is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
 
-\emph{Unfolding} is the process of reordering the elements of an \N-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
+\emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
 In this work we will make advantage of the following unfolding:
 
 \begin{Def}
-  Let \X an \N-way tensor. We define the \emph{k-th unfolding} matrix of \X as:
+  Let \X an $d$-way tensor. We define the \emph{k-th unfolding} matrix of \X as:
   \begin{equation} \label{def:unfolding}
-    X_k = X_k(i_1,\dots,i_k;i_{k+1},\dots,i_N) = X(1_1,\dots,i_N)
+    X_k = X_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = X(1_1,\dots,i_d)
   \end{equation}
 
-where the first $k$ indices enumerate the rows of $X_k$, while the last $N - k$ indices enumerate the columns of $X_k$.
+where the first $k$ indices enumerate the rows of $X_k$, while the last $d - k$ indices enumerate the columns of $X_k$.
 \end{Def}
 
 \section{Tensor products}
-\todo{Here talk only about products that are instersting to the TT format and construction, e.g. elementwise and boh}
+\todo{(Ma ce n'è davvero bisogno?) - Here talk only about products that are instersting to the TT format and construction, e.g. elementwise and boh}
+
+\section{Tensor-by-matrix product}
+We can define a tensor-by-matrix product in several ways. In this work we will always refer to what is called the \e{mode-k contraction} or \e{mode-k multiplication}.
+
+\begin{Def}
+  Given a $d$-way tensor $\A \in I_1 \times \cdots \times I_d$ with elements $\A(i_1,\ldots,i_d)$ and a matrix $U \in I_\alpha \times I_k$ with elements $U(\alpha,i_k)$, we define the \e{mode-k multiplication}
+  \begin{equation*}
+    \A \times_k U
+  \end{equation*}
+  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place}, yielding a tensor $\B \in I_1 \times \cdots \times I_\alpha \times \cdots \times I_d$ as follows
+  \begin{equation*}
+    \A \times_k U = B(i_1,\ldots,\alpha,\ldots,i_d) = \sum_{i_k = 1}^{n_k} A(i_1,\ldots,i_k,\ldots,i_d) U(\alpha,i_k)
+  \end{equation*}
+\end{Def}
+This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
 \section{Rank-one tensor}
-An \N-way tensor \X is said to be \emph{rank-one} if it can be written as the outer product of \N vectors:
+An $d$-way tensor \X is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
 \begin{equation}
-  \X = a^{(1)} \circ a^{(2)} \circ \cdots \circ a^{(N)}
+  \X = a^{(1)} \circ a^{(2)} \circ \cdots \circ a^{(d)}
 \end{equation}
 Elementwise this translates to:
 \begin{equation}
-  x_{i_1,i_2,\ldots,i_n} = a_{i_1}^{(1)} a_{i_2}^{(2)} \cdots a_{i_N}^{(N)}
+  x_{i_1,i_2,\ldots,i_n} = a_{i_1}^{(1)} a_{i_2}^{(2)} \cdots a_{i_d}^{(d)}
 \end{equation}
 This can be seen as a generalization of the fact that
 \begin{equation*}
