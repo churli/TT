@@ -23,6 +23,7 @@ bibcompileauto:
 autocompile:
 	./autocompile.loop.sh
 push:
+	go phc -- echo "foo" 1>/dev/null
 	git push --mirror #Ricordati di settare --mirror=push anche per il repo PHC
 	#git push casa #Quando hai fatto il salvataggio anche sul server di casa
 	git push --mirror dropbox
