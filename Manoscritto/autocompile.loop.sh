@@ -19,9 +19,9 @@ while true; do
     if [[ "$CUR" != "$OLD" ]]; then
 	if [[ $RANDOM -ge 6552 ]]; then
 	    #succede con 4/5 di prob
-	    make autocompile
+	    make compileauto
 	else
-	    make autobibcompile
+	    make bibcompileauto
 	fi
 	OLD=$CUR
 	date
