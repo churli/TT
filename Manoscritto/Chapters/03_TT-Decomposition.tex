@@ -163,21 +163,23 @@ Using a Tucker decomposition on each of the three-dimesional TT-cores this can b
 \section{Rounding in the TT format}
 We have seen how a full tensor can be converted into the TT format using the TT-SVD algorithm. However it is not always possible, on real world machines, to have a full tensor to start with: the available memory can be insufficient to store all the elements and even computing all entries of the tensor can be a way too expensive task when dealing with many dimensions.
 
-It is thus interesting considering the case of having a tensor in an already structured format. More specifically, we can assume having a tensor in the TT format already, but stored with suboptimal ranks $r_k$. This is an important case since, as will be shown later, such tensors can result from performing many basic linear algebra operations in TT format. In this case ranks $r_k$ have to be reduced while mantaining the prescribed accuracy: what we need here is a \e{rounding} algorithm, to recompress the tensor to optimal ranks while keeping the TT format.
+It is thus interesting considering the case of having a tensor in an already structured format. More specifically, we can assume having a tensor in the TT format already, but stored with suboptimal ranks $r_k$. This is an important case since, as will be shown later, such tensors can result from performing basic linear algebra operations in TT format. In this case ranks $r_k$ have to be reduced while mantaining the prescribed accuracy: what we need here is a \e{rounding} algorithm, to recompress the tensor to optimal ranks while keeping the TT format.
 
 \paragraph{Rounding technique}
 Let \A in the TT format:
 \begin{equation*}
   \A(1_1,\ldots,i_d) = G_1(i_1) \cdots G_d(i_d)
 \end{equation*}
-and assume its ranks $r_k$ are \e{increased} in respect to the optimal ranks $r_k^\prime$. We want now estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
+and assume its ranks $r_k$ are \e{increased} in respect to the optimal ranks $r_k^\prime$. We want now to estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
 
-First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. The corresponding unfolding matrix $A_1$ can be written as
+First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section.
+
+The first unfolding matrix $A_1$ can be written as
 \begin{equation} \label{eq:unfolding_dyadic}
   A_1 = UV^\top
 \end{equation}
 where
-\begin{equation}
+\begin{equation} \label{def:UV}
   \begin{split}
     U(i_1,\alpha_1) &= G_1(i_1,\alpha_1)\\
     V(i_2,\ldots,i_d;\alpha_1) &= G_2(\alpha_1,i_2) G_3(i_3) \cdots G_d(i_d)
@@ -195,3 +197,50 @@ then we assemble a small $r \times r$ matrix
 \begin{equation*}
   P = R_u R_v
 \end{equation*}
+and we compute its SVD
+\begin{equation*}
+  P = X \Sigma Y^\top
+\end{equation*}
+where $\Sigma$ is an $\hat{r}\times\hat{r}$ diagonal matrix, $X$ and $Y$ are $r \times \hat{r}$ matrices with orthonormal columns and $\hat{r}$ is the $\eps$-rank of $D$ (which is equal to the $\eps$-rank of $A_1$)\todo{Magari dimostriamolo...}.
+
+So we have that
+\begin{equation*}
+  \begin{split}
+    \hat{U} &= Q_u X\\
+    \hat{V} &= Q_v Y
+  \end{split}
+\end{equation*}
+are matrices of dominant singular vectors of $A_1$.
+
+\paragraph{Structured QR decomposition}
+To be able to compute the SVD we thus have to go through the QR decompositions of the factor matrices $U$ and $V$.
+The $U$ matrix is small, as we can see in \ref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
+
+However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT-format, while the small R factor will be stored explicitly. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
+\begin{Lemma}
+  Let a tensor \Z expressed as:
+  \begin{equation*}
+    \Z(\alpha_1,i_2,\ldots,i_d) = Q_2(i_2) \cdots Q_d(i_d)
+  \end{equation*}
+  where for each $k = 2,\ldots,d$, $Q_k(i_k)$ is an $r_{k-1} \times r_k$ matrix\footnote{For fixed $i_k$ with $k=2,\ldots,d$, the product is a $r_1$-long vector indexed by $\alpha_1$} and it satisfies the following orthogonality condition\footnote{By $I_s$ we denote the $s \times s$ identity matrix}
+  \begin{equation*}
+    \sum_{i_k} Q_k(i_k) Q_k^{\top}(i_k) = I_{r_{k-1}}
+  \end{equation*}
+  Then the $r_1 \times \prod_{k=2}^d$ first unfolding of \Z is a matrix $Z$ with orthonormal rows, i.e.
+  \begin{equation*}
+    (Z Z^\top)_{\alpha_1,\hat{\alpha}_1} = \sum_{i_2,\ldots,i_d} Z(\alpha_1,i_2,\ldots,i_d) Z(\hat{\alpha}_1,i_2,\ldots,i_d) = \delta(\alpha_1,\hat{\alpha}_1)
+  \end{equation*}
+
+  \begin{proof}
+    It follows immediately from the orthogonality of the cores:
+    \begin{equation*}
+      \begin{split}
+        ZZ^\top &= \sum_{i_1,\ldots,i_d} (Q_1())
+      \end{split}
+    \end{equation*}
+  \end{proof}
+\end{Lemma}
+
+\paragraph{Putting all the pieces together}
+
+\todo{Finire rounding...}
