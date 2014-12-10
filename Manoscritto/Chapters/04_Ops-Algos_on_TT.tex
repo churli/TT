@@ -1,3 +1,45 @@
 \chapter{Linear algebra on TT: operations and algorithms}
-ciao prz
-ciao
+Now we will see how some basic operations can be performed on the TT format and what is their complexity.
+
+\section{Addition and multiplication by a number}
+Let \A and \B $d$-dimensional tensors that can be written in the TT format as
+\begin{equation*}
+  \begin{split}
+    \A &= A_1(i_1) \cdots A_d(i_d)\\
+    \B &= B_1(i_1) \cdots B_d(i_d)
+  \end{split}
+\end{equation*}
+
+\paragraph{Multiplication by a number}
+This is a very easy operation, since to scale a tensor by $\alpha$ it is sufficient to scale one of the cores by it.
+
+\paragraph{Addition}
+The addition of these two tensors can be performed by \emph{merging} each couple of cores, i.e. the sum $\C = A + B$ will have \e{central} cores
+\begin{equation*}
+  C_k(i_k) = 
+  \begin{pmatrix}
+    A_k(i_k) & 0\\
+    0 & B_k(i_k)
+  \end{pmatrix}
+\end{equation*}
+and \e{border} cores
+\begin{equation*}
+  \begin{split}
+    C_1(i_d) &= 
+  \begin{pmatrix}
+    A_1(i_1) & B1(i_1)
+  \end{pmatrix}\\
+  C_d(i_d) &= 
+  \begin{pmatrix}
+    A_d(i_d)\\
+    B_d(i_d)
+  \end{pmatrix}
+  \end{split}
+\end{equation*}
+
+We can easily prove the above by direct multiplication:
+\begin{equation*}
+  C_1(i_1) \cdots C_d(i_d) = A_1(i_1) \cdots A_d(i_d) + B_1(i_1) \cdots B_d(i_d)
+\end{equation*}
+
+By the definition of the cores, we can see that summing tensors leads to a rank increase. For each core of the sum, we have a rank that is the sum of the ranks of the underlying cores. This makes the addition operation a good test bench for the rounding procedure.
