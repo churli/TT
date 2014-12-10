@@ -216,7 +216,7 @@ are matrices of dominant singular vectors of $A_1$.
 To be able to compute the SVD we thus have to go through the QR decompositions of the factor matrices $U$ and $V$.
 The $U$ matrix is small, as we can see in \ref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
 
-However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT-format, while the small R factor will be stored explicitly. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
+However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT format, while the small R factor will be stored explicitly. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
 \begin{Lemma}
   Let a tensor \Z expressed as:
   \begin{equation*}
@@ -235,11 +235,20 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
     It follows immediately from the orthogonality of the cores:
     \begin{equation*}
       \begin{split}
-        ZZ^\top &= \sum_{i_1,\ldots,i_d} (Q_1())
+        ZZ^\top &= \sum_{i_2,\ldots,i_d} \Big( Q_2(i_2) \cdots Q_d(i_d) \Big) \Big( Q_2(i_2) \cdots Q_d(i_d) \Big)^\top \\
+        &= \sum_{i_2,\ldots,i_d} \Big( Q_2(i_2) \cdots Q_{d-1}(i_{d-1}) \Big)
+        \underbrace{\Big( \sum_{i_d} Q_d(i_d) Q_d^{\top}(i_d) \Big)}_{I_{r_d}}
+        \Big( Q_{d-1}^\top(i_{d-1}) \cdots Q_2^\top(i_2) \Big) \\
+        &= \sum_{i_2,\ldots,i_d} \Big( Q_2(i_2) \cdots Q_{d-1}(i_{d-1}) \Big)
+        \Big( Q_{d-1}^\top(i_{d-1}) \cdots Q_2^\top(i_2) \Big) \\
+        &= \cdots = \sum_{i_2} Q_2(i_2) Q_2^{\top}(i_2) \\
+        &= I_{r_1}
       \end{split}
     \end{equation*}
   \end{proof}
 \end{Lemma}
+
+Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \ref{def:UV}. The idea is to perform a single right-to-left othogonalization sweep through all the cores
 
 \paragraph{Putting all the pieces together}
 
