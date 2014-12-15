@@ -4,6 +4,8 @@ The \emph{Tensor-Train decomposition} is the main topic of this work. It was pre
 
 The idea behind the \emph{tensor train decomposition}, or simply \emph{TT-decomposition}, is to have a way of representing the higher order tensor using a sequence of third order tensors. This will prove to be useful, since we can use the \emph{Tucker} decomposition on these third order factors to further lower the number of parameters involved.
 
+In this chapter we will go through some basic theorical results, we will see how to compress a \e{full} tensor into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the scope of this work.
+
 We define the \emph{TT-decomposition} of a given tensor \A as follows:
 
 \begin{Def}
@@ -223,9 +225,9 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
     \Z(\alpha_1,i_2,\ldots,i_d) = Q_2(i_2) \cdots Q_d(i_d)
   \end{equation*}
   where for each $k = 2,\ldots,d$, $Q_k(i_k)$ is an $r_{k-1} \times r_k$ matrix\footnote{For fixed $i_k$ with $k=2,\ldots,d$, the product is a $r_1$-long vector indexed by $\alpha_1$} and it satisfies the following orthogonality condition\footnote{By $I_s$ we denote the $s \times s$ identity matrix}
-  \begin{equation*}
+  \begin{equation} \label{eq:orth_cond}
     \sum_{i_k} Q_k(i_k) Q_k^{\top}(i_k) = I_{r_{k-1}}
-  \end{equation*}
+  \end{equation}
   Then the $r_1 \times \prod_{k=2}^d$ first unfolding of \Z is a matrix $Z$ with orthonormal rows, i.e.
   \begin{equation*}
     (Z Z^\top)_{\alpha_1,\hat{\alpha}_1} = \sum_{i_2,\ldots,i_d} Z(\alpha_1,i_2,\ldots,i_d) Z(\hat{\alpha}_1,i_2,\ldots,i_d) = \delta(\alpha_1,\hat{\alpha}_1)
@@ -248,8 +250,49 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
   \end{proof}
 \end{Lemma}
 
-Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \ref{def:UV}. The idea is to perform a single right-to-left othogonalization sweep through all the cores
+Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \ref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
 
-\paragraph{Putting all the pieces together}
+Let's start with $V$ written as
+\begin{equation*}
+  V(i_1,\ldots,i_d) = G_2(i_2) \cdots G_d(i_d)
+\end{equation*}
+Now, considering $G_d(i_d)$ as an $r_{d-1} \times n_d$ matrix (since $r_d = 1$) and orthogonalizing its rows, we can represent $G_d(i_d)$ as
+\begin{equation*}
+  G_d(i_d) = R_d Q_d(i_d)
+\end{equation*}
+where $Q_d(i_d)$ is an $r_{d-1} \times n_d$ matrix with orthonormal rows.
+We now have
+\begin{equation*}
+  V(i_2,\ldots,i_d) = G_2(i_2) \cdots G^\prime_{d-1}(i_{d-1}) Q_d(i_d)
+\end{equation*}
+with
+\begin{equation*}
+  G^\prime_{d-1}(i_{d-1}) = G_{d-1}(i_{d-1}) R_d
+\end{equation*}
+This was the first step of the sweep. Suppose now that we already have a representation of the form
+\begin{equation*}
+  V(i_2,\ldots,i_d) = G_2(i_2) \cdots G_k(i_k) Q_{k+1}(i_{k+1}) \cdots Q_d(i_d)
+\end{equation*}
+where matrices $Q_s(i_s)$ satisfy \ref{eq:orth_cond} for each $s = k+1, \ldots, d$. We now perform the orthogonalization step, defining
+\begin{equation*}
+  G^\prime_k(i_k) = R_k Q_k(i_k)
+\end{equation*}
+or, in index form
+\begin{equation*}
+  G^\prime_k (\alpha_{k-1},i_k,\alpha_k) = \sum_{\beta_k} R(\alpha_k,\beta_k) Q_k(\beta_{k-1},i_k,\alpha_k)
+\end{equation*}
+where $R_k$ is a matrix not depending on $i_k$ and holds
+\begin{equation*}
+  \sum_{i_k} Q_k(i_k) Q_k^\top(i_k) = I_{r_k}
+\end{equation*}
+or, in index form
+\begin{equation*}
+  \sum_{i_k,\alpha_k} Q_k(\beta_{k-1},i_k,\alpha_k)Q_k(\hat{\beta}_k,i_k,\alpha_k) = \delta(\beta_k,\hat{\beta}_k)
+\end{equation*}
 
-\todo{Finire rounding...}
+Looking at the index forms of the above equations, we can see that $Q_k$ and $R_k$ can be computed by reshaping the $r_{k-1} \times n_k \times r_k$ tensor $G_k$ into a $r_{k-1} \times n_k r_k$ matrix and then orthogonalizing this matrix.
+
+%\paragraph{Putting all the pieces together}
+
+\todo{Aggiungere qualcosa sulle altre modes? (cfr. pag.2304 Oseledets)}
+\todo{Aggiungere algoritmo rounding}
