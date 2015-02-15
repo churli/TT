@@ -55,14 +55,42 @@ In this work we will make advantage of the following unfolding:
 \begin{Def}
   Let \X an $d$-way tensor. We define the \emph{k-th unfolding} matrix of \X as:
   \begin{equation} \label{def:unfolding}
-    X_k = X_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = X(1_1,\dots,i_d)
+    X_k = X_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = X(i_1,\dots,i_d)
   \end{equation}
 
 where the first $k$ indices enumerate the rows of $X_k$, while the last $d - k$ indices enumerate the columns of $X_k$.
 \end{Def}
 
-\section{Tensor products}
-\todo{(Ma ce n'è davvero bisogno?) - Here talk only about products that are instersting to the TT format and construction, e.g. elementwise and boh}
+\section{Matrix Kronecker and Hadamard products}
+\e{Kronecker} and \e{Hadamard} matrix products are important basic notations and can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
+\paragraph{Kronecker product}
+\begin{Def}
+  Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
+  \begin{equation} \label{def:kronecker}
+    A \otimes B =
+    \begin{bmatrix}
+      a_{11}B & a_{12}B & \cdots & a_{1J}B \\
+      a_{21}B & a_{22}B & \cdots & a_{2J}B \\
+      \vdots & \vdots & \ddots & \cdots \\
+      a_{I1}B & a_{I2}B & \cdots & a_{IJ}B
+    \end{bmatrix}
+  \end{equation}
+\end{Def}
+The result of the Kronecker product is thus an $IK \times JL$ matrix made by multiplying each element of $A$ by the entire matrix $B$.
+
+\paragraph{Hadamard product}
+\begin{Def}
+  The Hadamard product is the elementwise matrix product. If $A$ and $B$ are both $I \times J$ matrices, their Hadamard product $A \circ B$ is defined by
+  \begin{equation} \label{def:hadamard}
+    A \circ B =
+    \begin{bmatrix}
+      a_{11}b_{11} & a_{12}b_{12} & \cdots & a_{1J}b_{1J} \\
+      a_{21}b_{21} & a_{22}b_{22} & \cdots & a_{2J}b_{2J} \\
+      \vdots & \vdots & \ddots & \cdots \\
+      a_{I1}b_{I1} & a_{I2}b_{I2} & \cdots & a_{IJ}b_{IJ}
+    \end{bmatrix}
+  \end{equation}
+\end{Def}
 
 \section{Tensor-by-matrix product}
 We can define a tensor-by-matrix product in several ways. In this work we will always refer to what is called the \e{mode-k contraction} or \e{mode-k multiplication}.
