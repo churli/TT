@@ -86,6 +86,28 @@ The scalar product of two tensors can be computed using the Hadamard product and
 \begin{equation*}
   \langle \A, \B \rangle = \sum_{i_1,\ldots,i_d} A(i_1,\ldots,i_d)B(i_1,\ldots,i_d) = \sum_{i_1,\ldots,i_d} \A \circ \B
 \end{equation*}
+Looking at the complexity, we have that the ranks of the product are $\ord(r^2)$ and computing the contraction with vectors of all ones gives $\ord(dnr^4)$.
+However, this complexity can be reduced by exploiting the way the contraction is computed in the TT format. We have seen that the contraction is reduced to the computation of the product
+\begin{equation*}
+  W = \Gamma_1 \cdots \Gamma_d
+\end{equation*}
+where
+\begin{equation*}
+  \Gamma_k = \sum_{i_k}A_k(i_k) \otimes K_k(i_k)
+\end{equation*}
+Since $\Gamma_1$ is a row vector, the product can be computed with a sequence of vector-by-matrix products:
+\begin{equation*}
+  \begin{split}
+    v_1 &= \Gamma_1\\
+    v_k &= v_{k-1} \Gamma_k \qquad \forall k = 2,\ldots,d
+  \end{split}
+\end{equation*}
+Each $v_k$ is a row vector with length $r_k^{(A)} r_k^{(B)}$. If we now look at the computation of $v_k$, given that $v_{k-1}$ is known, we have:
+\begin{equation*}
+  v_k = v_{k-1} \Gamma_k = v_{k-1} \sum_{i_k} A_k(i_k) \otimes B_k(i_k) = \sum_{i_k} \underbrace{v_{k-1} \Big( A_k(i_k) \otimes B_k(i_k) \Big) }_{p_k(i_k)}
+\end{equation*}
+Each $p_k(i_k)$ is again a row vector with length $r_k^{(A)} r_k^{(B)}$.
+Assuming now that all the TT-ranks involved are of order $r$, we have, thanks to the special structure of the Kronecker product, that the computation of each $p_k(i_k)$ can be done in $\ord(r^3)$ operations. Thus the complete scalar product costs $\ord(dnr^3)$.
 
 \paragraph{Frobenius norm}
 TODO
