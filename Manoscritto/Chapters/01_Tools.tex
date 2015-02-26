@@ -1,6 +1,6 @@
 \chapter{Preliminary definitions, notation and tools}
 
-In this chapter we will go through the basic definitions and notation about tensors, introduce tensor unfoldings, see the most common tensor products and introduce the idea of tensor rank.
+In this chapter we will go through basic definitions and notation about tensors, introduce tensor unfoldings, see the most common tensor products and introduce the idea of tensor rank.
 
 \section{Definitions and notation}
 
@@ -11,14 +11,14 @@ The idea of tensor generalizes those of \emph{matrix} and \emph{vector}, making 
 \begin{Def}
   The \emph{order}, or number of \emph{ways} or \emph{modes}, of a tensor is its number of dimensions, i.e. its number of indices.
 \end{Def}
-So if we have a $d$-way tensor \X, we can refer to its elements as
+So if we have a $d$-way tensor \A, we can refer to its elements as
 \begin{equation*}
-  \X(i_1,\ldots,i_d)
+  \A(i_1,\ldots,i_d)
 \end{equation*}
-From this definition also follows that vectors are tensors of order \emph{one}, matrices are tensors of order \emph{two}.
+From this definition follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
 
 \begin{Def}
-  The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \X is the vector of elements given by fixing all the indices but the i-th.
+  The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \A is the vector of elements given by fixing all the indices but the i-th.
 \end{Def}
 
 \begin{Def}
@@ -28,20 +28,20 @@ From this definition also follows that vectors are tensors of order \emph{one}, 
 \begin{Def}
   We can define the \emph{norm} of a tensor as a general form of the matrix Frobenius norm:
   \[
-  \|\X\| = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_d = 1}^{I_d}\X^2(i_1 i_2 \cdots i_d)}
+  \|\A\| = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_d = 1}^{I_d}\A^2(i_1 i_2 \cdots i_d)}
   \]
 \end{Def}
 
 \todo{Inserire anche il prodotto scalare?}
 
 \begin{Def}
-  An $d$-way tensor \X is \emph{rank one} if it can be written as the outer product of d vectors:
+  A $d$-way tensor \A is \emph{rank one} if it can be written as the outer product of $d$ vectors:
   \[
-  \X = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(d)}}
+  \A = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(d)}}
   \]
   This can be written elementwise as:
   \[
-  \X(i_1,i_2,\cdots,i_d) = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
+  \A(i_1,i_2,\cdots,i_d) = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
   \]
 \end{Def}
 
@@ -53,12 +53,12 @@ An important concept in the tensor world, that will be heavily used in the tenso
 In this work we will make advantage of the following unfolding:
 
 \begin{Def}
-  Let \X an $d$-way tensor. We define the \emph{k-th unfolding} matrix of \X as:
+  Let \A a $d$-way tensor. We define the \emph{k-th unfolding} matrix of \A as:
   \begin{equation} \label{def:unfolding}
-    X_k = X_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = X(i_1,\dots,i_d)
+    A_k = A_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = A(i_1,\dots,i_d)
   \end{equation}
 
-where the first $k$ indices enumerate the rows of $X_k$, while the last $d - k$ indices enumerate the columns of $X_k$.
+where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ indices enumerate the columns of $A_k$.
 \end{Def}
 
 \section{Matrix Kronecker and Hadamard products}
@@ -93,7 +93,7 @@ The result of the Kronecker product is thus an $IK \times JL$ matrix made by mul
 \end{Def}
 
 \section{Tensor-by-matrix product}
-We can define a tensor-by-matrix product in several ways. In this work we will always refer to what is called the \e{mode-k contraction} or \e{mode-k multiplication}.
+We can define a tensor-by-matrix product in several ways. In this work we will always refer to \e{mode-k contraction} or \e{mode-k multiplication}.\todo{Forse superflua?}
 
 \begin{Def}
   Given a $d$-way tensor $\A \in I_1 \times \cdots \times I_d$ with elements $\A(i_1,\ldots,i_d)$ and a matrix $U \in I_\alpha \times I_k$ with elements $U(\alpha,i_k)$, we define the \e{mode-k multiplication}
@@ -108,13 +108,13 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
 \section{Rank-one tensor}
-An $d$-way tensor \X is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
+A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
 \begin{equation}
-  \X = a^{(1)} \circ a^{(2)} \circ \cdots \circ a^{(d)}
+  \A = v^{(1)} \circ v^{(2)} \circ \cdots \circ v^{(d)}
 \end{equation}
 Elementwise this translates to:
 \begin{equation}
-  x_{i_1,i_2,\ldots,i_n} = a_{i_1}^{(1)} a_{i_2}^{(2)} \cdots a_{i_d}^{(d)}
+  a_{i_1,i_2,\ldots,i_n} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
 \end{equation}
 This can be seen as a generalization of the fact that
 \begin{equation*}

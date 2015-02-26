@@ -110,6 +110,15 @@ Each $p_k(i_k)$ is again a row vector with length $r_k^{(A)} r_k^{(B)}$.
 Assuming now that all the TT-ranks involved are of order $r$, we have, thanks to the special structure of the Kronecker product, that the computation of each $p_k(i_k)$ can be done in $\ord(r^3)$ operations. Thus the complete scalar product costs $\ord(dnr^3)$.
 
 \paragraph{Frobenius norm}
-TODO
+The Frobenius norm can be computed directly as
+\begin{equation*}
+  ||\A||_F = \sqrt{\langle \A, \A \rangle}
+\end{equation*}
+and, by consequence, the distance between two tensors
+\begin{equation*}
+  ||\A - \B||_F
+\end{equation*}
+Deriving from the scalar product, the complexity for the computation of the Frobenius norm is $\ord(dnr^3)$.
+\todo{Si fa anche il matrix-by-vector product?}
 
 %EOF
