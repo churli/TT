@@ -34,16 +34,33 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   Let \A a $d$-dimensional tensor and let, for each $k$, $A_k$ its standard $k$-th unfolding matrix defined in \ref{def:unfolding}.
 
   If
-
-  \[
-  \forall k \quad rank(A_k) = r_k
-  \]
-  
+  \begin{equation*}
+    \forall k \quad rank(A_k) = r_k
+  \end{equation*}
   then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
 
   \begin{proof}
-    TODO\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
+    *\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
+
+    Let $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore $A_1$ admits a dyadic (skeleton) decomposition
+    \begin{equation*}
+      A_1 = UV^\top
+    \end{equation*}
+    that is expressed with indices as
+    \begin{equation*}
+      A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V^\top(\alpha_1;i_2,\ldots,i_d)
+    \end{equation*}
+    The matrix $V$ can be expressed as
+    \begin{equation*}
+      V = A_1^\top U (U^\top U)^{-1} = A_1^\top W
+    \end{equation*}
+    and with indices
+    \begin{equation*}
+      V(i_2,\ldots,i_d;\alpha_1) = \sum_{i_1 = 1}^{n_1} A_1^\top(i_2,\ldots,i_d;i_1) W(i_1,\alpha_1)
+    \end{equation*}
+    We can now consider $V$ as a tensor and make $(\alpha_1 i_2)$ one long index, so that \V will be a $(d-1)$-dimensional tensor.
   \end{proof}
+  
 \end{Teo}
 
 The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices\footnote{The SVD is used to compute the dyadic decomposition of $A_k$}. This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
