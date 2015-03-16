@@ -35,7 +35,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
 
   If
   \begin{equation*}
-    \forall k \quad rank(A_k) = r_k
+    \forall k \quad rk(A_k) = r_k
   \end{equation*}
   then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
 
@@ -48,7 +48,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     \end{equation*}
     that is expressed with indices as
     \begin{equation*}
-      A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V^\top(\alpha_1;i_2,\ldots,i_d)
+      A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V(\alpha_1;i_2,\ldots,i_d)
     \end{equation*}
     The matrix $V$ can be expressed as
     \begin{equation*}
@@ -58,7 +58,14 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     \begin{equation*}
       V(i_2,\ldots,i_d;\alpha_1) = \sum_{i_1 = 1}^{n_1} A_1^\top(i_2,\ldots,i_d;i_1) W(i_1,\alpha_1)
     \end{equation*}
-    We can now consider $V$ as a tensor and make $(\alpha_1 i_2)$ one long index, so that \V will be a $(d-1)$-dimensional tensor.
+    We can now consider $V$ as a tensor and make $(\alpha_1 i_2)$ one long index, so that \V is a $(d-1)$-dimensional tensor.
+
+    The tensor \V has its unfoldings $V_2,\ldots,V_d$. If $rk(V_k) \leq r_k$ holds, then we can apply the same procedure as above, so
+    \begin{equation*}
+      V(\alpha_1 i_2;i_3,\ldots,i_d) = \sum_{\alpha_2=1}^{r_2} G_2(\alpha_1 i_2;\alpha_2) V'(\alpha_2;i_3,\ldots,i_d)
+    \end{equation*}
+    and then we can consider $V'$ as a $(d-2)$-dimensional tensor and so on.
+    
   \end{proof}
   
 \end{Teo}
@@ -71,7 +78,7 @@ Since the SVD is used, we can make advantage of its properties: at each step, we
   Suppose that the unfoldings $A_k$ of the tensor \A are rank-$k$ only approximately, i.e. they satisfy
 
   \begin{equation} \label{teo:ttsvd_approx:ip:1}
-  A_k = R_k + E_k, \quad rank(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1
+  A_k = R_k + E_k, \quad rk(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1
   \end{equation}
 
   Then the TT-SVD yields a tensor \B in the TT format with TT-ranks $r_k$ and
@@ -143,11 +150,11 @@ Two important corollaries follow from this theorem:
 
     The elements of $\B^{(s)}$ are bounded and \todo{Perchè averli bounded ci serve?} there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
     \begin{equation*}
-      rank(\B^{(s_t)}_k) \le r_k \quad \forall k
+      rk(\B^{(s_t)}_k) \le r_k \quad \forall k
     \end{equation*}
     and thus
     \begin{equation*}
-      rank(\B^{min}_k) \le r_k \quad \forall k
+      rk(\B^{min}_k) \le r_k \quad \forall k
     \end{equation*}
     Moreover, $||\A - \B^{min}||_F = \eps$, \todo{Perchè questo, bisogna controllare!} so $\B^{min}$ is the minimum.
 
