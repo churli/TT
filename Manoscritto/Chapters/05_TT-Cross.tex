@@ -16,8 +16,53 @@ Having to deal with a black-box tensor can result in a relevant advantage: we ca
 
 The question we want to answer in this chapter is: \e{Can we exploit this advantage? Can we find a way to have an arbitrary good approximation of the tensor just by using a limited subset of its element?}
 
-\paragraph{TT-cross}
+\paragraph{Tensor train cross-approximation}
 Here we are going to describe a low-rank tensor approximation techinique using a subset of few, well-chosen, elements.
 The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
-The outcoming algorithm is called \e{TT cross} and it is shown \todo{da dimostrare? o forse è meglio mettere 'it turns out'?} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
+The outcoming algorithm is called \e{TT-cross} and it is shown \todo{da dimostrare? o forse è meglio mettere 'it turns out'?} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
 
+\section{Skeleton decomposition for matrices}
+First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on [???] \todo{Vai in biblioteca e spera di trovare questo Grantmacher-Theory of Matrices, che su internet non si trova nulla}.
+
+\begin{Teo}
+  Let $A$ an $m \times n$ matrix with rank $r$. $A$ can be represented as
+  \begin{equation} \label{def:skeleton}
+    A = C \hat{A}^{-1} R
+  \end{equation}
+  where:
+  \begin{itemize}
+  \item $C = A(:,\J)$ is made of a subset of $r$ columns of $A$, indexed by $\J$
+  \item $R = A(\I,:)$ is made of a subset of $r$ rows of $A$, indexed by $\I$
+  \item $\hat{A} = A(\I,\J)$ is the submatrix on their intersection, that should be nonsingular
+  \end{itemize}
+\end{Teo}
+
+From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly independent rows and $r$ linearly independent columns\footnote{The total amount of elements that have to be stored for a rank-$r$, $m \times n$ matrix, is $r(m+n-r)$.}.
+
+\paragraph{An approximate skeleton}
+We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g. when its $\eps$-rank is $r$.
+How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results?
+
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e. determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose.
+
+The \e{maxvol} algorithm is what is currently used in the implementation of the TT-cross algorithm.
+The high-level strategy that is used with matrices is the following.
+
+First choose a subset of either rows or columns containing a submatrix of sufficiently large volume. E.g. consider a set $\J = [i_k], k=1,\ldots,r$ of column indices suitable for this purpose.
+
+Knowing $\J$, we can compute the elements of the $n \times r$ column matrix $C = A(:,\J)$. This obviously takes $nr$ element evaluations.
+
+Using the \e{maxvol} algorithm we can then obtain a submatrix $\hat{A}$ of quasi-maximal volume in $C$ with $\ord(nr^2)$ operations.
+
+Since the previous step also gives us the set of row indices containing $\hat{A}$, the row matrix can now be computed as $R = A(\I,:)$.
+
+\section{From skeletons to trains}
+Now that we have seen the skeleton decomposition for matrices, how can we use it to compute a \e{tensor-train} approximation?
+The basic idea is to replace the SVD with the skeleton decomposition in the proof of \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to make advantage of the skeleton decomposition.
+
+Considering again the strategy described above for matrices, we can notice that only one set of indices, either $\J$ or $\I$, is required at the beginning. This is going to be very helpful in the tensor case.
+
+\paragraph{TT-cross}
+Given a tensor $\A = A(i_1,\ldots,i_d)$, let us consider the first unfolding matrix $A_1$ and its rank $r_1$. We know that there is a subset of $r_1$ linearly independent columns in $A_1$, so let us take $\J_1}$ as the set of their indices.
+
+Since each column of $A_1$ is naturally pointed to a multi-index $(i_2,\ldots,i_d)$, $\J_1$ is actually a set of $(d-1)$-tuples.
