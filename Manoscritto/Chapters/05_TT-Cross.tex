@@ -1,2 +1,23 @@
 \chapter{TT-Cross}
-Still TODO
+So far we have seen how a given tensor can be:
+\begin{itemize}
+\item compressed from the \e{full format} to the TT format
+\item manipulated via various operations directly into the TT format
+\item \e{rounded} (i.e. recompressed) without leaving the TT format
+\end{itemize}
+
+However, we still have a very relevant dependency on either the full representation format or the canonical decomposition as unique ways to input data to the TT format.
+In fact, in case of a high value of $d$, we likely may be unable to represent the full tensor in order to perform the compression at the first instance. On the other hand, a canonical representation of tensors is usually already available only in few special cases (e.g. for discrete operators).
+
+Fortunately, we can notice that, in all analytical problems and in many practical applications, tensors are often described implicitly by a procedure letting us compute any of its elements.
+This is what is called a \e{black-box} tensor.
+
+Having to deal with a black-box tensor can result in a relevant advantage: we can compute any of its element given their coordinates, thus we don't have to store the full multi-dimensional array of elements in order to be able to access them.
+
+The question we want to answer in this chapter is: \e{Can we exploit this advantage? Can we find a way to have an arbitrary good approximation of the tensor just by using a limited subset of its element?}
+
+\paragraph{TT-cross}
+Here we are going to describe a low-rank tensor approximation techinique using a subset of few, well-chosen, elements.
+The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
+The outcoming algorithm is called \e{TT cross} and it is shown \todo{da dimostrare? o forse è meglio mettere 'it turns out'?} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
+
