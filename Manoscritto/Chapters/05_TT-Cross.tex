@@ -63,6 +63,15 @@ The basic idea is to replace the SVD with the skeleton decomposition in the proo
 Considering again the strategy described above for matrices, we can notice that only one set of indices, either $\J$ or $\I$, is required at the beginning. This is going to be very helpful in the tensor case.
 
 \paragraph{TT-cross}
-Given a tensor $\A = A(i_1,\ldots,i_d)$, let us consider the first unfolding matrix $A_1$ and its rank $r_1$. We know that there is a subset of $r_1$ linearly independent columns in $A_1$, so let us take $\J_1}$ as the set of their indices.
+Given a tensor $\A = A(i_1,\ldots,i_d)$, let us consider the first unfolding matrix $A_1$ and its rank $r_1$. We know that there is a subset of $r_1$ linearly independent columns in $A_1$, so let us take $\J_1$ as the set of their indices.
 
-Since each column of $A_1$ is naturally pointed to a multi-index $(i_2,\ldots,i_d)$, $\J_1$ is actually a set of $(d-1)$-tuples.
+Since each column of $A_1$ is naturally pointed to a multi-index $(i_2,\ldots,i_d)$, $\J_1$ is actually a set of $(d-1)$-tuples and can be written as:
+\begin{equation*}
+  \J_1 = [j_l^{(\alpha_1)}], \quad \alpha_1 = 1,\ldots,r_1, \quad l = 2,\ldots,d
+\end{equation*}
+where $\alpha_1$ is the column number and $l$ is the mode, so each of the $r_1$ columns is split in $(d-1)$ mode-indices.
+
+The unfolding $A_1$ has a skeleton decomposition where the column matrix $C$ has size $n_1 \times r_1$ and can be computed as
+\begin{equation*}
+  $C(i_1,\alpha_1) = A(i_1,j_2^{(\alpha_1)},\ldots,j_d^{(\alpha_1)})$
+\end{equation*}
