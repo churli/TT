@@ -40,7 +40,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
 
   \begin{proof}
-    *\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
+    *NB:*\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini}
 
     Let $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore $A_1$ admits a dyadic (skeleton) decomposition
     \begin{equation*}
@@ -169,7 +169,7 @@ Two important corollaries follow from this theorem:
 \todo{Inserisci l'algoritmo TT-SVD qui!}
 
 \subsection{How many parameters?}
-Let's take an $n_1 \times \cdots \times n_d$ tensor $\A \in I_1 \times \cdots \times I_d$. The number of parameters used to represent it in the full format is $n_1 \cdots n_d$. If we assume , $\forall k$, $n_k  = n$, we have an $n^d$ number of parameters used.
+Let us take an $n_1 \times \cdots \times n_d$ tensor $\A \in I_1 \times \cdots \times I_d$. The number of parameters used to represent it in the full format is $n_1 \cdots n_d$. If we assume , $\forall k$, $n_k  = n$, we have an $n^d$ number of parameters used.
 
 If \A is instead represented in the TT format, as in \ref{def:TTindex}, with TT-ranks $r_k$ we have that the number of parameters used is
 \begin{equation*}
@@ -276,7 +276,7 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
 
 Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \ref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
 
-Let's start with $V$ written as
+Let us start with $V$ written as
 \begin{equation*}
   V(i_1,\ldots,i_d) = G_2(i_2) \cdots G_d(i_d)
 \end{equation*}
