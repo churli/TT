@@ -4,22 +4,28 @@
 #RSYNC_OPTS=--links
 #TEST_FILES=index.html bianucci-custom.less bootstrap photos
 BASEDIR=/home/tommaso/Repo/Tesi_triennale
+MANDIR=$(BASEDIR)/Manoscritto
+OUTDIR=$(MANDIR)/Out
+
+TEXOPTS=-output-directory=$(OUTDIR)
+BIBENVS=BIBINPUTS=$(MANDIR) TEXMFOUTPUT=$(OUTDIR)
+AUTOPTS=-interaction nonstopmode
 # end vars
 
 compile:
-	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex $(TEXOPTS) $(MANDIR)/tesi.tex
 bibcompile:
-	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
-	bibtex tesi.aux
-	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
-	pdflatex $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex $(TEXOPTS) $(MANDIR)/tesi.tex
+	$(BIBENVS) bibtex $(OUTDIR)/tesi.aux
+	pdflatex $(TEXOPTS) $(MANDIR)/tesi.tex
+	pdflatex $(TEXOPTS) $(MANDIR)/tesi.tex
 compileauto:
-	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex $(AUTOPTS) $(TEXOPTS) $(MANDIR)/tesi.tex
 bibcompileauto:
-	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
-	bibtex tesi.aux
-	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
-	pdflatex -interaction nonstopmode $(BASEDIR)/Manoscritto/tesi.tex
+	pdflatex $(AUTOPTS) $(TEXOPTS) $(MANDIR)/tesi.tex
+	$(BIBENVS) bibtex $(OUTDIR)/tesi.aux
+	pdflatex $(AUTOPTS) $(TEXOPTS) $(MANDIR)/tesi.tex
+	pdflatex $(AUTOPTS) $(TEXOPTS) $(MANDIR)/tesi.tex
 autocompile:
 	./autocompile.loop.sh
 push:
@@ -33,6 +39,7 @@ sync:
 # test:
 # 	$(foreach s,$(TEST_FILES),go -m rsync -D -r -i $(s) -o r:~/public_html/etc/development/ phc -- $(RSYNC_OPTS);)
 clean:
-	echo "Nothing set to clean..."
+	echo "Cleaning outfiles..."
+	rm $(OUTDIR)/*
 
 #EOF

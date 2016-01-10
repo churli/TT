@@ -166,7 +166,29 @@ Two important corollaries follow from this theorem:
   From \ref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$
 \end{Cor}
 
-\todo{Inserisci l'algoritmo TT-SVD qui!}
+\begin{lstlisting}[title=TT-SVD compression algorithm]
+  ttsvd($A$,$\eps$):
+    #Compute the truncation parameter $\delta$
+    $\delta = \frac{\eps}{\sqrt{d-1}}||A||_F$
+  
+    $C = A$
+    $r_0 = 1$
+    for $k$ in range($1$,$d-1$) do
+      #Unfold $C$
+      $C = reshape(C,[r_{k-1}n_k,\frac{numel(C)}{r_{k-1}n_k}]$)
+      #Compute the $\delta$-truncated SVD
+      $C = USV + E$, where $||E||_F \leq \delta$
+      $r_k = rank_{\delta}(C)$
+      #Compute the new TT carriage
+      $G_k = reshape(U,[r_{k-1},n_k,r_k])$
+      $C = SV^T$
+    done
+    
+    #Set last carriage
+    $G_d = C$
+    #Return the computed carriages
+    return $G_1, G_2, \ldots, G_d$
+\end{lstlisting}
 
 \subsection{How many parameters?}
 Let us take an $n_1 \times \cdots \times n_d$ tensor $\A \in I_1 \times \cdots \times I_d$. The number of parameters used to represent it in the full format is $n_1 \cdots n_d$. If we assume , $\forall k$, $n_k  = n$, we have an $n^d$ number of parameters used.
