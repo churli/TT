@@ -22,7 +22,7 @@ The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (ske
 The outcoming algorithm is called \e{TT-cross} and it is shown \todo{da dimostrare? o forse è meglio mettere 'it turns out'?} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
 
 \section{Skeleton decomposition for matrices}
-First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on [???] \todo{Vai in biblioteca e spera di trovare questo Grantmacher-Theory of Matrices, che su internet non si trova nulla}.
+First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on [???] \todo{Vai in biblioteca e spera di trovare questo \emph{Grantmacher-Theory of Matrices}, che su internet non si trova nulla}.
 
 \begin{Teo}
   Let $A$ an $m \times n$ matrix with rank $r$. $A$ can be represented as
@@ -41,11 +41,11 @@ From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly i
 
 \paragraph{An approximate skeleton}
 We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g. when its $\eps$-rank is $r$.
-How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results?
+How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
 An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e. determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose.
 
-The \e{maxvol} algorithm is what is currently used in the implementation of the TT-cross algorithm.
+The \e{maxvol}\todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
 The high-level strategy that is used with matrices is the following.
 
 First choose a subset of either rows or columns containing a submatrix of sufficiently large volume. E.g. consider a set $\J = [i_k], k=1,\ldots,r$ of column indices suitable for this purpose.
@@ -71,7 +71,20 @@ Since each column of $A_1$ is naturally pointed to a multi-index $(i_2,\ldots,i_
 \end{equation*}
 where $\alpha_1$ is the column number and $l$ is the mode, so each of the $r_1$ columns is split in $(d-1)$ mode-indices.
 
-The unfolding $A_1$ has a skeleton decomposition where the column matrix $C$ has size $n_1 \times r_1$ and can be computed as
+The unfolding $A_1$ has a skeleton decomposition where the column matrix $C$ has size $n_1 \times r_1$ and is made of $r_1$ columns of $A_1$.
+It can be computed as
 \begin{equation*}
   C(i_1,\alpha_1) = A(i_1,j_2^{(\alpha_1)},\ldots,j_d^{(\alpha_1)})
 \end{equation*}
+
+Using the \emph{maxvol} algorithm we can then compute a submatrix of $C$ having quasi-maximal volume, $\hat{A}_1$. It will also yield the corresponding row-indices set
+\begin{equation*}
+  \I_1 = [I_1^{(\alpha_1)}], \quad \alpha_1 = 1,\ldots,r_1
+\end{equation*}
+
+Matrix $A_1$ is now represented as
+\begin{equation*}
+  A_1 = C\hat{A}_1^{-1}R
+\end{equation*}
+
+%EOF

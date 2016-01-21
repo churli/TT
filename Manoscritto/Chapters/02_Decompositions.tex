@@ -1,5 +1,5 @@
 \chapter{Decompositions}
-wwwwww
+Here we briefly present two important tensor decomposition mainly for their historycal interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their possible application on real world applications.
 
 \section{Canonical Decomposition (CANDECOMP/CP)}
 The core idea behind the Canonical Decomposition\footnote{also called Parallel Factors, thus abbreviated as \emph{CP}} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
@@ -37,4 +37,18 @@ We would like to be able to get a best rank-k approximation of \X by summing k f
 Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor. \todo{Qui rivedi bene, perchè forse è meglio metterla solo sulla storia delle successioni che convergono ad altri ranghi} \todo{Inoltre questa roba l'ha scoperta Bini, quindi vedi un po' il suo articolo}
 
 \section{Tucker decomposition}
-wwww
+The idea behind the Tucker decomposition is to decompose the input tensor into a \emph{core} tensor multiplied by a matrix along each mode.
+The three-way case example, where $\X \in \R^{I \times J \times K}$ is:
+\begin{equation*}
+  \X \approx \G \times_1 A \times_2 B \times_3 C = \sum_{p=1}^P \sum_{q=1}^Q \sum_{r=1}^R g_{pqr} a_p \circ b_q \circ c_r
+\end{equation*}
+and in the elementwise form:
+\begin{equation*}
+  x_{ijk} \approx \sum_{p=1}^P \sum_{q=1}^Q \sum_{r=1}^R g_{pqr} a_{ip} b_{jq} c_{kr}
+\end{equation*}
+
+$P, Q$ and $R$ are the number of components (i.e. columns) of the factor matrices $A, B$ and $C$ respectively. When $P,Q,R$ are smaller than $I,J,K$, the core \G can be thought of as a compressed version of the input tensor \X.
+
+The Tucker decomposition has a stable algorithms for compression but it has the relevant limitation of showing an exponential dependence on the number of dimensions $d$. The number of parameters required is $\ord(dnr+r^d)$.
+While this makes the Tucker decomposition unsuitable for large $d$, this leaves enough room for valuable applications in \emph{small} dimensions, expecially in the three-dimensional case. Further in this work we will see how the Tucker decomposition can be used to further \emph{compress} the three-dimensional cores yielded by the Tensor Train decomposition.
+%EOF
