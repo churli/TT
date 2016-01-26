@@ -43,22 +43,19 @@ From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly i
 We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g. when its $\eps$-rank is $r$.
 How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
-An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e. determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose.
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e. determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
 
-The \e{maxvol}\todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
 The high-level strategy that is used with matrices is the following.
 
 First choose a subset of either rows or columns containing a submatrix of sufficiently large volume. E.g. consider a set $\J = [i_k], k=1,\ldots,r$ of column indices suitable for this purpose.
 
 Knowing $\J$, we can compute the elements of the $n \times r$ column matrix $C = A(:,\J)$. This obviously takes $nr$ element evaluations.
-
 Using the \e{maxvol} algorithm we can then obtain a submatrix $\hat{A}$ of quasi-maximal volume in $C$ with $\ord(nr^2)$ operations.
-
 Since the previous step also gives us the set of row indices containing $\hat{A}$, the row matrix can now be computed as $R = A(\I,:)$.
 
 \section{From skeletons to trains}
 Now that we have seen the skeleton decomposition for matrices, how can we use it to compute a \e{tensor-train} approximation?
-The basic idea is to replace the SVD with the skeleton decomposition in the proof of \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to make advantage of the skeleton decomposition.
+The basic idea is to replace the SVD with the skeleton decomposition in the proof of \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to leverage the properties of the skeleton decomposition.
 
 Considering again the strategy described above for matrices, we can notice that only one set of indices, either $\J$ or $\I$, is required at the beginning. This is going to be very helpful in the tensor case.
 
@@ -86,5 +83,11 @@ Matrix $A_1$ is now represented as
 \begin{equation*}
   A_1 = C\hat{A}_1^{-1}R
 \end{equation*}
+and similarly to the TT-SVD case, we can set the first tensor carriage as
+\begin{equation*}
+  G_1 = C\hat{A}_1^{-1}
+\end{equation*}
+
+We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus \todo{Why is this true? Proof requred!}. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \todo{add refs here, can be found at page 9 of tt-cross paper}.
 
 %EOF
