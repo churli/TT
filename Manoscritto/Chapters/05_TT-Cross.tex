@@ -90,4 +90,30 @@ and similarly to the TT-SVD case, we can set the first tensor carriage as
 
 We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus \todo{Why is this true? Proof requred!}. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \todo{add refs here, can be found at page 9 of tt-cross paper}.
 
+The next step is to iterate further on the $R$ term and represent it in the TT format. $R$ consists of $r_1$ rows of $A_1$ and it can be reshaped into a subtensor $\tensor{R}$ of $\A$:
+\begin{equation*}
+  R(\alpha_1,i_2,\ldots,i_d) = A(i_1^{(\alpha_1)},i_2,\ldots,i_d)
+\end{equation*}
+We can now concatenate indices $\alpha_1$ and $i_2$ in one long index $\alpha_1i_2$: in this way $\tensor{R}$ can be seen as a tensor of dimensionality $d-1$ and size $r_1n_2 \times n_2 \times \cdots \times n_d$.
+
+Similarly to as shown in proof of \ref{teo:ttsvd}, if the unfoldings $A_k$ have ranks $r_k$, then the corresponding compression ranks for $\tensor{R}$ cannot be larger and, in case the TT representation of $\A$ is exact, these compression ranks must be equal to $r_k$.\todo{Clarify and prove this.}
+
+In order to obtain the second carriage, we consider again the first unfolding of the new, reshaped, subtensor \tensor{R}:
+\begin{equation*}
+  R_2 = R(\alpha_1i_2;i_3,\ldots,i_d)
+\end{equation*}
+
+Now suppose that we know a set
+\begin{equation*}
+  \J_2 = [j_l^{(\alpha_2)}], \quad \alpha_2 = 1,\ldots,r_2, \quad l = 2,\ldots,d
+\end{equation*}
+of $(d-2)$-tuples, indicating the columns containing a submatrix of quasi-maximal volume in $R_2$. In order to obtain the skeleton decomposition of $R_2$, we use these linearly independent \todo{Is it proven that columns containing a quasi-maximal submatrix are linearly independent?} columns to make matrix $C_2$ of size $r_1 n_2 \times r_2$. Computing its entries
+\begin{equation*}
+  C_2(\alpha_1 i_2; \alpha_2) = R(\alpha_1 i_2,j_3^{(\alpha_2)},\ldots,,j_d^{(\alpha_2)})
+\end{equation*}
+that, in terms of the initial array are
+\begin{equation*}
+  C_2(\alpha_1 i_2; \alpha_2) = R(i_1^{(\alpha_1)},i_2,j_3^{(\alpha_2)},\ldots,j_d^{(\alpha_2)})
+\end{equation*}
+where the indices $i_1^{(\alpha_1)}$ belong to set $\I_1$ computed at the previous step.
 %EOF
