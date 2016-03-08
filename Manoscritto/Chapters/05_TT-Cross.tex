@@ -146,8 +146,45 @@ Now the next \emph{left index set} is defined by the row positions of the quasi-
 
 The new tensor carriage $\G_k$ is then obtained by reshaping the result of $C_k \hat{R}^{-1}$
 
-Let's now recap the entire procedure. If we know the index sets $\I_k$
+Let's now recap the entire procedure. If we know the index sets $\J_k$
 \begin{equation*}
   \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d
 \end{equation*}
+corresponding to the columns that contain quasi-maximal submatrices in the unfolding matrices $A_k$ and if the values $r_k = rank(A_k)$ are the compression ranks for the TT decomposition we are trying to obtain, then then number of elements fo $\A$ that are required in order to compute such TT decomposition is
+\begin{equation*}
+  n_1 r_1 + n_2 r_1 r_2 + \ldots + n_{d-1} r_{d-2} r_{d-1} + n_d r_{d-1}
+\end{equation*}
+This means that if $n_k = n$ and $r_k = r$ for all $k$, then the number of elements that have to be computed are $\ord(dnr^2)$.
+In addition to this, we also have to perform $d$ searches for a quasi-maximal volume submatrix in matrices that have size $nr \times r$. Using the \emph{maxvol} algorithm we can achieve this is $\ord(dnr^3)$ operations.
+As a side note, we should also add that usually evaluating a function in $d$ variables takes at least $\ord(d)$ operations, which would make the whole method scale quadratically in $d$. In case of a very large number of dimensions $d$ this could be problematic and it would be useful to find and use a specific fast method for computing the subtensor
+\begin{equation*}
+  C_k = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,j_{k+1}^{(\alpha_k)},\ldots,j_d^{(\alpha_k)})
+\end{equation*}
+
+The computation of the TT decomposition's carriages also yields the \emph{left index sets} $\I_k$. As opposed to the \emph{right index sets} $J_k$, which are assumed to be given at the beginning, these are not arbitrary and depend on each other. Each $\I_k$ is of the form
+\begin{equation*}
+  \I_k = [i_k^{(\alpha_k)}, \quad \alpha_k = 1,\ldots,k \quad k = 1,\ldots,d-1
+\end{equation*}
+and relates to $\I_{k-1}, \forall k \geq 2$ as
+\begin{equation*}
+  (i_1,i_2,\ldots,i_{k-1},i_k) \in \I_k \implies (i_1,i_2,\ldots,i_{k-1}) \in \I_{k-1}, \quad k=2,\ldots,d-1
+\end{equation*}
+A sequence matching this definition will be called a \emph{left-nested sequence}.
+
+A similar definition can be given for a \emph{right-nested sequence} of right-index sets $\J_k$, although in the above construction it was not assumed for the sequence $\J_k$:
+\begin{equation*}
+  (j_{k+1},j_{k+2},\ldots,j_d) \in \J_k \implies (j_{k+2},\ldots,j_d) \in \J_{k+1}, \quad k=1,\ldots,d-2
+\end{equation*}
+
+With the above we have proven the following theorem:
+\begin{Teo}
+  Let $\A$ be an arbitrary $d$-dimensional tensor of size $n_1 \times \cdots \times n_d$ having compression ranks
+  \begin{equation*}
+    r_k = rank(A_k), \quad A_k = A(i_1 i_2 \ldots i_k;i_{k+1} \ldots i_d)
+  \end{equation*}
+  Assume that the right-index sets
+  \begin{equation*}
+    \J_k
+  \end{equation*} \todo{Continua...pagina 11 dell'articolo}
+\end{Teo}
 %EOF
