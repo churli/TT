@@ -13,6 +13,9 @@ BIBENVS=BIBINPUTS=$(MANDIR) TEXMFOUTPUT=$(OUTDIR)
 AUTOPTS=-interaction nonstopmode
 # end vars
 
+init:
+	mkdir -p $(OUTDIR)
+
 compile:
 	pdflatex $(TEXOPTS) $(MANDIR)/tesi.tex
 bibcompile:
