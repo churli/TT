@@ -3,7 +3,8 @@
 # vars
 #RSYNC_OPTS=--links
 #TEST_FILES=index.html bianucci-custom.less bootstrap photos
-BASEDIR=/home/tommaso/Repo/Tesi_triennale
+#BASEDIR=/home/tommaso/Repo/Tesi_triennale
+BASEDIR=`cd .. && pwd`
 MANDIR=$(BASEDIR)/Manoscritto
 OUTDIR=$(MANDIR)/Out
 
