@@ -49,6 +49,6 @@ and in the elementwise form:
 
 $P, Q$ and $R$ are the number of components (i.e. columns) of the factor matrices $A, B$ and $C$ respectively. When $P,Q,R$ are smaller than $I,J,K$, the core \G can be thought of as a compressed version of the input tensor \X.
 
-The Tucker decomposition has a stable algorithms for compression but it has the relevant limitation of showing an exponential dependence on the number of dimensions $d$. The number of parameters required is $\ord(dnr+r^d)$.
+The Tucker decomposition has a stable algorithm for compression but it has the relevant limitation of showing an exponential dependence on the number of dimensions $d$. The number of parameters required is $\ord(dnr+r^d)$.
 While this makes the Tucker decomposition unsuitable for large $d$, this leaves enough room for valuable applications in \emph{small} dimensions, expecially in the three-dimensional case. Further in this work we will see how the Tucker decomposition can be used to further \emph{compress} the three-dimensional cores yielded by the Tensor Train decomposition.
 %EOF

@@ -209,7 +209,7 @@ With the above we have proven the following theorem:
     A(i_1,\ldots,i_d) =& \sum_{\alpha_1,\ldots,\alpha_{d-1}} \left[ \, \hat{C}_1(i_1,\alpha_1) \hat{C}_2(\alpha_1,i_2,\alpha_2) \quad \cdots \right. \nonumber \\
     &\cdots \quad \left. \hat{C}_{d-1}(\alpha_{d-2},i_{d-1},\alpha_{d-1}) \hat{C}_d(\alpha_{d-1},i_d) \, \right]
   \end{align}
-  where tensor carriages $\hat{\C}_k$ are obtained from $\C_k$ by the following scaling\footnote{The general $k$-th tensor-by-matrix multiplication is defined in \ref{def:tensor-matrix-product}. Here computing $\C_k \times_3 \hat{A}_{-1}$ is equivalent to taking the second unfolding of $\C_k$, computing the product $\hat{\C}_k(\alpha_{k-1},i_k;\alpha_k) = \C_k(\alpha_{k-1},i_k;\alpha_k) \cdot \hat{A}_k^{-1}$ and reshaping the result back to a 3-way tensor $\hat{C}_k = \hat{\C}_k(\alpha_{k-1},i_k,\alpha_k)$.}:
+  where tensor carriages $\hat{\C}_k$ are obtained from $\C_k$ by the following scaling.\footnote{The general $k$-th tensor-by-matrix multiplication is defined in \ref{def:tensor-matrix-product}. Here computing $\C_k \times_3 \hat{A}_{-1}$ is equivalent to taking the second unfolding of $\C_k$, computing the product $\hat{\C}_k(\alpha_{k-1},i_k;\alpha_k) = \C_k(\alpha_{k-1},i_k;\alpha_k) \cdot \hat{A}_k^{-1}$ and reshaping the result back to a 3-way tensor $\hat{C}_k = \hat{\C}_k(\alpha_{k-1},i_k,\alpha_k)$.}:
   \begin{align}
     \hat{\C}_1 &= \C_1 \hat{A}_1^{-1} \nonumber \\
     \hat{\C}_k &= \C_k \times_3 \hat{A}_k^{-1}, \quad k = 2, \ldots, d-1 \\
@@ -222,6 +222,7 @@ It is important to note that this theorem is formally valid only in the exact lo
 Moving to a numerically viable algorithm requires a careful selection of \emph{sufficiently good} submatrices among those that are non-singular.\todo{Here report a hint about approximate skeleton and errors involved}
 
 \section{A TT-cross algorithm}
+foobar
 
 
 %%EOF\todo{Continua... a pagina 12 dell'articolo}

@@ -1,10 +1,10 @@
 \chapter{Tensor-Train Decomposition}
 
-The \emph{Tensor-Train decomposition} is the main topic of this work. It was presented in this form by Oseledets in \cite{oseledets2011tt} although the format was already presented in a recursive form by the same author in \cite{oseledetstyrty2009}.
+The \emph{Tensor-Train decomposition} is the main topic of this work. It is a novel representation which was presented in this form by Oseledets in \cite{oseledets2011tt} although the format was already presented in a recursive form by the same author in \cite{oseledetstyrty2009}.
 
-The idea behind the \emph{tensor train decomposition}, or simply \emph{TT-decomposition}, is to have a way of representing the higher order tensor using a sequence of third order tensors. This will prove to be useful, since we can use the \emph{Tucker} decomposition on these third order factors to further lower the number of parameters involved.
+The idea behind the \emph{tensor train decomposition}, or simply \emph{TT-decomposition}, is to have a way of representing a higher order tensor using a sequence of third order tensors. This will prove to be useful, since we can use the \emph{Tucker} decomposition on these third order factors to further lower the number of parameters involved.
 
-In this chapter we will go through some basic theorical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the scope of this work.
+In this chapter we will go through some basic theoretical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the scope of this work.
 
 We define the \emph{TT-decomposition} of a given tensor \A as follows:
 
@@ -27,7 +27,7 @@ We can now write the TT-decomposition of \A in the indexed form as:
   \A(i_1,\dots,i_d) = \sum_{\alpha_0,\dots,\alpha_d} \G_1(\alpha_0,i_1,\alpha_1) \cdots \G_d(\alpha_{d-1},i_d,\alpha_d)
 \end{equation}
 
-\section{Theorical results}
+\section{Theoretical results}
 We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $\G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \ref{def:TT}.
 
 \begin{Teo} \label{teo:ttsvd}
@@ -51,26 +51,45 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
       A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V(\alpha_1;i_2,\ldots,i_d)
     \end{equation*}
     The matrix $V$ can be expressed as
-    \begin{equation*}
+    \begin{equation}\label{eq:Vdecomp}
       V = A_1^\top U (U^\top U)^{-1} = A_1^\top W
-    \end{equation*}
+    \end{equation}
     and with indices
     \begin{equation*}
       V(i_2,\ldots,i_d;\alpha_1) = \sum_{i_1 = 1}^{n_1} A_1^\top(i_2,\ldots,i_d;i_1) W(i_1,\alpha_1)
     \end{equation*}
     We can now consider $V$ as a tensor and make $(\alpha_1 i_2)$ one long index, so that \V is a $(d-1)$-dimensional tensor.
 
-    The tensor \V has its unfoldings $V_2,\ldots,V_d$. If $rk(V_k) \leq r_k$ holds, then we can apply the same procedure as above, so
+    The tensor \V has its unfoldings $V_2,\ldots,V_d$. Assuming that $rk(V_k) \leq r_k$ holds, then we can apply the same procedure as above, so
     \begin{equation*}
       V(\alpha_1 i_2;i_3,\ldots,i_d) = \sum_{\alpha_2=1}^{r_2} G_2(\alpha_1 i_2;\alpha_2) V'(\alpha_2;i_3,\ldots,i_d)
     \end{equation*}
-    and then we can consider $V'$ as a $(d-2)$-dimensional tensor and so on.\todo{21 Jan 2016: Qui va finita binebo...}
-    
+    This yields the next core tensor $G_2(\alpha_1,i_2,\alpha_2)$.
+    We can now continue similarly by considering $V'$ as a $(d-2)$-dimensional tensor and so on, yielding all the cores up to $G_d(\alpha_{d-1},i_d)$ and therefore the entire TT-decomposition.\todo{26 Apr 2016: Ci sto mettendo le mani, speriamo di finire a questo giro.}
+
+    Now we have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r_k$, therefore \A can be represented as\todo{26 Apr 2016: Skeleton decomp.?}
+    \begin{equation*}
+      A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)
+    \end{equation*}
+    Using this, together with \ref{eq:Vdecomp}, we obtain
+    \begin{align*}
+      V_k &= V(\alpha_1 i_2,\ldots,i_k;i_{k+1},\ldots,i_d) \\
+      &= \sum_{i_1 = 1}^{n_1} \sum_{\beta = 1}^{r_k} W(i_1, \alpha_1) F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d) \\
+      &= \sum_{\beta = 1}^{r_k} H(\alpha_1 i_2,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d) \\
+    \end{align*}
+    where
+    \begin{equation*}
+      H(\alpha_1 i_2,\ldots,i_k,\beta) = \sum_{i_1 = 1}^{n_1} W(i_1, \alpha_1) F(i_1,\ldots,i_k,\beta)
+    \end{equation*}
+    This separates row and column indices of $V_k$ and it holds
+    \begin{equation*}
+      rank(V_k) \leq r_k
+    \end{equation*}
   \end{proof}
   
 \end{Teo}
 
-The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices\footnote{The SVD is used to compute the dyadic decomposition of $A_k$}. This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
+The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
 
 Since the SVD is used, we can make advantage of its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure:
 
@@ -112,7 +131,7 @@ Since the SVD is used, we can make advantage of its properties: at each step, we
     B_1 = U_1^\top A_1
     \]
 
-    If we now consider $B_{1,k}$ the $k$-th unfolding of the $(d-1)$-dimensional tensor $\B_1$, from the orthonormality of $U_1$, for each $k=2,\ldots,d-1$ we have\footnote{It's useful to recall here that the Frobenius norm is invariant under unfolding}
+    If we now consider $B_{1,k}$ the $k$-th unfolding of the $(d-1)$-dimensional tensor $\B_1$, from the orthonormality of $U_1$, for each $k=2,\ldots,d-1$ we have\footnote{It's useful to recall here that the Frobenius norm is invariant under unfolding.}
     \begin{equation*}
       \begin{split}
         ||B_{1,k} - R_k||_F^2 &= ||U_1^\top A_1 - R_k||_F^2 = ||A_k - R_k||_F^2\\

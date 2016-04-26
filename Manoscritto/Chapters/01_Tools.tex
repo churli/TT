@@ -50,7 +50,7 @@ An important concept in the tensor world, that will be heavily used in the tenso
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
-In this work we will make advantage of the following unfolding:
+In this work we will leverage the following unfolding:
 
 \begin{Def}
   Let \A a $d$-way tensor. We define the \emph{k-th unfolding} matrix of \A as:
@@ -63,8 +63,8 @@ where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ 
 
 \section{Matrix Kronecker and Hadamard products}
 \e{Kronecker} and \e{Hadamard} matrix products are important basic notations and can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
-\paragraph{Kronecker product}
-\begin{Def}
+%\paragraph{Kronecker product}
+\begin{Def}[Kronecker product]
   Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
   \begin{equation} \label{def:kronecker}
     A \otimes B =
@@ -78,8 +78,8 @@ where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ 
 \end{Def}
 The result of the Kronecker product is thus an $IK \times JL$ matrix made by multiplying each element of $A$ by the entire matrix $B$.
 
-\paragraph{Hadamard product}
-\begin{Def}
+%\paragraph{Hadamard product}
+\begin{Def}[Hadamard product]
   The Hadamard product is the elementwise matrix product. If $A$ and $B$ are both $I \times J$ matrices, their Hadamard product $A \circ B$ is defined by
   \begin{equation} \label{def:hadamard}
     A \circ B =
