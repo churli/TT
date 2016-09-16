@@ -18,7 +18,7 @@ We define the \emph{TT-decomposition} of a given tensor \A as follows:
 
 Since, for each $k$, $\G_k$ is a third order tensor, each $G_k(i_k)$ is a matrix slice of it. Defining each $G_k(i_k)$ as a $r_{k-1} \times r_k$ matrix and given that our original tensor \A is $n_1 \times \cdots \times n_d$, we have that each carriage $\G_k$ can be treated as a $r_{k-1} \times n_k \times r_k$ tensor.
 
-As we can see from \ref{def:TT}, the result is a $r_0 \times r_d$ matrix. Since we want to have a scalar result (i.e. the tensor element we are considering), we have to set $r_0 = r_d = 0$ as boundary condition.
+As we can see from \ref{def:TT}, the result is a $r_0 \times r_d$ matrix. Since we want to have a scalar result (i.e.\ the tensor element we are considering), we have to set $r_0 = r_d = 1$ as boundary condition.
 
 The ranks $r_k$ are called \emph{compression ranks} or \emph{TT-ranks}. We will see how compression ranks can be computed and what their role is in aproximate representations.
 
@@ -94,7 +94,7 @@ The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for comp
 Since the SVD is used, we can make advantage of its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure:
 
 \begin{Teo} \label{teo:ttsvd_approx}
-  Suppose that the unfoldings $A_k$ of the tensor \A are rank-$k$ only approximately, i.e. they satisfy
+  Suppose that the unfoldings $A_k$ of the tensor \A are rank-$k$ only approximately, i.e.\ they satisfy
 
   \begin{equation} \label{teo:ttsvd_approx:ip:1}
   A_k = R_k + E_k, \quad rk(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1

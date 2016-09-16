@@ -3,11 +3,11 @@ So far we have seen how a given tensor can be:
 \begin{itemize}
 \item compressed from the \e{full format} to the TT format
 \item manipulated via various operations directly into the TT format
-\item \e{rounded} (i.e. recompressed) without leaving the TT format
+\item \e{rounded} (i.e.\ recompressed) without leaving the TT format
 \end{itemize}
 
 However, we still have a very relevant dependency on either the full representation format or the canonical decomposition as unique ways to input data to the TT format.
-In fact, in case of a high value of $d$, we likely may be unable to represent the full tensor in order to perform the compression at the first instance. On the other hand, a canonical representation of tensors is usually already available only in few special cases (e.g. for discrete operators).
+In fact, in case of a high value of $d$, we likely may be unable to represent the full tensor in order to perform the compression at the first instance. On the other hand, a canonical representation of tensors is usually already available only in few special cases (e.g.\ for discrete operators).
 
 Fortunately, we can notice that, in all analytical problems and in many practical applications, tensors are often described implicitly by a procedure letting us compute any of its elements.
 This is what is called a \e{black-box} tensor.
@@ -40,10 +40,10 @@ First of all, we need to introduce the skeleton decomposition for the exact matr
 From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly independent rows and $r$ linearly independent columns\footnote{The total amount of elements that have to be stored for a rank-$r$, $m \times n$ matrix, is $r(m+n-r)$.}.
 
 \paragraph{An approximate skeleton}
-We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g. when its $\eps$-rank is $r$.
+We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g.\ when its $\eps$-rank is $r$.
 How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
-An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e. determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
 
 The high-level strategy that is used with matrices is the following.
 
