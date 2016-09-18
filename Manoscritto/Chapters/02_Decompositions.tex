@@ -1,8 +1,8 @@
 \chapter{Decompositions}
-Here we briefly present two important tensor decomposition mainly for their historycal interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their possible application on real world applications.
+Here we briefly present two important tensor decomposition mainly for their historycal interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their suitability to real world applications.
 
 \section{Canonical Decomposition (CANDECOMP/CP)}
-The core idea behind the Canonical Decomposition\footnote{also called Parallel Factors, thus abbreviated as \emph{CP}} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
+The core idea behind the Canonical Decomposition\footnote{Also called Parallel Factors and abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
 \begin{equation}
   \X \approx \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
 \end{equation}
@@ -34,7 +34,7 @@ This does not hold for higher order tensors. For instance consider a third-order
 \end{equation*}
 We would like to be able to get a best rank-k approximation of \X by summing k factors of the CP decomposition. However this is not possible and it was shown by an example \cite{kolda2001orthogonal} where the best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
 
-Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor. \todo{Qui rivedi bene, perchè forse è meglio metterla solo sulla storia delle successioni che convergono ad altri ranghi} \todo{Inoltre questa roba l'ha scoperta Bini, quindi vedi un po' il suo articolo}
+Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor. \todo{Opportuna citazione qui.} %\todo{Qui rivedi bene, perchè forse è meglio metterla solo sulla storia delle successioni che convergono ad altri ranghi} %\todo{Inoltre questa roba l'ha scoperta Bini, quindi vedi un po' il suo articolo}
 
 \section{Tucker decomposition}
 The idea behind the Tucker decomposition is to decompose the input tensor into a \emph{core} tensor multiplied by a matrix along each mode.

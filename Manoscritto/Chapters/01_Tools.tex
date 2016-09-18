@@ -32,7 +32,7 @@ From this definition follows that vectors are tensors of order \emph{one} and ma
   \]
 \end{Def}
 
-\todo{Inserire anche il prodotto scalare?}
+\todo{Vale la pena di aggiungere anche il prodotto scalare?}
 
 \begin{Def}
   A $d$-way tensor \A is \emph{rank one} if it can be written as the outer product of $d$ vectors:
@@ -46,7 +46,7 @@ From this definition follows that vectors are tensors of order \emph{one} and ma
 \end{Def}
 
 \section{Unfoldings}
-An important concept in the tensor world, that will be heavily used in the tensor train decomposition, is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
+An important concept in the tensor world which will be heavily used in the tensor train decomposition is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
@@ -62,7 +62,7 @@ where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ 
 \end{Def}
 
 \section{Matrix Kronecker and Hadamard products}
-\e{Kronecker} and \e{Hadamard} matrix products are important basic notations and can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
+\e{Kronecker} and \e{Hadamard} matrix products are important basic notations and they can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
 %\paragraph{Kronecker product}
 \begin{Def}[Kronecker product]
   Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
@@ -76,7 +76,7 @@ where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ 
     \end{bmatrix}
   \end{equation}
 \end{Def}
-The result of the Kronecker product is thus an $IK \times JL$ matrix made by multiplying each element of $A$ by the entire matrix $B$.
+The result of the Kronecker product is thus an $IK \times JL$ matrix obtained by multiplying each element of $A$ by the entire matrix $B$.
 
 %\paragraph{Hadamard product}
 \begin{Def}[Hadamard product]
@@ -93,14 +93,14 @@ The result of the Kronecker product is thus an $IK \times JL$ matrix made by mul
 \end{Def}
 
 \section{Tensor-by-matrix product}
-We can define a tensor-by-matrix product in several ways. In this work we will always refer to \e{mode-k contraction} or \e{mode-k multiplication}.\todo{Forse superflua?}
+We can define a tensor-by-matrix product in several ways. In this work we will always refer to \e{mode-k contraction} or \e{mode-k multiplication}.\todo{Forse si può omettere?}
 
 \begin{Def} \label{def:tensor-matrix-product}
   Given a $d$-way tensor $\A \in I_1 \times \cdots \times I_d$ with elements $\A(i_1,\ldots,i_d)$ and a matrix $U \in I_\alpha \times I_k$ with elements $U(\alpha,i_k)$, we define the \e{mode-k multiplication}
   \begin{equation*}
     \A \times_k U
   \end{equation*}
-  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place}, yielding a tensor $\B \in I_1 \times \cdots \times I_\alpha \times \cdots \times I_d$ as follows
+  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place.}, yielding a tensor $\B \in I_1 \times \cdots \times I_\alpha \times \cdots \times I_d$ as follows
   \begin{equation*}
     \A \times_k U = B(i_1,\ldots,\alpha,\ldots,i_d) = \sum_{i_k = 1}^{n_k} A(i_1,\ldots,i_k,\ldots,i_d) U(\alpha,i_k)
   \end{equation*}

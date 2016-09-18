@@ -4,7 +4,7 @@ The \emph{Tensor-Train decomposition} is the main topic of this work. It is a no
 
 The idea behind the \emph{tensor train decomposition}, or simply \emph{TT-decomposition}, is to have a way of representing a higher order tensor using a sequence of third order tensors. This will prove to be useful, since we can use the \emph{Tucker} decomposition on these third order factors to further lower the number of parameters involved.
 
-In this chapter we will go through some basic theoretical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the scope of this work.
+In this chapter we will go through some basic theoretical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the purpose of this work.
 
 We define the \emph{TT-decomposition} of a given tensor \A as follows:
 
@@ -40,9 +40,8 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   then there exists a TT-decomposition with TT-ranks not higher than $r_k$.
 
   \begin{proof}
-    *NB:*\todo{In questa dimostrazione ci sono ancora dei punti poco chiari: vedila bene e semmai chiedi a Bini. UPDATE 21Jan2016: in realtà sembra che sia spiegata bene in \cite{tt-cross}}
-
-    Let $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore $A_1$ admits a dyadic (skeleton) decomposition\todo{21 Jan 2016: Aspetta aspetta, ma da dove viene questa roba? Ma non doveva esserci la SVD qui?}
+    Let \todo{Dimostrazione da rivedere (vedi \cite{tt-cross}).}
+    $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore $A_1$ admits a dyadic (skeleton) decomposition%\todo{21 Jan 2016: Aspetta aspetta, ma da dove viene questa roba? Ma non doveva esserci la SVD qui?}
     \begin{equation*}
       A_1 = UV^\top
     \end{equation*}
@@ -65,9 +64,9 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
       V(\alpha_1 i_2;i_3,\ldots,i_d) = \sum_{\alpha_2=1}^{r_2} G_2(\alpha_1 i_2;\alpha_2) V'(\alpha_2;i_3,\ldots,i_d)
     \end{equation*}
     This yields the next core tensor $G_2(\alpha_1,i_2,\alpha_2)$.
-    We can now continue similarly by considering $V'$ as a $(d-2)$-dimensional tensor and so on, yielding all the cores up to $G_d(\alpha_{d-1},i_d)$ and therefore the entire TT-decomposition.\todo{26 Apr 2016: Ci sto mettendo le mani, speriamo di finire a questo giro.}
+    We can now continue similarly by considering $V'$ as a $(d-2)$-dimensional tensor and so on, yielding all the cores up to $G_d(\alpha_{d-1},i_d)$ and therefore the entire TT-decomposition.%\todo{26 Apr 2016: Ci sto mettendo le mani, speriamo di finire a questo giro.}
 
-    Now we have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r_k$, therefore \A can be represented as\todo{26 Apr 2016: Skeleton decomp.?}
+    Now we have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r_k$, therefore \A can be represented as\todo{Skeleton decomp.?}
     \begin{equation*}
       A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)
     \end{equation*}
@@ -114,7 +113,7 @@ Since the SVD is used, we can make advantage of its properties: at each step, we
 
     Now $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\B_1$ having elements $B_1(\alpha_1i_2,i_3,\ldots,i_d)$. This tensor $\B_1$ will be further decomposed in the TT-SVD algorithm: $B_1$ will be approximated by matrix $\hat{B}_1$.
 
-    From the properties of the SVD we have $U_1^\top E_1 = 0$ \todo{Perchè? Devi approfondire e capire perchè vale questo} , thus
+    From the properties of the SVD we have $U_1^\top E_1 = 0$ \todo{Da approfindire/chiarire} , thus
     \begin{equation*}
       \begin{split}
         ||\A-\B||_F^2 &= ||A_1 - U_1\hat{B}_1||_F^2 = ||A_1 - U_1(\hat{B}_1 + B_1 - B_1)||_F^2 \\
@@ -152,7 +151,8 @@ Since the SVD is used, we can make advantage of its properties: at each step, we
 
 Two important corollaries follow from this theorem:
 \begin{Cor}
-  If \A admits a canonical approximation with $R$ terms \todo{Che minchia è, una CP con R addendi?} and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
+  If \A admits a canonical approximation with $R$ terms %\todo{Che minchia è, una CP con R addendi?}
+  and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
 \end{Cor}
 \begin{Cor}
   Given a tensor \A and a set of rank bounds $r_k$, the best approximation\footnote{In the Frobenius norm} $\A^{best}$ of \A with TT-ranks bounded by $r_k$ always exists and the approximation $\B$ computed by the TT-SVD agorithm is \e{quasi-optimal}, i.e.
@@ -167,7 +167,8 @@ Two important corollaries follow from this theorem:
     \end{equation*}
     where $TT(r_k)$ is the set of all the tensor trains with TT-ranks bounded by $r_k$. By definition of infimum there exists a sequence of tensor trains $\B^{(s)} : s \in \NN$ such that $lim_{s\to\infty} ||\A - \B||_F = \eps$.
 
-    The elements of $\B^{(s)}$ are bounded and \todo{Perchè averli bounded ci serve?} there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
+    The elements of $\B^{(s)}$ are bounded and %\todo{Perchè averli bounded ci serve? BOLZANO-WEIERSTRASS!!!}
+    there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
     \begin{equation*}
       rk(\B^{(s_t)}_k) \le r_k \quad \forall k
     \end{equation*}
@@ -175,14 +176,14 @@ Two important corollaries follow from this theorem:
     \begin{equation*}
       rk(\B^{min}_k) \le r_k \quad \forall k
     \end{equation*}
-    Moreover, $||\A - \B^{min}||_F = \eps$, \todo{Perchè questo, bisogna controllare!} so $\B^{min}$ is the minimum.
+    Moreover, $||\A - \B^{min}||_F = \eps$, \todo{Check.} so $\B^{min}$ is the minimum.
 
-    Finally, we note that $\eps_k \le \eps$, since each unfolding can be approximated at least with accuracy $\eps$, and the quasi-optimality bound follows directly from \ref{teo:ttsvd_approx}
+    Finally, we note that $\eps_k \le \eps$, since each unfolding can be approximated at least with accuracy $\eps$, and the quasi-optimality bound follows directly from \ref{teo:ttsvd_approx}.
   \end{proof}
 \end{Cor}
 
 \begin{Cor}
-  From \ref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$
+  From \ref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
 \end{Cor}
 
 \begin{lstlisting}[title=TT-SVD compression algorithm]
@@ -268,7 +269,7 @@ and we compute its SVD
 \begin{equation*}
   P = X \Sigma Y^\top
 \end{equation*}
-where $\Sigma$ is an $\hat{r}\times\hat{r}$ diagonal matrix, $X$ and $Y$ are $r \times \hat{r}$ matrices with orthonormal columns and $\hat{r}$ is the $\eps$-rank of $D$ (which is equal to the $\eps$-rank of $A_1$)\todo{Magari dimostriamolo...}.
+where $\Sigma$ is an $\hat{r}\times\hat{r}$ diagonal matrix, $X$ and $Y$ are $r \times \hat{r}$ matrices with orthonormal columns and $\hat{r}$ is the $\eps$-rank of $D$ (which is equal to the $\eps$-rank of $A_1$)\todo{Dimostrazione?}.
 
 So we have that
 \begin{equation*}
@@ -360,4 +361,4 @@ Looking at the index forms of the above equations, we can see that $Q_k$ and $R_
 %\paragraph{Putting all the pieces together}
 
 \todo{Aggiungere qualcosa sulle altre modes? (cfr. pag.2304 Oseledets)}
-\todo{Aggiungere algoritmo rounding}
+\todo{Aggiungere algoritmo rounding qui}

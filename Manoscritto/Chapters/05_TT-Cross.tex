@@ -19,10 +19,10 @@ The question we want to answer in this chapter is: \e{Can we exploit this advant
 \paragraph{Tensor train cross-approximation}
 Here we are going to describe a low-rank tensor approximation techinique using a subset of few, well-chosen, elements.
 The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
-The outcoming algorithm is called \e{TT-cross} and it is shown \todo{da dimostrare? o forse è meglio mettere 'it turns out'?} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
+The outcoming algorithm is called \e{TT-cross} and it is shown \todo{Dimostrare!} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
 
 \section{Skeleton decomposition for matrices}
-First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on [???] \todo{Vai in biblioteca e spera di trovare questo \emph{Grantmacher-Theory of Matrices}, che su internet non si trova nulla}.
+First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on [???] \todo{Aggiungere ref a \emph{Grantmacher-Theory of Matrices}}.
 
 \begin{Teo}
   Let $A$ an $m \times n$ matrix with rank $r$. $A$ can be represented as
@@ -43,7 +43,7 @@ From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly i
 We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g.\ when its $\eps$-rank is $r$.
 How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
-An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \todo{Refs here?}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \todo{Add ref!}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
 
 The high-level strategy that is used with matrices is the following.
 
@@ -88,7 +88,7 @@ and similarly to the TT-SVD case, we can set the first tensor carriage as
   G_1 = C\hat{A}_1^{-1}
 \end{equation*}
 
-We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus \todo{Why is this true? Proof requred!}. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \todo{add refs here, can be found at page 9 of tt-cross paper}.
+We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus \todo{Add proof}. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \todo{add refs here, can be found at page 9 of tt-cross paper}.
 
 The next step is to iterate further on the $R$ term and represent it in the TT format. $R$ consists of $r_1$ rows of $A_1$ and it can be reshaped into a subtensor $\tensor{R}$ of $\A$:
 \begin{equation*}
@@ -126,7 +126,7 @@ At the $k$-th step we have a subtensor $\tensor{R}$ of dimensionality $d-k+1$ an
 \begin{equation*}
   R(\alpha_{k-1}n_k,n_{k+1},\ldots,n_d) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,i_{k+1},\ldots,i_d)
 \end{equation*}
-The first $k-1$ indices, which we call \emph{left indices}, are taken as $(k-1)$-tuples from the already computed entries of the \emph{left index set} \todo{???sicuramente le entries degli steps precedenti sono conosciute}
+The first $k-1$ indices, which we call \emph{left indices}, are taken as $(k-1)$-tuples from the already computed entries of the \emph{left index set} \todo{(?) sicuramente le entries degli steps precedenti sono conosciute}
 \begin{equation*}
   \I_{k-1} = [i_s^{(\alpha_{k-1})}],\quad \alpha_{k-1} = 1,\ldots,r_{k-1},\quad s = 1,\ldots,k-1
 \end{equation*}
@@ -222,7 +222,7 @@ It is important to note that this theorem is formally valid only in the exact lo
 Moving to a numerically viable algorithm requires a careful selection of \emph{sufficiently good} submatrices among those that are non-singular.\todo{Here report a hint about approximate skeleton and errors involved}
 
 \section{A TT-cross algorithm}
-foobar
+TODO!
 
 
 %%EOF\todo{Continua... a pagina 12 dell'articolo}

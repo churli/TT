@@ -1,16 +1,16 @@
 \chapter{Introduction}
-Tensors are multidimensional arrays, that generalize matrices and vectors to higher dimension. More formally, an $d$-way or $d$th-order tensor is an element of the tensor product of $d$ vector spaces.
+Tensors are multidimensional arrays, that generalize matrices and vectors to higher dimension. More formally, a $d$-way or $d$th-order tensor is an element of the tensor product of $d$ vector spaces.
 
-Tensors are naturally suited to represent multdimensional problems: that's why they commonly arise in many applied contexts. From scientific computing to quantum mechanics, from signal analysis to computational chemistry, there is a strong and wide interest in having robust, fast and memory efficient methods for handling tensors.\todo{Refs here PLZ}
+Tensors are naturally suited to represent multdimensional problems: that's why they commonly arise in many applied contexts. From scientific computing to quantum mechanics, from signal analysis to computational chemistry, there is a strong and wide interest in having robust, fast and memory efficient methods for handling tensors.\todo{Add ref from TT-review}
 
 In this work we will focus on the problem of representing a tensor, either exactly or through approximation, in a low-parametric format.
 We will provide a quick overview of the basic definitions and tools and of two classic tensor decomposition. We will then present the \emph{Tensor Train Decomposition}, a recently developed low-parametric format for representing general tensors. We will see the decomposition's main properties, the algorithms for compressing from the \emph{full-tensor} to the \emph{tensor-train}\footnote{or just \e{TT}} format and how to perform all the basic linear algebra operations in the compressed format. Eventually, chapter 5 covers the \emph{TT-cross} algorithm, presenting a way to incrementally build a tensor approximation by using a specific small subset of the tensor's elements.
 
 \paragraph{The curse of dimensionality}
-Problems involving an high number of dimensions are intrinsically difficult to handle: the computational resources, as memory or number of operations, needed for a $d$-dimensional problem, grow exponentially in $d$. Many real world applications involve a number of dimensions that can be as high as 10, 100 or even 1000, making them impossible to be handled using standard numerical methods.\\
+Problems involving a high number of dimensions are intrinsically difficult to handle: the computational resources, as memory or number of operations, needed for a $d$-dimensional problem, grow exponentially in $d$. Many real world applications involve a number of dimensions that can be as high as 10, 100 or even 1000, making them impossible to be handled using standard numerical methods.\\
 Our aim is to show a tensor representation that:
 \begin{itemize}
-\item Does not inherently suffer from the curse of dimensionality
-\item Has stable algorithms to perform the compression step \todo{devi accennare dei problemi di computazione della CP}
+\item Does not inherently suffer from the curse of dimensionality,
+\item Has stable algorithms to perform the compression step, \todo{Accennare dei problemi computazionali della CP?}
 \end{itemize}
-Making it feasible to store high dimensional tensors and to perform computations on them.
+making it feasible to store high dimensional tensors and to perform computations on them.

@@ -1,7 +1,7 @@
 \chapter{Basic linear algebra on TT}
 Now we will see how some basic operations can be performed on the TT format and what is their complexity.
 
-\todo{Davvero vogliamo fare delle sezioni così?}
+%\todo{Davvero vogliamo fare delle sezioni così?}
 \section{Addition and multiplication by a number}
 Let \A and \B $d$-dimensional tensors that can be written in the TT format as
 \begin{equation*}
@@ -45,8 +45,8 @@ We can easily prove the above by direct multiplication:
 
 By the definition of the cores, we can see that summing tensors leads to a rank increase. For each core of the sum, we have a rank that is the sum of the ranks of the underlying cores. This makes the addition operation a good test bench for the rounding procedure.
 
-\section{Multidimensional contraction, Hadamard product, scalar product, Frobenius norm}
-\todo{Questa roba è troppo lunga, va fuori margine quando viene usata top pagina}
+\section[Contraction, products and norm]{Multidimensional contraction, Hadamard product, scalar product, Frobenius norm}
+%\todo{Questa roba è troppo lunga, va fuori margine quando viene usata top pagina}
 \paragraph{Multidimensional contraction}
 The multidimensional contraction is the evaluation of an expression of the form
 \begin{equation*}
@@ -69,11 +69,9 @@ then the multidimensional contraction can be seen as
 \end{equation*}
 The matrix $\Gamma_k$ is $r_{k-1} \times r_k$, so $\Gamma_1$ is a row vector and $\Gamma_d$ is a column vector. Computing W, the multidimensional contraction, means thus computing matrices $\Gamma_k$ and evaluating $d$ matrix-by-vector products, requiring a total of $\ord(dnr^2)$ arithmetic operations.
 
-\paragraph{Hadamard product} The Hadamard product, defined in \ref{def:hadamard}, can be computed in the TT format as follows. Consider
-\begin{equation*}
-  \C = \A \circ \B
-\end{equation*}
-From the definition of its elements we can easily derive the way to compute the TT-cores associated with this product
+\paragraph{Hadamard product} The Hadamard product, defined in \ref{def:hadamard}, can be computed in the TT format as follows.
+
+Consider $\C = \A \circ \B$: from the definition of its elements we can easily derive the way to compute the TT-cores associated with this product
 \begin{equation*}
   \begin{split}
     C(i_1,\ldots,i_d) &= A(i_1,\ldots,i_d) B(i_1,\ldots,i_d)\\
@@ -83,7 +81,7 @@ From the definition of its elements we can easily derive the way to compute the 
 \end{equation*}
 
 \paragraph{Scalar product}
-The scalar product of two tensors can be computed using the Hadamard product and the multidimensional contraction. Fro two tensors \A and \B it is defined as
+The scalar product of two tensors can be computed using the Hadamard product and the multidimensional contraction. For two tensors \A and \B it is defined as
 \begin{equation*}
   \langle \A, \B \rangle = \sum_{i_1,\ldots,i_d} A(i_1,\ldots,i_d)B(i_1,\ldots,i_d) = \sum_{i_1,\ldots,i_d} \A \circ \B
 \end{equation*}
@@ -108,7 +106,7 @@ Each $v_k$ is a row vector with length $r_k^{(A)} r_k^{(B)}$. If we now look at 
   v_k = v_{k-1} \Gamma_k = v_{k-1} \sum_{i_k} A_k(i_k) \otimes B_k(i_k) = \sum_{i_k} \underbrace{v_{k-1} \Big( A_k(i_k) \otimes B_k(i_k) \Big) }_{p_k(i_k)}
 \end{equation*}
 Each $p_k(i_k)$ is again a row vector with length $r_k^{(A)} r_k^{(B)}$.
-Assuming now that all the TT-ranks involved are of order $r$, we have, thanks to the special structure of the Kronecker product, that the computation of each $p_k(i_k)$ can be done in $\ord(r^3)$ operations. Thus the complete scalar product costs $\ord(dnr^3)$.
+Assuming now that all the TT-ranks involved have order $r$, we have, thanks to the special structure of the Kronecker product, that the computation of each $p_k(i_k)$ can be done in $\ord(r^3)$ operations. Thus the complete scalar product costs $\ord(dnr^3)$.
 
 \paragraph{Frobenius norm}
 The Frobenius norm can be computed directly as
@@ -120,6 +118,6 @@ and, by consequence, the distance between two tensors
   ||\A - \B||_F
 \end{equation*}
 Deriving from the scalar product, the complexity for the computation of the Frobenius norm is $\ord(dnr^3)$.
-\todo{Si fa anche il matrix-by-vector product?}
+%\todo{Si fa anche il matrix-by-vector product?}
 
 %EOF
