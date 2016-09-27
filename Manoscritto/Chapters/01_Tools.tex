@@ -15,7 +15,7 @@ So if we have a $d$-way tensor \A, we can refer to its elements as
 \begin{equation*}
   \A(i_1,\ldots,i_d)
 \end{equation*}
-From this definition follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
+From this definition it\todo{Ask Laura if this form is correct} follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
 
 \begin{Def}
   The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \A is the vector of elements given by fixing all the indices but the i-th.
@@ -34,16 +34,16 @@ From this definition follows that vectors are tensors of order \emph{one} and ma
 
 \todo{Vale la pena di aggiungere anche il prodotto scalare?}
 
-\begin{Def}
-  A $d$-way tensor \A is \emph{rank one} if it can be written as the outer product of $d$ vectors:
-  \[
-  \A = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(d)}}
-  \]
-  This can be written elementwise as:
-  \[
-  \A(i_1,i_2,\cdots,i_d) = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
-  \]
-\end{Def}
+%% \begin{Def}
+%%   A $d$-way tensor \A is \emph{rank one} if it can be written as the outer product of $d$ vectors:
+%%   \[
+%%   \A = \vett{v^{(1)}} \circ \vett{v^{(2)}} \circ \cdots \circ \vett{v^{(d)}}
+%%   \]
+%%   This can be written elementwise as:
+%%   \[
+%%   \A(i_1,i_2,\cdots,i_d) = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
+%%   \]
+%% \end{Def}
 
 \section{Unfoldings}
 An important concept in the tensor world which will be heavily used in the tensor train decomposition is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
@@ -57,12 +57,26 @@ In this work we will leverage the following unfolding:
   \begin{equation} \label{def:unfolding}
     A_k = A_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = A(i_1,\dots,i_d)
   \end{equation}
-
 where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ indices enumerate the columns of $A_k$.
 \end{Def}
 
+\section{Rank-one tensor}
+A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
+\begin{equation}
+  \A = v^{(1)} \circ v^{(2)} \circ \cdots \circ v^{(d)}
+\end{equation}
+Elementwise this translates to:
+\begin{equation}
+  a_{i_1,i_2,\ldots,i_n} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
+\end{equation}
+This can be seen as a generalization of the fact that
+\begin{equation*}
+  M = u v^t
+\end{equation*}
+is a rank-one matrix.
+
 \section{Matrix Kronecker and Hadamard products}
-\e{Kronecker} and \e{Hadamard} matrix products are important basic notations and they can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
+\emph{Kronecker} and \emph{Hadamard} matrix products are important basic notations and they can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
 %\paragraph{Kronecker product}
 \begin{Def}[Kronecker product]
   Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
@@ -106,19 +120,4 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
   \end{equation*}
 \end{Def}
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
-
-\section{Rank-one tensor}
-A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
-\begin{equation}
-  \A = v^{(1)} \circ v^{(2)} \circ \cdots \circ v^{(d)}
-\end{equation}
-Elementwise this translates to:
-\begin{equation}
-  a_{i_1,i_2,\ldots,i_n} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
-\end{equation}
-This can be seen as a generalization of the fact that
-\begin{equation*}
-  M = u v^t
-\end{equation*}
-is a rank-one matrix.
 

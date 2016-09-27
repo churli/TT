@@ -2,7 +2,7 @@
 Here we briefly present two important tensor decomposition mainly for their historycal interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their suitability to real world applications.
 
 \section{Canonical Decomposition (CANDECOMP/CP)}
-The core idea behind the Canonical Decomposition\footnote{Also called Parallel Factors and abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
+The core idea behind the Canonical Decomposition\footnote{This decomposition has been historically called either Canonical Decomposition (CANDECOMP) or Parallel Factors (PARAFAC) and often abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
 \begin{equation}
   \X \approx \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
 \end{equation}
@@ -19,7 +19,7 @@ We can then use the following notation to express the CP decomposition:
 \end{equation*}
 
 \subsection{Tensor Rank}
-Given a tensor \X we can define its \emph{rank} as \emph{the smallest number of rank-one tensors that generates \X as their sum}. We can see the rank as the minimum number of components in an exact CP decomposition.
+Given a tensor \X we can define its \emph{rank} as \emph{the smallest number of rank-one tensors that generate \X as their sum}. We can see the rank as the minimum number of components in an exact CP decomposition.
 
 The definition of rank for tensors is an analogue of the matrix rank. However there are some major differences in their properties.
 The first difference is that the rank of a real-valued tensor can be different over \RR and \CC \todo{Add the example as in Kolda-Bader, here or in appendix}. Another difference is that there is no general and straightforward agorithm to determine the tensor rank\footnote{Actually it is proven in \cite{rankNP} that computing the rank of a three-dimensional tensor over any finite field is NP-complete. Over the rational numbers the problem is NP-hard.}.

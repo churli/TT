@@ -70,7 +70,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     \begin{equation*}
       A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)
     \end{equation*}
-    Using this, together with \ref{eq:Vdecomp}, we obtain
+    Using this, together with \eqref{eq:Vdecomp}, we obtain
     \begin{align*}
       V_k &= V(\alpha_1 i_2,\ldots,i_k;i_{k+1},\ldots,i_d) \\
       &= \sum_{i_1 = 1}^{n_1} \sum_{\beta = 1}^{r_k} W(i_1, \alpha_1) F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d) \\
@@ -88,7 +88,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   
 \end{Teo}
 
-The above proof \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
+The above proof of theorem \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD}.
 
 Since the SVD is used, we can make advantage of its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure:
 
@@ -183,7 +183,7 @@ Two important corollaries follow from this theorem:
 \end{Cor}
 
 \begin{Cor}
-  From \ref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
+  From \eqref{teo:ttsvd_approx} it also follows that if the SVD \todo{Aggiungere in chapter 1 cos'è la SVD, definiz e proprietà} of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
 \end{Cor}
 
 \begin{lstlisting}[title=TT-SVD compression algorithm]
@@ -238,7 +238,7 @@ Let \A in the TT format:
 \begin{equation*}
   \A(1_1,\ldots,i_d) = G_1(i_1) \cdots G_d(i_d)
 \end{equation*}
-and assume its ranks $r_k$ are \e{increased} in respect to the optimal ranks $r_k^\prime$. We want now to estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
+and assume its ranks $r_k$ are \e{increased} with respect to the optimal ranks $r_k^\prime$. We want now to estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
 
 First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section.
 
@@ -254,7 +254,7 @@ where
   \end{split}
 \end{equation}
 
-We can compute the SVD of the unfolding $A_1$ making advantage of its representation \ref{eq:unfolding_dyadic}. First we compute QR decompositions of $U$ and $V$
+We can compute the SVD of the unfolding $A_1$ making advantage of its representation \eqref{eq:unfolding_dyadic}. First we compute QR decompositions of $U$ and $V$
 \begin{equation*}
   \begin{split}
     U &= Q_u R_u\\
@@ -339,7 +339,7 @@ This was the first step of the sweep. Suppose now that we already have a represe
 \begin{equation*}
   V(i_2,\ldots,i_d) = G_2(i_2) \cdots G_k(i_k) Q_{k+1}(i_{k+1}) \cdots Q_d(i_d)
 \end{equation*}
-where matrices $Q_s(i_s)$ satisfy \ref{eq:orth_cond} for each $s = k+1, \ldots, d$. We now perform the orthogonalization step, defining
+where matrices $Q_s(i_s)$ satisfy \eqref{eq:orth_cond} for each $s = k+1, \ldots, d$. We now perform the orthogonalization step, defining
 \begin{equation*}
   G^\prime_k(i_k) = R_k Q_k(i_k)
 \end{equation*}
