@@ -1,0 +1,19 @@
+### Some notes on the Lab activity
+
+1. Kolmogorov
+   A big thanks to Kolmogorov, which represented a HUGE improvement in terms of performance in compressing and quality of life of who's writing.
+   Setting up Kolmogorov for this task required installing a few pkgs via apt-get and a couple via pip. I tried to use virtualenv as much as possible in order to keep the main python install clean. E.g. I have installed ttpy on virtualenv via pip.
+   See the specific notes on Kolmogorov itself for further info.
+
+2. Bug(s) in ttpy
+   Basically at about line 208 of maxvol in ttpy package the following line
+       nd.core = reshape(q, (r1, n1, r2)).copy()
+   had to be amended as
+       nd.core = reshape(q, (r1, n1, -1)).copy()
+
+   The file to be amended is here (@kolmogorov):
+       /home/macchilocal/Tommaso/CompuLabTTGif/venv/local/lib/python2.7/site-packages/tt/cross/rectcross/rect_cross.py
+   
+3. (?)
+
+#EOF

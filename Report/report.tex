@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{article}
+%\documentclass[11pt,a4paper,draft]{book}
+
+%%% Packages
+\usepackage{Styles/reportstyle}
+%\usepackage{Styles/unipitesi}
+\usepackage{Styles/commands}
+
+\usepackage{amsfonts}
+%%%
+\title{Immagini animate e Tensor Train.\\Compressione e suoi effetti su dati ``visibili''.}
+\author{Tommaso Bianucci}
+%%%
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  La \emph{Tensor Train Decomposition} (\emph{TT}), è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
+
+  %% In particolare, questo metodo di rappresentazione \emph{rompe} la diendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
+  %% Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
+
+  La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
+
+  La compressione di immagini è un classico esempio che permette apprezzare immediatamente il risultato della SVD, così abbiamo utilizzato un approccio analogo con la TT, comprimendo brevi animazioni.
+  Le immagini animate costituiscono infatti un facile esempio di dato in 4 dimensioni: larghezza, altezza, colore e numero di frame.
+  Abbiamo quindi compresso le animazioni in formato TT, misurato il \emph{rapporto di compressione} e ricostruito le animazioni approssimate per un facile confronto visivo con l'originale. \todo{Rivedi, anche alla luce di quanto riutilizzato sotto in Obiettivi}
+\end{abstract}
+
+%\listoftodos
+%\tableofcontents
+
+%%% WRITE TEXT HERE
+\section{Obiettivi}
+La \emph{Tensor Train Decomposition}, o più brevemente \emph{TT}, è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
+In particolare, questo metodo di rappresentazione \emph{rompe} la dipendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
+Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
+
+  La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
+
+  La compressione di immagini è un classico esempio che permette, letteralmente, di visualizzare il risultato della SVD, apprezzandone intuitivamente le caratteristiche principali. Così abbiamo pensato di seguire un approccio analogo con la TT: comprimere immagini, per poterne visualizzare immediatamente il risultato.
+
+\section{Approccio}
+Un tensore rappresentato in formato TT consta di un insieme di tensori 3-dimensionali i cui elementi, opportunamente moltiplicati tra di loro, restituiscono tutti gli elementi, entro un certo grado di approssimazione, del tensore di partenza.
+Questo lascia immediatamente intuire come i vantaggi del formato TT siano tanto maggiori quanto maggiore è la dimensionalità del tensore originario e anche come i benefici su tensori 3-dimensionali siano esigui se non assenti da un punto di vista di spazio utilizzato e sicuramente vanificati dalla complessità e dal tempo computazionale aggiuntivi che la rappresentazione in formato TT richiedono.
+
+Con questa premessa abbiamo cercato una tipologia di dati che avesse 4 dimensioni e che fosse facilmente visualizzabile. La scelta è caduta sulle immagini animate.
+
+Le sequenze animate si prestano naturalmente ad essere rappresentate in 4 dimensioni, infatti
+\begin{itemize}
+\item queste sono sicuramente un insieme ordinato di immagini (\emph{frames}),
+\item ogni frame è composto da una matrice di \emph{pixel},
+\item ogni pixel può emettere i 3 colori primari (rgb\footnote{\emph{RGB} = red-green-blue (rosso-verde-blu), i tre colori primari per la sintesi sottrattiva.}), ognuno caratterizzato da un proprio valore di luminosità.
+\end{itemize}
+Quindi otteniamo le 4 dimensioni su cui si strutturano i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione del pixel, colore.
+
+\section{Implementazione e compromessi}
+Per l'implementazione abbiamo utilizzato il seguente approccio:
+\begin{itemize}
+\item estrarre i singoli frame dalle animazioni GIF in ingresso e convertirli in formato PPM utilizzando il comando \rawcode{convert} dalla suite \href{http://www.imagemagick.org/}{Imagemagick},
+\item x
+\item x
+\end{itemize}
+la libreria \href{https://github.com/oseledets/ttpy}{ttpy} di Ivan Oseledets
+
+\section{Risultati}
+Lorem ipsum
+
+\section{Conclusioni}
+Lorem ipsum
+
+
+%%%
+\end{document}
