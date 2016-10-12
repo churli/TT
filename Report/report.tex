@@ -28,7 +28,7 @@
 \end{abstract}
 
 %\listoftodos
-%\tableofcontents
+\tableofcontents
 
 %%% WRITE TEXT HERE
 \section{Obiettivi}
@@ -48,27 +48,70 @@ Con questa premessa abbiamo cercato una tipologia di dati che avesse 4 dimension
 
 Le sequenze animate si prestano naturalmente ad essere rappresentate in 4 dimensioni, infatti
 \begin{itemize}
-\item queste sono sicuramente un insieme ordinato di immagini (\emph{frames}),
+\item queste sono certamente un insieme ordinato di immagini (\emph{frames}),
 \item ogni frame è composto da una matrice di \emph{pixel},
 \item ogni pixel può emettere i 3 colori primari (rgb\footnote{\emph{RGB} = red-green-blue (rosso-verde-blu), i tre colori primari per la sintesi sottrattiva.}), ognuno caratterizzato da un proprio valore di luminosità.
 \end{itemize}
-Quindi otteniamo le 4 dimensioni su cui si strutturano i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione del pixel, colore.
+Quindi otteniamo le 4 dimensioni su cui si strutturano i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione spaziale del pixel, colore. Gli elementi del tensore assumeranno quindi valori tra $0$ e $255$ e rappresenteranno la luminosità di un dato colore per un certo pixel all'interno di uno specifico frame.
 
-\section{Implementazione e compromessi}
+\section{Implementazione, problemi e compromessi}
 Per l'implementazione abbiamo utilizzato il seguente approccio:
 \begin{itemize}
 \item estrarre i singoli frame dalle animazioni GIF in ingresso e convertirli in formato PPM utilizzando il comando \rawcode{convert} dalla suite \href{http://www.imagemagick.org/}{Imagemagick},
-\item x
-\item x
+\item leggere i frame per popolare gli elementi di un tensore di dimensioni adeguate,
+\item approssimare iterativamente il tensore utilizzando l'algoritmo \emph{tt-cross} dalla libreria \href{https://github.com/oseledets/ttpy}{\emph{ttpy}} di Ivan Oseledets,
+\item estrarre i valori per ogni frame e scriverli in un nuovo file PPM,
+\item infine ricomporre i file PPM risultanti in una nuova animazione GIF.
 \end{itemize}
-la libreria \href{https://github.com/oseledets/ttpy}{ttpy} di Ivan Oseledets
+
+\subsection{Linguaggi utilizzati}
+Le operazioni di estrazione, conversione a PPM e ricomposizione dei frame dal o verso il formato GIF sono state organizzate semplicemente sotto forma di brevi script in Bash. Invece la parte saliente di lettura dei frame, approssimazione in formato TT e riscrittura dei nuovi frame è stata implementata in linguaggio Python.
+
+La scelta di utilizzare Python è risultata dal considerare che
+\begin{itemize}
+\item Python è un linguaggio flessibile e agevole, tipizzato dinamicamente e che non richiede una gestione manuale dell'allocazione di memoria, rendendo la prototipazione e cambiamenti anche radicali molto agevoli e veloci,
+\item è disponibile, per Python, il modulo \emph{ttpy}, che implementa la rappresentazione e i vari algoritmi per la compressione e la manipolazione di tensori in formato TT,
+\item Python è un linguaggio notoriamente poco performante, ma il modulo \emph{ttpy} implementa tutte le operazioni computazionalmente intense e critiche in linguaggio Fortran, avvalendosi dove possibile di subroutine da LaPack/BLAS.
+\end{itemize}
+In questo modo è stato possibile mantenere i vantaggi di un linguaggio come Python, pur mantenedo tutte le fasi computazionalmente più costose in opportune subroutine Fortran e quindi non intaccando le prestazioni complessive dell'intero processo.
+
+\subsection{TT-cross e criteri d'arresto}
+Foo\todo{Qui parla brevemente di come funziona TT-cross, di come abbiamo deciso di ``misurare'' l'errore e dei criteri d'arresto delle iterazioni.}
+\paragraph{TT-cross.}
+L'algoritmo di TT-cross è basato sull'approssimazione iterativa di un tensore tramite l'utilizzo, ad ogni passo, di alcuni specifici elementi.
+Questo permette la costruzione di un un'approssimazione TT anche in assenza del tensore completo di partenza. Infatti è sufficiente avere a disposizione una funzione che permetta di calcolare, date le coordinate di un elemento, il suo valore.
+
+Noi costruiamo esplicitamente l'intero tensore di partenza, popolandolo con i valori che vengono letti dai file che contengono i vari frame: questo non ci danneggia, visto che lo spazio richiesto in questa operazione è nel nostro caso davvero modesto, e ci avvantaggia in termini di tempo. Abbiamo comunque definito una funzione che ci restituisce l'elemento del tensore date le coordinate, in modo da poterla utilizzare nell'algoritmo TT-cross.
+
+\paragraph{Misurare l'errore.}
+Per decidere quando arrestare l'iterazione, abbiamo bisogno di definire una misura di errore.
+
+Per il nostro scopo di comprimere animazioni, abbiamo deciso di affidarci ad un metodo molto semplice ma che ha dimostrato di dare buoni risultati: vengono campionati casualmente l'1\% degli elementi del tensore e viene quindi calcolata la distanza dal corrispondente valore nel tensore originario; se l'elemento è all'interno di un raggio di 5 unità di luminosità dal corrispondente valore del tensore originario, viene considerato valido, altrimenti non valido.
+La percentuale di valori validi sul totale campionato è quindi considerata un parametro indice della verosimiglianza dell'animazione compressa rispetto all'originale.
+
+La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross\todo{Controlla bene come è calcolato l'errore internamente in TT-cross}, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
+
+\paragraph{Criteri d'arresto.}
+Come menzionato nel precedente paragrafo, 
+
+\subsection{Ottimizzazione delle performance}
+Bar\todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).}
+
+\paragraph{Lettura frame.}
+foobar
+
+\paragraph{Scrittura frame.}
+foobar
+
+\paragraph{Modifiche \emph{ad-hoc} del modulo ttpy.}
+foobar
 
 \section{Risultati}
 Lorem ipsum
 
 \section{Conclusioni}
-Lorem ipsum
-
+Abbiamo raggiunto il nostro scopo di \emph{visualizzare} gli effetti dell'approssimazione tramite TT. Certamente la qualità dell'immagine, la presenza di vistosi artefatti e lo scarso livello di compressione ci fanno chiaramente capire come la compressione di filmati non sia il campo di applicazione di elezione del formato TT.
+Dobbiamo però ricordare come il basso numero di dimensioni (4) e il vincolo di dover rappresentare valori in $[0,255]\subset\NN$ limitino l'efficacia dell'utilizzo del formato TT in questa applicazione.
 
 %%%
 \end{document}
