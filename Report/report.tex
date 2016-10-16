@@ -7,6 +7,7 @@
 \usepackage{Styles/commands}
 
 \usepackage{amsfonts}
+\lstset{language=Python}
 %%%
 \title{Immagini animate e Tensor Train.\\Compressione e suoi effetti su dati ``visibili''.}
 \author{Tommaso Bianucci}
@@ -32,7 +33,7 @@
 
 %%% WRITE TEXT HERE
 \section{Obiettivi}
-La \emph{Tensor Train Decomposition}, o più brevemente \emph{TT}, è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
+La \emph{Tensor Train Decomposition}, o più brevemente \emph{TT}, è un formato di rappresentazione di tensori\footnote{Con tensore intendiamo genericamente un array multidimensionale.} di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
 In particolare, questo metodo di rappresentazione \emph{rompe} la dipendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
 Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
 
@@ -44,7 +45,7 @@ Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di d
 Un tensore rappresentato in formato TT consta di un insieme di tensori 3-dimensionali i cui elementi, opportunamente moltiplicati tra di loro, restituiscono tutti gli elementi, entro un certo grado di approssimazione, del tensore di partenza.
 Questo lascia immediatamente intuire come i vantaggi del formato TT siano tanto maggiori quanto maggiore è la dimensionalità del tensore originario e anche come i benefici su tensori 3-dimensionali siano esigui se non assenti da un punto di vista di spazio utilizzato e sicuramente vanificati dalla complessità e dal tempo computazionale aggiuntivi che la rappresentazione in formato TT richiedono.
 
-Con questa premessa abbiamo cercato una tipologia di dati che avesse 4 dimensioni e che fosse facilmente visualizzabile. La scelta è caduta sulle immagini animate.
+Con questa premessa abbiamo cercato una tipologia di dati che avesse un numero di dimensioni maggiore di 3 e che fosse facilmente visualizzabile. La scelta è caduta sulle immagini animate.
 
 Le sequenze animate si prestano naturalmente ad essere rappresentate in 4 dimensioni, infatti
 \begin{itemize}
@@ -52,7 +53,7 @@ Le sequenze animate si prestano naturalmente ad essere rappresentate in 4 dimens
 \item ogni frame è composto da una matrice di \emph{pixel},
 \item ogni pixel può emettere i 3 colori primari (rgb\footnote{\emph{RGB} = red-green-blue (rosso-verde-blu), i tre colori primari per la sintesi sottrattiva.}), ognuno caratterizzato da un proprio valore di luminosità.
 \end{itemize}
-Quindi otteniamo le 4 dimensioni su cui si strutturano i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione spaziale del pixel, colore. Gli elementi del tensore assumeranno quindi valori tra $0$ e $255$ e rappresenteranno la luminosità di un dato colore per un certo pixel all'interno di uno specifico frame.
+In 4 dimensioni si strutturano quindi i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione spaziale del pixel, colore. Gli elementi del tensore assumeranno quindi valori tra $0$ e $255$ e rappresenteranno la luminosità di un dato colore per un certo pixel all'interno di uno specifico frame.
 
 \section{Implementazione, problemi e compromessi}
 Per l'implementazione abbiamo utilizzato il seguente approccio:
@@ -76,7 +77,6 @@ La scelta di utilizzare Python è risultata dal considerare che
 In questo modo è stato possibile mantenere i vantaggi di un linguaggio come Python, pur mantenedo tutte le fasi computazionalmente più costose in opportune subroutine Fortran e quindi non intaccando le prestazioni complessive dell'intero processo.
 
 \subsection{TT-cross e criteri d'arresto}
-Foo\todo{Qui parla brevemente di come funziona TT-cross, di come abbiamo deciso di ``misurare'' l'errore e dei criteri d'arresto delle iterazioni.}
 \paragraph{TT-cross.}
 L'algoritmo di TT-cross è basato sull'approssimazione iterativa di un tensore tramite l'utilizzo, ad ogni passo, di alcuni specifici elementi.
 Questo permette la costruzione di un un'approssimazione TT anche in assenza del tensore completo di partenza. Infatti è sufficiente avere a disposizione una funzione che permetta di calcolare, date le coordinate di un elemento, il suo valore.
@@ -92,13 +92,33 @@ La percentuale di valori validi sul totale campionato è quindi considerata un p
 La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross\todo{Controlla bene come è calcolato l'errore internamente in TT-cross}, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
 
 \paragraph{Criteri d'arresto.}
-Come menzionato nel precedente paragrafo, 
+Come menzionato nel precedente paragrafo, per questa applicazione ci siamo affidati ad un criterio d'arresto \emph{ad-hoc}: quando una percentuale sufficientemente alta di elementi presenta un errore al di sotto di un certo valore, l'approssimazione viene fermata.
+
+Come intuibile, questo criterio presenta il grande difetto di non tenere in considerazione quanto errore presentino gli altri elementi, quelli che non hanno superato il test.
+D'altra parte però questo criterio ci permette di terminare l'approssimazione non appena una parte sufficiente dell'animazione bene approssima l'originale.
+
+Questa scelta, del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame \todo{Controlla se si può dire aliasing nella footnote.} multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti dei fenomani di aliasing al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
 
 \subsection{Ottimizzazione delle performance}
-Bar\todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).}
+In una prima implementazione, \todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).} abbiamo osservato come la maggior frazione del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
+Questo succedeva perchè 
+
+\begin{lstlisting}
+    rowput = [ str( pixelRound(x, maxval=depth) ) + " " for x in 
+                    frame[:,:,row]
+                    .full()
+                    .reshape( 3*width, order='F' ) ]
+\end{lstlisting}
+
+\begin{lstlisting}
+    frameput = [ ' '.join( vectorStrPixelRound(x) ) for x in 
+                    ( depth*frame )
+                    .full( shape=( 3*width,height ) )
+                    .transpose() ]
+\end{lstlisting}
 
 \paragraph{Lettura frame.}
-foobar
+foobar ciao
 
 \paragraph{Scrittura frame.}
 foobar
