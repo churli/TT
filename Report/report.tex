@@ -147,11 +147,141 @@ Queste piccole modifiche hanno ridotto il tempo dedicato alla scrittura dei fram
 %% foobar
 
 \section{Risultati}
-Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative che avevamo. Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni e non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni e non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
 
 Da un punto di vista qualitativo, invece, abbiamo potuto rilevare soprattutto la presenza di artefatti quali l'uniformità lungo delle specifiche \emph{bande} lungo le fibre e improvvisi cambi di luminosità e colore \todo{Inserire immagini.}.
 
 La fase di calcolo della compressione a mostrato una convergenza assai lenta, soprattutto se paragonata con la convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come ad esempio nel caso tensori popolati con i valori assunti da una funzione multidimensionale. \todo{magari vedi di metterci esempio del vsin.} In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata nei fatti utile ad avere un'approssimazione in ogni caso accettabile.
+
+%% \def\wid{0.5}
+%% \begin{wrapfigure}{L}{\wid\textwidth}
+%%   \def\scal{0.47}
+%%   \centering
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-10}
+%%   \end{subfigure}
+  
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-11}
+%%   \end{subfigure}
+  
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-12}
+%%   \end{subfigure}
+%%   \caption{Sequenza con elementi \emph{fantasma}.}\label{fig:cats_sequence_phantoms}
+%% \end{wrapfigure}
+
+%% \def\wid{0.5}
+%% \begin{wrapfigure}{R}{\wid\textwidth}
+%%   \def\scal{0.47}
+%%   \centering
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-105}
+%%   \end{subfigure}
+  
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-111}
+%%   \end{subfigure}
+  
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-113}
+%%   \end{subfigure}
+%%   \caption{Frame di provenienza.}\label{fig:cats_sequence_phantoms_comp}
+%% \end{wrapfigure}
+
+\begin{figure}
+  \centering
+  \def\wid{0.48}
+  \def\scal{0.44}
+  \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-10}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-11}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-12}
+    \end{subfigure}
+    \caption{Sequenza con elementi \emph{fantasma}.}\label{fig:cats_sequence_phantoms}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-105}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-111}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-113}
+    \end{subfigure}
+    \caption{Frame di provenienza.}\label{fig:cats_sequence_phantoms_comp}
+  \end{subfigure}
+  \caption{Elementi fantasma e rispettivi frame di provenienza.}
+\end{figure}
+
+Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione link\todo{Metti la gif intera su poisson e linkala qui!}: possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
+
+%\lipsum[2-5]
+
+\def\widFrame{0.62}
+\def\wid{0.6}
+\def\scal{0.5}
+\begin{wrapfigure}{R}{\widFrame\textwidth}
+  \centering
+  \begin{subfigure}[b]{\wid\textwidth}
+    \centering
+    \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-62}
+    \caption{Frange di rumore che si propagano verticalmente rispetto ai gatti.}\label{fig:cats_noise_vertical}
+  \end{subfigure}
+  
+  \begin{subfigure}[b]{\wid\textwidth}
+    \centering
+    \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-94}
+    \caption{Immagine fantasma sul lato destro dell'immagine}\label{fig:cats_noise_time}
+  \end{subfigure}
+  \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:cats_noise}
+\end{wrapfigure}
+
+%%%% Tets
+%% \def\widFrame{0.62}
+%% \def\wid{0.6}
+%% \def\scal{0.5}
+%% \begin{wrapfigure}{R}{\widFrame\textwidth}
+%%   \centering
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-11}
+%%     \caption{Frange di rumore che si propagano verticalmente rispetto ai gatti.}\label{fig:muhammadali_noise_vertical}
+%%   \end{subfigure}
+  
+%%   \begin{subfigure}[b]{\wid\textwidth}
+%%     \centering
+%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-12}
+%%     \caption{Immagine fantasma sul lato destro dell'immagine}\label{fig:muhammadali_noise_time}
+%%   \end{subfigure}
+%%   \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:muhammadali_noise}
+%% \end{wrapfigure}
+
+%\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-62}
+%\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-94}
 
 \section{Conclusioni}
 Abbiamo raggiunto il nostro scopo di \emph{visualizzare} gli effetti dell'approssimazione tramite TT. Certamente la qualità dell'immagine, la presenza di vistosi artefatti e lo scarso livello di compressione ci fanno chiaramente capire come la compressione di filmati non sia il campo di applicazione di elezione del formato TT.
