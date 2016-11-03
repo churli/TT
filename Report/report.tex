@@ -89,7 +89,7 @@ Per decidere quando arrestare l'iterazione, abbiamo bisogno di definire una misu
 Per il nostro scopo di comprimere animazioni, abbiamo deciso di affidarci ad un metodo molto semplice ma che ha dimostrato di dare buoni risultati: vengono campionati casualmente l'1\% degli elementi del tensore e viene quindi calcolata la distanza dal corrispondente valore nel tensore originario; se l'elemento è all'interno di un raggio di 5 unità di luminosità dal corrispondente valore del tensore originario, viene considerato valido, altrimenti non valido.
 La percentuale di valori validi sul totale campionato è quindi considerata un parametro indice della verosimiglianza dell'animazione compressa rispetto all'originale.
 
-La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross\todo{Controlla bene come è calcolato l'errore internamente in TT-cross}, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
+La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross \todo{Controlla bene come è calcolato l'errore internamente in TT-cross}, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
 
 \paragraph{Criteri d'arresto.}
 Come menzionato nel precedente paragrafo, per questa applicazione ci siamo affidati ad un criterio d'arresto \emph{ad-hoc}: quando una percentuale sufficientemente alta di elementi presenta un errore al di sotto di un certo valore, l'approssimazione viene fermata.
@@ -100,7 +100,7 @@ D'altra parte però questo criterio ci permette di terminare l'approssimazione n
 Questa scelta, del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame \todo{Controlla se si può dire aliasing nella footnote.} multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti dei fenomani di aliasing al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
 
 \subsection{Ottimizzazione delle performance}
-In una prima implementazione, \todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).} abbiamo osservato come la maggior frazione del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
+In una prima implementazione, \todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).} abbiamo osservato come la maggior parte del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
 Questo succedeva a causa del seguente codice: 
 
 \begin{lstlisting}
@@ -147,88 +147,48 @@ Queste piccole modifiche hanno ridotto il tempo dedicato alla scrittura dei fram
 %% foobar
 
 \section{Risultati}
-Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni e non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni e non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
 
-Da un punto di vista qualitativo, invece, abbiamo potuto rilevare soprattutto la presenza di artefatti quali l'uniformità lungo delle specifiche \emph{bande} lungo le fibre e improvvisi cambi di luminosità e colore \todo{Inserire immagini.}.
+Da un punto di vista qualitativo, invece, abbiamo potuto rilevare soprattutto la presenza di artefatti quali l'uniformità lungo delle specifiche \emph{bande} lungo le fibre e improvvisi cambi di luminosità e colore.
 
 La fase di calcolo della compressione a mostrato una convergenza assai lenta, soprattutto se paragonata con la convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come ad esempio nel caso tensori popolati con i valori assunti da una funzione multidimensionale. \todo{magari vedi di metterci esempio del vsin.} In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata nei fatti utile ad avere un'approssimazione in ogni caso accettabile.
 
-%% \def\wid{0.5}
-%% \begin{wrapfigure}{L}{\wid\textwidth}
-%%   \def\scal{0.47}
-%%   \centering
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-10}
-%%   \end{subfigure}
-  
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-11}
-%%   \end{subfigure}
-  
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-12}
-%%   \end{subfigure}
-%%   \caption{Sequenza con elementi \emph{fantasma}.}\label{fig:cats_sequence_phantoms}
-%% \end{wrapfigure}
-
-%% \def\wid{0.5}
-%% \begin{wrapfigure}{R}{\wid\textwidth}
-%%   \def\scal{0.47}
-%%   \centering
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-105}
-%%   \end{subfigure}
-  
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-111}
-%%   \end{subfigure}
-  
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-113}
-%%   \end{subfigure}
-%%   \caption{Frame di provenienza.}\label{fig:cats_sequence_phantoms_comp}
-%% \end{wrapfigure}
+Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats_TT.gif}{\rawcode{cats_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats.gif}{\rawcode{cats.gif}}): possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
 
 \begin{figure}
   \centering
   \def\wid{0.48}
   \def\scal{0.44}
-  \begin{subfigure}[b]{\wid\textwidth}
-    \begin{subfigure}[b]{\wid\textwidth}
+  \begin{subfigure}[]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-10}
     \end{subfigure}
     
-    \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-11}
     \end{subfigure}
     
-    \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-12}
     \end{subfigure}
-    \caption{Sequenza con elementi \emph{fantasma}.}\label{fig:cats_sequence_phantoms}
+    \caption{Sequenza con elementi fantasma.}\label{fig:cats_sequence_phantoms}
   \end{subfigure}
   ~
-  \begin{subfigure}[b]{\wid\textwidth}
-    \begin{subfigure}[b]{\wid\textwidth}
+  \begin{subfigure}[]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-105}
     \end{subfigure}
     
-    \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-111}
     \end{subfigure}
     
-    \begin{subfigure}[b]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-113}
     \end{subfigure}
@@ -237,48 +197,58 @@ La fase di calcolo della compressione a mostrato una convergenza assai lenta, so
   \caption{Elementi fantasma e rispettivi frame di provenienza.}
 \end{figure}
 
-Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione link\todo{Metti la gif intera su poisson e linkala qui!}: possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
-
-%\lipsum[2-5]
-
-\def\widFrame{0.62}
-\def\wid{0.6}
-\def\scal{0.5}
-\begin{wrapfigure}{R}{\widFrame\textwidth}
-  \centering
-  \begin{subfigure}[b]{\wid\textwidth}
-    \centering
+\begin{figure}
+  \def\wid{0.48}
+  \def\scal{0.44}
+  \begin{subfigure}[]{\wid\textwidth}
     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-62}
     \caption{Frange di rumore che si propagano verticalmente rispetto ai gatti.}\label{fig:cats_noise_vertical}
   \end{subfigure}
-  
-  \begin{subfigure}[b]{\wid\textwidth}
-    \centering
+  ~
+  \begin{subfigure}[]{\wid\textwidth}
     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-94}
     \caption{Immagine fantasma sul lato destro dell'immagine}\label{fig:cats_noise_time}
   \end{subfigure}
   \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:cats_noise}
-\end{wrapfigure}
+\end{figure}
 
-%%%% Tets
-%% \def\widFrame{0.62}
-%% \def\wid{0.6}
-%% \def\scal{0.5}
-%% \begin{wrapfigure}{R}{\widFrame\textwidth}
-%%   \centering
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-11}
-%%     \caption{Frange di rumore che si propagano verticalmente rispetto ai gatti.}\label{fig:muhammadali_noise_vertical}
-%%   \end{subfigure}
-  
-%%   \begin{subfigure}[b]{\wid\textwidth}
-%%     \centering
-%%     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-12}
-%%     \caption{Immagine fantasma sul lato destro dell'immagine}\label{fig:muhammadali_noise_time}
-%%   \end{subfigure}
-%%   \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:muhammadali_noise}
-%% \end{wrapfigure}
+Ancora possiamo vedere, in \ref{fig:cats_noise}, come il rumore \todo{check if correct term} si propaghi lungo le fibre, rivelando la struttura stessa del formato TT: in \ref{fig:cats_noise_vertical} possiamo vedere come le figure dei due gatti diano origine ad alcune bande verticali di pixel più scuri, mentre in \ref{fig:cats_noise_time} si veda chiaramente in basso a destra la propagazione nella dimensione temporale di una sagoma proveniente da un altro frame.
+
+Nell'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali_TT.gif}{\rawcode{muhammad_ali_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali.gif}{\rawcode{muhammad_ali.gif}}) invece si possono vedere dei forti effetti di aberrazione cromatica, probabilmente a causa delle ampie zone molto scure che compongono l'immagine. In questo caso possiamo vedere come in frame consecutivi ci sia una forte alternanza di luminosità e di colore, che nell'animazione provocano dei forti \emph{flash}.
+
+\def\wid{0.48}
+\def\scal{0.55}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-11}
+      \caption{Frame 11.}
+    \end{subfigure}
+    
+    \begin{subfigure}[]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-12}
+      \caption{Frame 12.}
+    \end{subfigure}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[]{\wid\textwidth}
+    \begin{subfigure}[]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-208}
+      \caption{Frame 208.}
+    \end{subfigure}
+    
+    \begin{subfigure}[]{\wid\textwidth}
+      \centering
+      \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-209}
+      \caption{Frame 209.}
+    \end{subfigure}
+  \end{subfigure}
+  \caption{Fluttuazioni cromatiche tra frame consecutivi.}\label{fig:muhammadali_color_flickering}
+\end{figure}
 
 %\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-62}
 %\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-94}
