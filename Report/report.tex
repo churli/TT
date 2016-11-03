@@ -9,14 +9,14 @@
 \usepackage{amsfonts}
 \lstset{language=Python}
 %%%
-\title{Immagini animate e Tensor Train.\\Compressione e suoi effetti su dati ``visibili''.}
+\title{Immagini animate e Tensor Train.\\Compressione e suoi effetti su dati visibili.}
 \author{Tommaso Bianucci}
 %%%
 \begin{document}
 \maketitle
 
 \begin{abstract}
-  La \emph{Tensor Train Decomposition} (\emph{TT}), è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
+  La \emph{Tensor Train Decomposition} (\emph{TT}), è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{Singular Value Decomposition} (\emph{SVD}) permette di fare con le matrici.
 
   %% In particolare, questo metodo di rappresentazione \emph{rompe} la diendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
   %% Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
@@ -39,21 +39,22 @@ Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di d
 
   La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
 
-  La compressione di immagini è un classico esempio che permette, letteralmente, di visualizzare il risultato della SVD, apprezzandone intuitivamente le caratteristiche principali. Così abbiamo pensato di seguire un approccio analogo con la TT: comprimere immagini, per poterne visualizzare immediatamente il risultato.
+  La compressione di immagini è un classico esempio che permette di visualizzare il risultato della SVD, apprezzandone intuitivamente le caratteristiche principali. Così abbiamo pensato di seguire un approccio analogo con la TT: comprimere immagini per poterne visualizzare immediatamente il risultato.
 
 \section{Approccio}
 Un tensore rappresentato in formato TT consta di un insieme di tensori 3-dimensionali i cui elementi, opportunamente moltiplicati tra di loro, restituiscono tutti gli elementi, entro un certo grado di approssimazione, del tensore di partenza.
-Questo lascia immediatamente intuire come i vantaggi del formato TT siano tanto maggiori quanto maggiore è la dimensionalità del tensore originario e anche come i benefici su tensori 3-dimensionali siano esigui se non assenti da un punto di vista di spazio utilizzato e sicuramente vanificati dalla complessità e dal tempo computazionale aggiuntivi che la rappresentazione in formato TT richiedono.
+Questo lascia intuire come i vantaggi del formato TT siano tanto maggiori quanto maggiore è la dimensionalità del tensore originario.
+Inoltre possiamo notare come i benefici su tensori 3-dimensionali siano esigui, se non assenti da un punto di vista di spazio utilizzato e vanificati dalla complessità e dal tempo computazionale aggiuntivi che la rappresentazione in formato TT richiede.
 
-Con questa premessa abbiamo cercato una tipologia di dati che avesse un numero di dimensioni maggiore di 3 e che fosse facilmente visualizzabile. La scelta è caduta sulle immagini animate.
+Con questa premessa abbiamo cercato una tipologia di dati che avesse un numero di dimensioni maggiore di 3 e che fosse facilmente visualizzabile. Per questo abbiamo scelto di applicare il formato TT a delle immagini animate.
 
-Le sequenze animate si prestano naturalmente ad essere rappresentate in 4 dimensioni, infatti
+Le sequenze animate sono infatti naturalmente rappresentabili in 4 dimensioni, infatti:
 \begin{itemize}
-\item queste sono certamente un insieme ordinato di immagini (\emph{frames}),
+\item sono certamente un insieme ordinato di immagini (\emph{frame}),
 \item ogni frame è composto da una matrice di \emph{pixel},
 \item ogni pixel può emettere i 3 colori primari (RGB\footnote{\emph{RGB} = red-green-blue (rosso-verde-blu), i tre colori primari per la sintesi sottrattiva.}), ognuno caratterizzato da un proprio valore di luminosità.
 \end{itemize}
-In 4 dimensioni si strutturano quindi i dati di una sequenza animata: numero di frame per identificare la posizione temporale, larghezza e altezza per identificare la posizione spaziale del pixel, colore. Gli elementi del tensore assumeranno quindi valori tra $0$ e $255$ e rappresenteranno la luminosità di un dato colore per un certo pixel all'interno di uno specifico frame.
+In 4 dimensioni si strutturano quindi i dati di una sequenza animata: numero di frame (per identificare la posizione temporale), larghezza e altezza (per identificare la posizione spaziale del pixel) e colore. Gli elementi del tensore assumeranno quindi valori tra $0$ e $255$ e rappresenteranno la luminosità di un dato colore per un certo pixel all'interno di uno specifico frame.
 
 \section{Implementazione, problemi e compromessi}
 Per l'implementazione abbiamo utilizzato il seguente approccio:
@@ -66,38 +67,38 @@ Per l'implementazione abbiamo utilizzato il seguente approccio:
 \end{itemize}
 
 \subsection{Linguaggi utilizzati}
-Le operazioni di estrazione, conversione a PPM e ricomposizione dei frame dal o verso il formato GIF sono state organizzate semplicemente sotto forma di brevi script in Bash. Invece la parte saliente di lettura dei frame, approssimazione in formato TT e riscrittura dei nuovi frame è stata implementata in linguaggio Python.
+Le operazioni di estrazione, conversione a PPM e ricomposizione dei frame dal o verso il formato GIF sono state organizzate sotto forma di brevi script in \emph{Bash}. Invece la parte saliente di lettura dei frame, approssimazione in formato TT e riscrittura dei nuovi frame è stata implementata in linguaggio \emph{Python}.
 
-La scelta di utilizzare Python è risultata dal considerare che
+La scelta di utilizzare Python è risultata dal considerare che:
 \begin{itemize}
 \item Python è un linguaggio flessibile e agevole, tipizzato dinamicamente e che non richiede una gestione manuale dell'allocazione di memoria, rendendo la prototipazione e cambiamenti anche radicali molto agevoli e veloci,
 \item è disponibile, per Python, il modulo \emph{ttpy}, che implementa la rappresentazione e i vari algoritmi per la compressione e la manipolazione di tensori in formato TT,
 \item Python è un linguaggio notoriamente poco performante, ma il modulo \emph{ttpy} implementa tutte le operazioni computazionalmente intense e critiche in linguaggio Fortran, avvalendosi dove possibile di subroutine da LaPack/BLAS.
 \end{itemize}
-In questo modo è stato possibile mantenere i vantaggi di un linguaggio come Python, pur mantenedo tutte le fasi computazionalmente più costose in opportune subroutine Fortran e quindi non intaccando le prestazioni complessive dell'intero processo.
+In questo modo è stato possibile mantenere i vantaggi di un linguaggio come Python, pur conservando tutte le fasi computazionalmente più costose in opportune subroutine Fortran e quindi non intaccando le prestazioni complessive dell'intero processo.
 
 \subsection{TT-cross e criteri d'arresto}
 \paragraph{TT-cross.}
 L'algoritmo di TT-cross è basato sull'approssimazione iterativa di un tensore tramite l'utilizzo, ad ogni passo, di alcuni specifici elementi.
 Questo permette la costruzione di un un'approssimazione TT anche in assenza del tensore completo di partenza. Infatti è sufficiente avere a disposizione una funzione che permetta di calcolare, date le coordinate di un elemento, il suo valore.
 
-Noi costruiamo esplicitamente l'intero tensore di partenza, popolandolo con i valori che vengono letti dai file che contengono i vari frame: questo non ci danneggia, visto che lo spazio richiesto in questa operazione è nel nostro caso davvero modesto, e ci avvantaggia in termini di tempo. Abbiamo comunque definito una funzione che ci restituisce l'elemento del tensore date le coordinate, in modo da poterla utilizzare nell'algoritmo TT-cross.
+Costruiamo esplicitamente l'intero tensore di partenza, popolandolo con i valori che vengono letti dai file che contengono i vari frame: in questo caso lo spazio richiesto da questa operazione è davvero modesto e ci avvantaggia in termini di tempo. Abbiamo comunque definito una funzione che ci restituisce l'elemento del tensore date le coordinate, in modo da poterla utilizzare nell'algoritmo TT-cross.
 
 \paragraph{Misurare l'errore.}
 Per decidere quando arrestare l'iterazione, abbiamo bisogno di definire una misura di errore.
 
-Per il nostro scopo di comprimere animazioni, abbiamo deciso di affidarci ad un metodo molto semplice ma che ha dimostrato di dare buoni risultati: vengono campionati casualmente l'1\% degli elementi del tensore e viene quindi calcolata la distanza dal corrispondente valore nel tensore originario; se l'elemento è all'interno di un raggio di 5 unità di luminosità dal corrispondente valore del tensore originario, viene considerato valido, altrimenti non valido.
-La percentuale di valori validi sul totale campionato è quindi considerata un parametro indice della verosimiglianza dell'animazione compressa rispetto all'originale.
+Per il nostro scopo di comprimere animazioni abbiamo deciso di affidarci ad un metodo molto semplice ma che ha dimostrato di dare buoni risultati: vengono campionati casualmente l'1\% degli elementi del tensore e calcolata la distanza dal corrispondente valore del tensore originario; se l'elemento è all'interno di un raggio di 5 unità di luminosità dal corrispondente valore del tensore originario viene considerato valido, altrimenti non valido.
+La percentuale di valori validi sul totale campionato è utilizzata come parametro indice della verosimiglianza dell'animazione compressa rispetto all'originale.
 
-La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross \todo{Controlla bene come è calcolato l'errore internamente in TT-cross}, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
+La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross, \todo{Controlla bene come è calcolato l'errore internamente in TT-cross}convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
 
 \paragraph{Criteri d'arresto.}
 Come menzionato nel precedente paragrafo, per questa applicazione ci siamo affidati ad un criterio d'arresto \emph{ad-hoc}: quando una percentuale sufficientemente alta di elementi presenta un errore al di sotto di un certo valore, l'approssimazione viene fermata.
 
-Come intuibile, questo criterio presenta il grande difetto di non tenere in considerazione quanto errore presentino gli altri elementi, quelli che non hanno superato il test.
-D'altra parte però questo criterio ci permette di terminare l'approssimazione non appena una parte sufficiente dell'animazione bene approssima l'originale.
+Come intuibile, questo criterio presenta il grande difetto di non tenere in considerazione quanto errore presentino gli elementi che non hanno superato il test.
+D'altra parte però questo criterio ci permette di terminare le iterazioni non appena una parte sufficiente dell'animazione approssima bene l'originale.
 
-Questa scelta, del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame \todo{Controlla se si può dire aliasing nella footnote.} multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti dei fenomani di aliasing al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
+Questa scelta del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame \todo{Controlla se si può dire aliasing nella footnote.} multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti dei fenomani di aliasing al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
 
 \subsection{Ottimizzazione delle performance}
 In una prima implementazione, \todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).} abbiamo osservato come la maggior parte del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
@@ -113,18 +114,18 @@ Questo succedeva a causa del seguente codice:
       f.write('\n')
 \end{lstlisting}
 
-Questa confezionava una riga del frame corrente prendendo, in formato TT, la matrice $3 \times width$ corrispondente alla riga, calcolandone tutti gli elementi (con il metodo \rawcode{full()}, e facendo quindi un reshape per ottenere la concatenazione dei valori di colore per ogni pixel.
+Questo costruiva una riga del frame corrente prendendo, in formato TT, la matrice $3 \times width$ corrispondente alla riga, calcolandone tutti gli elementi (con il metodo \rawcode{full()}) e facendo quindi un reshape per ottenere la concatenazione dei valori di colore per ogni pixel.
 
 Ci sono principalmente due motivi per cui questo era inefficiente.
-Il primo è che il metodo \rawcode{full()} è computazionalmente molto costoso, in quanto implica $\prod_{j=1}^d n_j (d-1)$ moltiplicazioni di matrici per un tensore $n_1 \times \ldots \times n_d$. Nel nostro caso, questa operazione comportava, per ogni riga, $2 \cdot 3 \cdot width$ moltiplicazioni di matrici, per un totale di $6 \cdot width \cdot height$ moltiplicazioni di matrici per frame, visto che l'operazione veniva eseguita in un ciclo indicizzato dal numero di riga. Il problema è che una buona parte di queste moltiplicazioni è ridondante: infatti quando si fissano tutti gli elementi di un tensore tranne uno, tutte le matrici da moltiplicare resteranno invariate tranne quella corrispondente alla dimensione su cui scorre quest'ultimo. Quindi, per ottenere tutti gli elementi di una data \emph{fibra} del tensore, ad esempio sulla dimensione $k$, dobbiamo calcolare $n_k (d-1)$ moltiplicazioni di matrici, quando le necessarie sarebbero soltanto $(d-2) + n_k$.
+Il primo è che il metodo \rawcode{full()} è computazionalmente molto costoso, in quanto implica $\prod_{j=1}^d n_j (d-1)$ moltiplicazioni di matrici per un tensore $n_1 \times \ldots \times n_d$. Nel nostro caso questa operazione comportava, per ogni riga, $2 \cdot 3 \cdot width$ moltiplicazioni di matrici, per un totale di $6 \cdot width \cdot height$ moltiplicazioni di matrici per frame, visto che l'operazione veniva eseguita in un ciclo indicizzato dal numero di riga. Il problema è che una buona parte di queste moltiplicazioni è ridondante: infatti quando si fissano tutti gli elementi di un tensore tranne uno, tutte le matrici da moltiplicare resteranno invariate tranne quella corrispondente alla dimensione su cui scorre quest'ultimo. Per ottenere tutti gli elementi di una data \emph{fibra} del tensore, ad esempio sulla dimensione $k$, dobbiamo quindi calcolare $n_k (d-1)$ moltiplicazioni di matrici, quando ne sarebbero necessarie soltanto $(d-2) + n_k$.
 
-Il secondo motivo di inefficienza risiede nell'uso del metodo \rawcode{reshape()}: infatti \rawcode{full()} altro non fa se non calcolare tutti gli elementi del dato tensore in modo sequenziale, restituendoli in un array monodimensionale e applicando poi l'opportuno reshape per ottenere il tensore. Il problema è che, nel nostro codice, abbiamo bisogno di applicare un ulteriore \rawcode{reshape(3*width, order='F')}, di fatto rendendo il primo superfluo.
+Il secondo motivo di inefficienza risiede nell'uso del metodo \rawcode{reshape()}: infatti \rawcode{full()} calcola tutti gli elementi del dato tensore in modo sequenziale, restituendoli in un array monodimensionale e applicando poi l'opportuno reshape per ottenere il tensore. Il problema è che nel nostro codice abbiamo bisogno di applicare un ulteriore \rawcode{reshape(3*width, order='F')}, di fatto rendendo il primo superfluo.
 
-Abbiamo risolto il primo problema semplicemente calcolandoci tutti i valori di un intero frame con una sola chiamata di \rawcode{full}, invece che dovendone fare una per ogni riga. Infatti, con un opportuna manipolazione possiamo ottenere una lista di righe da poter scrivere nel file, senza dover iterare sulle righe come in precedenza. Questo risolve problema in quanto il metodo \rawcode{full()} è in grado di ottimizzare il numero di moltiplicazioni di matrici da eseguire.
+Abbiamo risolto il primo problema calcolandoci tutti i valori di un intero frame con una sola chiamata di \rawcode{full}, invece che farne una per ogni riga. Infatti, con un opportuna manipolazione possiamo ottenere una lista di righe da poter scrivere nel file, senza dover iterare sulle righe come in precedenza. Questo risolve problema in quanto il metodo \rawcode{full()} è in grado di ottimizzare il numero di moltiplicazioni di matrici da eseguire.
 
 Il secondo problema è invece stato risolto cambiando il metodo \rawcode{full()} nella libreria \emph{ttpy} in modo da poter accettare come argomento opzionale uno \emph{shape} specifico da passare alla chiamata di \rawcode{reshape()} che esegue internamente. Questo evita il bisogno di chiamare ogni volta un secondo \rawcode{reshape()} per ottenere il formato desiderato.
 
-Il risultato è il seguente codice, che restituisce direttamente una lista di righe, che vengono successivamente scritte del file per il frame corrente:
+Il risultato è il seguente codice, che restituisce una lista di righe, che vengono successivamente scritte del file per il frame corrente:
 \begin{lstlisting}
     frameput = [ ' '.join(vectorStrPixelRound(x)) for x in 
                     (depth*frame)
@@ -147,15 +148,16 @@ Queste piccole modifiche hanno ridotto il tempo dedicato alla scrittura dei fram
 %% foobar
 
 \section{Risultati}
-Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni e non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni; non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
 
-Da un punto di vista qualitativo, invece, abbiamo potuto rilevare soprattutto la presenza di artefatti quali l'uniformità lungo delle specifiche \emph{bande} lungo le fibre e improvvisi cambi di luminosità e colore.
+Da un punto di vista qualitativo abbiamo potuto rilevare la presenza di artefatti quali la propagazione di \emph{rumore} lungo le fibre del tensore e improvvisi cambi di luminosità e colore.
 
-La fase di calcolo della compressione a mostrato una convergenza assai lenta, soprattutto se paragonata con la convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come ad esempio nel caso tensori popolati con i valori assunti da una funzione multidimensionale. \todo{magari vedi di metterci esempio del vsin.} In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata nei fatti utile ad avere un'approssimazione in ogni caso accettabile.
+La fase di calcolo della compressione ha mostrato una convergenza assai lenta, soprattutto se paragonata alla convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come nel caso di tensori popolati con i valori assunti da una funzione multidimensionale. \todo{magari vedi di metterci esempio del vsin.} In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata utile ad avere un'approssimazione in ogni caso accettabile.
 
-Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats_TT.gif}{\rawcode{cats_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats.gif}{\rawcode{cats.gif}}): possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
+Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats_TT.gif}{\rawcode{cats_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats.gif}{\rawcode{cats.gif}}): possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in figura \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
 
 \begin{figure}
+  \captionsetup[subfigure]{justification=centering}
   \centering
   \def\wid{0.48}
   \def\scal{0.44}
@@ -200,6 +202,7 @@ Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_ph
 \begin{figure}
   \def\wid{0.48}
   \def\scal{0.44}
+  \captionsetup[subfigure]{justification=centering}
   \begin{subfigure}[]{\wid\textwidth}
     \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/Cats/frame-62}
     \caption{Frange di rumore che si propagano verticalmente rispetto ai gatti.}\label{fig:cats_noise_vertical}
@@ -212,49 +215,45 @@ Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_ph
   \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:cats_noise}
 \end{figure}
 
-Ancora possiamo vedere, in \ref{fig:cats_noise}, come il rumore \todo{check if correct term} si propaghi lungo le fibre, rivelando la struttura stessa del formato TT: in \ref{fig:cats_noise_vertical} possiamo vedere come le figure dei due gatti diano origine ad alcune bande verticali di pixel più scuri, mentre in \ref{fig:cats_noise_time} si veda chiaramente in basso a destra la propagazione nella dimensione temporale di una sagoma proveniente da un altro frame.
+Ancora possiamo vedere, in figura \ref{fig:cats_noise}, come il rumore \todo{check if correct term} si propaghi lungo le fibre, rivelando la struttura stessa del formato TT: in figura \ref{fig:cats_noise_vertical} possiamo vedere come le sagome dei due gatti diano origine ad alcune bande verticali di pixel più scuri, mentre in figura \ref{fig:cats_noise_time} si veda in basso a destra la propagazione nella dimensione temporale di una sagoma proveniente da un altro frame.
 
 Nell'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali_TT.gif}{\rawcode{muhammad_ali_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali.gif}{\rawcode{muhammad_ali.gif}}) invece si possono vedere dei forti effetti di aberrazione cromatica, probabilmente a causa delle ampie zone molto scure che compongono l'immagine. In questo caso possiamo vedere come in frame consecutivi ci sia una forte alternanza di luminosità e di colore, che nell'animazione provocano dei forti \emph{flash}.
 
 \def\wid{0.48}
 \def\scal{0.55}
-\begin{figure}[h]
+\begin{figure}
+  \captionsetup[subfigure]{justification=centering}
   \centering
   \begin{subfigure}[]{\wid\textwidth}
     \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-11}
-      \caption{Frame 11.}
     \end{subfigure}
     
     \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-12}
-      \caption{Frame 12.}
     \end{subfigure}
+    \caption{Frame 11-12.}
   \end{subfigure}
   ~
   \begin{subfigure}[]{\wid\textwidth}
     \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-208}
-      \caption{Frame 208.}
     \end{subfigure}
     
     \begin{subfigure}[]{\wid\textwidth}
       \centering
       \includegraphics[keepaspectratio=true, scale=\scal]{Imgs/MuhammadAli/frame-209}
-      \caption{Frame 209.}
     \end{subfigure}
+    \caption{Frame 208-209.}
   \end{subfigure}
   \caption{Fluttuazioni cromatiche tra frame consecutivi.}\label{fig:muhammadali_color_flickering}
 \end{figure}
 
-%\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-62}
-%\includegraphics[keepaspectratio=true, scale=0.7]{Imgs/Cats/frame-94}
-
 \section{Conclusioni}
-Abbiamo raggiunto il nostro scopo di \emph{visualizzare} gli effetti dell'approssimazione tramite TT. Certamente la qualità dell'immagine, la presenza di vistosi artefatti e lo scarso livello di compressione ci fanno chiaramente capire come la compressione di filmati non sia il campo di applicazione di elezione del formato TT.
+Abbiamo raggiunto il nostro scopo di \emph{visualizzare} gli effetti dell'approssimazione tramite TT. Certamente la qualità dell'immagine, la presenza di vistosi artefatti e lo scarso livello di compressione ci mostrano come la compressione di filmati non sia il campo di applicazione di elezione del formato TT.
 Dobbiamo però ricordare come il basso numero di dimensioni (4) e il vincolo di dover rappresentare valori in $[0,255]\subset\NN$ limitino l'efficacia dell'utilizzo del formato TT in questa applicazione.
 
 %%%
