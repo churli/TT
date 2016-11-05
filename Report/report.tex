@@ -148,7 +148,36 @@ Queste piccole modifiche hanno ridotto il tempo dedicato alla scrittura dei fram
 %% foobar
 
 \section{Risultati}
-Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni; non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota (vedi tabella \ref{tab:results}) e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni; non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+\begin{center}
+  \begin{tabular}[t]{| c | c | c | c | c | c |}
+    \hline
+    &GameBoy&Cats&67P&MuhammadAli&PikachuSurf\\
+    \hline
+    Sweeps&24&14&34&50&16\\
+    Wall Time&00:05:42&00:03:42&00:31:56&02:26:44&00:03:35\\
+    CPU Time&00:09:55&00:16:28&02:28:21&15:15:18&00:14:26\\
+    Passrate&50\%&51\%&52\%&50\%&55\%\\
+    Size Full&10\,500\,000&34\,493\,760&37\,096\,800&84\,588\,840&15\,498\,000\\
+    Size TT&4\,671\,736&4\,584\,860&19\,374\,766&33\,603\,020&7\,278\,045\\
+    Size Ratio&0.44&0.13&0.52&0.40&0.47\\
+    \hline
+    Original&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/game_boy.gif}{link}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats.gif}{link}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/67P.gif}{link}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali.gif}{link}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/pikachu_surf.gif}{link}\\
+    Compressed&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/game_boy_TT.gif}{link\_TT}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats_TT.gif}{link\_TT}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/67P_TT.gif}{link\_TT}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali_TT.gif}{link\_TT}&
+    \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/pikachu_surf_TT.gif}{link\_TT}\\
+    \hline
+  \end{tabular}
+  \captionof{table}{\label{tab:results}Risultati computazionali. \emph{Sweeps} sono le iterazioni compiute dall'algoritmo TT-cross. I tempi sono espressi in formato hh:mm:ss, le dimensioni in numero di elementi.}
+\end{center}
 
 Da un punto di vista qualitativo abbiamo potuto rilevare la presenza di artefatti quali la propagazione di \emph{rumore} lungo le fibre del tensore e improvvisi cambi di luminosità e colore.
 
