@@ -15,31 +15,33 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-  La \emph{Tensor Train Decomposition} (\emph{TT}), è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{Singular Value Decomposition} (\emph{SVD}) permette di fare con le matrici.
+%% \begin{abstract}
+%%   La \emph{Tensor Train Decomposition} (\emph{TT}), è un formato di rappresentazione di tensori di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{Singular Value Decomposition} (\emph{SVD}) permette di fare con le matrici.
 
-  %% In particolare, questo metodo di rappresentazione \emph{rompe} la diendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
-  %% Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
+%%   %% In particolare, questo metodo di rappresentazione \emph{rompe} la diendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
+%%   %% Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
 
-  La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
+%%   La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
 
-  La compressione di immagini è un classico esempio che permette apprezzare immediatamente il risultato della SVD, così abbiamo utilizzato un approccio analogo con la TT, comprimendo brevi animazioni.
-  Le immagini animate costituiscono infatti un facile esempio di dato in 4 dimensioni: larghezza, altezza, colore e numero di frame.
-  Abbiamo quindi compresso le animazioni in formato TT, misurato il \emph{rapporto di compressione} e ricostruito le animazioni approssimate per un facile confronto visivo con l'originale. \todo{Rivedi, anche alla luce di quanto riutilizzato sotto in Obiettivi}
-\end{abstract}
+%%   La compressione di immagini è un classico esempio che permette di apprezzare immediatamente il risultato della SVD, così abbiamo utilizzato un approccio analogo con la TT, comprimendo brevi animazioni.
+%%   Le immagini animate costituiscono infatti un facile esempio di dato in 4 dimensioni: larghezza, altezza, colore e numero di frame.
+%%   Abbiamo quindi compresso le animazioni in formato TT, misurato il \emph{rapporto di compressione} e ricostruito le animazioni approssimate per un facile confronto visivo con l'originale. \todo{Rivedi, anche alla luce di quanto riutilizzato sotto in Obiettivi}
+%% \end{abstract}
 
 %\listoftodos
 \tableofcontents
 
 %%% WRITE TEXT HERE
 \section{Obiettivi}
-La \emph{Tensor Train Decomposition}, o più brevemente \emph{TT}, è un formato di rappresentazione di tensori\footnote{Con tensore intendiamo genericamente un array multidimensionale.} di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{SVD} permette di fare con le matrici.
+La \emph{Tensor Train Decomposition}, o più brevemente \emph{TT}, è un formato di rappresentazione di tensori\footnote{Con tensore intendiamo genericamente un array multidimensionale.} di recente sviluppo che ha come principale obiettivo quello di fornire una buona approssimazione del tensore iniziale utilizzando un numero ridotto di \emph{parametri}, analogamente a quanto la \emph{Singular Value Decomposition (SVD)} permette di fare con le matrici.
 In particolare, questo metodo di rappresentazione \emph{rompe} la dipendenza esponenziale dal numero di dimensioni, rendendo finalmente possibili applicazioni con alta dimensionalità.
 Per questo possiamo riferirci alla TT come strumento di \emph{compressione} di dati, in quanto permette di manipolare dati dalla elevata dimensionalità con un'impronta in memoria relativamente ridotta.
 
   La qualità della rappresentazione è stata definita e dimostrata da risultati teorici, ma cosa questa comporti a livello qualitativo sui dati in ingresso resta difficile da immaginare, complicato inoltre dalla intrinseca difficoltà di rappresentazione di dati a più di 3 dimensioni.
 
   La compressione di immagini è un classico esempio che permette di visualizzare il risultato della SVD, apprezzandone intuitivamente le caratteristiche principali. Così abbiamo pensato di seguire un approccio analogo con la TT: comprimere immagini per poterne visualizzare immediatamente il risultato.
+
+  Ci siamo quindi posti l'obiettivo di comprimere le animazioni in formato TT, misure alcuni parametri della compressione e ricostruire le animazioni approssimate per un facile confronto visivo con l'originale.
 
 \section{Approccio}
 Un tensore rappresentato in formato TT consta di un insieme di tensori 3-dimensionali i cui elementi, opportunamente moltiplicati tra di loro, restituiscono tutti gli elementi, entro un certo grado di approssimazione, del tensore di partenza.
@@ -90,7 +92,7 @@ Per decidere quando arrestare l'iterazione, abbiamo bisogno di definire una misu
 Per il nostro scopo di comprimere animazioni abbiamo deciso di affidarci ad un metodo molto semplice ma che ha dimostrato di dare buoni risultati: vengono campionati casualmente l'1\% degli elementi del tensore e calcolata la distanza dal corrispondente valore del tensore originario; se l'elemento è all'interno di un raggio di 5 unità di luminosità dal corrispondente valore del tensore originario viene considerato valido, altrimenti non valido.
 La percentuale di valori validi sul totale campionato è utilizzata come parametro indice della verosimiglianza dell'animazione compressa rispetto all'originale.
 
-La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross, \todo{Controlla bene come è calcolato l'errore internamente in TT-cross}convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
+La scelta è caduta su questo criterio, a dire il vero piuttosto \emph{artigianale}, dopo aver osservato che l'errore relativo, così come misurato internamente durante l'algoritmo di TT-cross, convergeva troppo lentamente e a valori non generalizzabili ai vari esempi di input provati, sebbene i risultati in uscita fossero sufficientemente accurati da un punto di vista visivo.
 
 \paragraph{Criteri d'arresto.}
 Come menzionato nel precedente paragrafo, per questa applicazione ci siamo affidati ad un criterio d'arresto \emph{ad-hoc}: quando una percentuale sufficientemente alta di elementi presenta un errore al di sotto di un certo valore, l'approssimazione viene fermata.
@@ -98,10 +100,12 @@ Come menzionato nel precedente paragrafo, per questa applicazione ci siamo affid
 Come intuibile, questo criterio presenta il grande difetto di non tenere in considerazione quanto errore presentino gli elementi che non hanno superato il test.
 D'altra parte però questo criterio ci permette di terminare le iterazioni non appena una parte sufficiente dell'animazione approssima bene l'originale.
 
-Questa scelta del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame \todo{Controlla se si può dire aliasing nella footnote.} multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti dei fenomani di aliasing al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
+Questa scelta del tutto arbitraria e volta a contenere i tempi di convergenza ed il numero di parametri necessario, lascia passare nelle immagini finali alcuni artefatti degni di nota. Ad esempio può portare alcune parti dell'immagine ad avere valori di colore/luminosità molto instabili nel tempo, mentre altre parti risultano ben definite. Oppure si possono avere parti dell'immagine che ricompaiono come \emph{fantasmi} in frame multipli.\footnote{A questo proposito è bene ricordare come il \emph{tempo} altro non sia che una dimensione del tensore al pari delle altre e quindi presenti artefatti al pari delle dimensioni \emph{spaziali}. Quindi medesimi valori possono propagrsi all'interno dello stesso frame, sotto forma di \emph{bande} orizzontali o verticali, ma anche attraverso più frame, sotto forma di zone di immagine \emph{fantasma}.}
+
+\newpage
 
 \subsection{Ottimizzazione delle performance}
-In una prima implementazione, \todo{Qui parla di come read/write dei frame rischaissero di essere le fasi più costose in termini di tempo e di come questo sia stato risolto (soprattutto per il write che contiene gazillioni di moltiplicazioni tra matrici).} abbiamo osservato come la maggior parte del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
+In una prima implementazione, abbiamo osservato come la maggior parte del tempo veniva spesa nella fase di scrittura dei frame invece che in quella di TT-cross.
 Questo succedeva a causa del seguente codice: 
 
 \begin{lstlisting}
@@ -148,7 +152,7 @@ Queste piccole modifiche hanno ridotto il tempo dedicato alla scrittura dei fram
 %% foobar
 
 \section{Risultati}
-Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota (vedi tabella \ref{tab:results}) e questo è in linea con le aspettative. \todo{Aggiungi qui qualche dato su tempi e rapporti di compressione raggiunti} Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni; non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
+Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati degni di nota (vedi tabella \ref{tab:results}) e questo è in linea con le aspettative. Infatti il vantaggio del formato TT sta nel disaccopiare il numero di parametri necessari dalla dipendenza esponenziale dal numero di dimensioni; non ci aspettavamo di vedere risultati rilevanti con sole 4 dimensioni.
 \begin{center}
   \begin{tabular}[t]{| c | c | c | c | c | c |}
     \hline
@@ -181,7 +185,7 @@ Da un punto di vista di rapporto di compressione non abbiamo ottenuto risultati 
 
 Da un punto di vista qualitativo abbiamo potuto rilevare la presenza di artefatti quali la propagazione di \emph{rumore} lungo le fibre del tensore e improvvisi cambi di luminosità e colore.
 
-La fase di calcolo della compressione ha mostrato una convergenza assai lenta, soprattutto se paragonata alla convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come nel caso di tensori popolati con i valori assunti da una funzione multidimensionale. \todo{magari vedi di metterci esempio del vsin.} In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata utile ad avere un'approssimazione in ogni caso accettabile.
+La fase di calcolo della compressione ha mostrato una convergenza assai lenta, soprattutto se paragonata alla convergenza che l'algoritmo di TT-cross ha dimostrato in alcuni esempi di natura matematica, come nel caso di tensori popolati con i valori assunti da una funzione multidimensionale. In particolare, è stato impossibile stabilire valori di errore relativo in norma che potessero essere utilizzati in maniera affidabile e con una certa generalità. Al contrario, la semplice misura dell'errore da noi utilizzata si è rivelata utile ad avere un'approssimazione in ogni caso accettabile.
 
 Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_phantoms} mostra tre frame consecutivi dall'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats_TT.gif}{\rawcode{cats_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/cats.gif}{\rawcode{cats.gif}}): possiamo chiaramente vedere degli elementi \emph{fantasma} nella zona in basso a destra dell'immagine. Questi elementi provengono da frame successivi, visibili in figura \ref{fig:cats_sequence_phantoms_comp}. Sono ben visibili elementi di tutti e tre questi frame nella sequenza originale.
 
@@ -244,9 +248,9 @@ Vediamo alcuni esempi di questi artefatti. La sequenza~\ref{fig:cats_sequence_ph
   \caption{Propagazione di rumore e fantasmi lungo le fibre.}\label{fig:cats_noise}
 \end{figure}
 
-Ancora possiamo vedere, in figura \ref{fig:cats_noise}, come il rumore \todo{check if correct term} si propaghi lungo le fibre, rivelando la struttura stessa del formato TT: in figura \ref{fig:cats_noise_vertical} possiamo vedere come le sagome dei due gatti diano origine ad alcune bande verticali di pixel più scuri, mentre in figura \ref{fig:cats_noise_time} si veda in basso a destra la propagazione nella dimensione temporale di una sagoma proveniente da un altro frame.
+Ancora possiamo vedere, in figura \ref{fig:cats_noise}, come il rumore si propaghi lungo le fibre, rivelando la struttura stessa del formato TT: in figura \ref{fig:cats_noise_vertical} possiamo vedere come le sagome dei due gatti diano origine ad alcune bande verticali di pixel più scuri, mentre in figura \ref{fig:cats_noise_time} si veda in basso a destra la propagazione nella dimensione temporale di una sagoma proveniente da un altro frame.
 
-Nell'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali_TT.gif}{\rawcode{muhammad_ali_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali.gif}{\rawcode{muhammad_ali.gif}}) invece si possono vedere dei forti effetti di aberrazione cromatica, probabilmente a causa delle ampie zone molto scure che compongono l'immagine. In questo caso possiamo vedere come in frame consecutivi ci sia una forte alternanza di luminosità e di colore, che nell'animazione provocano dei forti \emph{flash}.
+Nell'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali_TT.gif}{\rawcode{muhammad_ali_TT.gif}} (originale \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad_ali.gif}{\rawcode{muhammad_ali.gif}}) invece si possono vedere dei forti effetti di aberrazione cromatica, probabilmente a causa delle ampie zone molto scure che compongono l'immagine. In questo caso (figura \ref{fig:muhammadali_color_flickering}) possiamo vedere come in frame consecutivi ci sia una forte alternanza di luminosità e di colore, che nell'animazione provocano dei forti \emph{flash}.
 
 \def\wid{0.48}
 \def\scal{0.55}
