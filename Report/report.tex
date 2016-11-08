@@ -69,7 +69,7 @@ Per l'implementazione abbiamo utilizzato il seguente approccio:
 \end{itemize}
 
 \subsection{Linguaggi utilizzati}
-Le operazioni di estrazione, conversione a PPM e ricomposizione dei frame dal o verso il formato GIF sono state organizzate sotto forma di brevi script in \emph{Bash}. Invece la parte saliente di lettura dei frame, approssimazione in formato TT e riscrittura dei nuovi frame è stata implementata in linguaggio \emph{Python}.
+Le operazioni di estrazione, conversione a PPM e ricomposizione dei frame dal o verso il formato GIF sono state organizzate sotto forma di brevi script in \emph{Bash}. Invece la parte saliente di lettura dei frame, approssimazione in formato TT e riscrittura dei nuovi frame è stata implementata in linguaggio \emph{Python}. Ulteriori dettagli, insieme al codice completo, sono disponibili in appendice \ref{code:all}.
 
 La scelta di utilizzare Python è risultata dal considerare che:
 \begin{itemize}
@@ -289,5 +289,55 @@ Nell'animazione \href{http://poisson.phc.unipi.it/~bianucci/shared/tesi/muhammad
 Abbiamo raggiunto il nostro scopo di \emph{visualizzare} gli effetti dell'approssimazione tramite TT. Certamente la qualità dell'immagine, la presenza di vistosi artefatti e lo scarso livello di compressione ci mostrano come la compressione di filmati non sia il campo di applicazione di elezione del formato TT.
 Dobbiamo però ricordare come il basso numero di dimensioni (4) e il vincolo di dover rappresentare valori in $[0,255]\subset\NN$ limitino l'efficacia dell'utilizzo del formato TT in questa applicazione.
 
+\newpage
+
+\appendix
+\section{Codice}\label{code:all}
+Alleghiamo qui il codice dei vari script sviluppati e usati per la sperimentazione:
+\begin{itemize}
+\item \rawcode{ttgif.sh} (\ref{code:ttgif})
+\item \rawcode{extractFrames.sh} (\ref{code:extractFrames})
+\item \rawcode{imageCompress.py} (\ref{code:imageCompress})
+\item \rawcode{reMergeFrames.sh} (\ref{code:reMergeFrames})
+\item \rawcode{timing.py} (\ref{code:timing})
+\end{itemize}
+
+L'intero processo è gestito da \rawcode{ttgif.sh} che a sua volta esegue opportunamente le tre fasi principali di estrazione dei singoli frame dalla GIF iniziale (\rawcode{extractFrames.sh}), rappresentazione del tensore in formato TT (\rawcode{imageCompress.py}) e ricostruzione dell'animazione a partire dai frame approssimati al passo precedente (\rawcode{reMergeFrames}).
+
+Il modulo \rawcode{timing.py} invece gestisce la misura dei tempi di calcolo ed il loro logging. È utilizzato da \rawcode{imageCompress.py}.
+
+\newpage
+%Codechange: 6
+\def\coderepo{/home/tommaso/Repo/TTGif}
+\subsection{ttgif.sh}\label{code:ttgif}
+Questo script mette insieme le fasi fondamentali del processo e passa gli opportuni parametri a \rawcode{extractFrames.sh}, \rawcode{imageCompress.py} e \rawcode{reMergeFrames}.
+
+\lstinputlisting[language=Bash,frame=L,numbers=left,title=\rawcode{ttgif.sh}]{\coderepo/ttgif.sh}
+\newpage
+\subsection{extractFrames.sh}\label{code:extractFrames}
+Questo script utilizza \rawcode{convert} per estrarre i singoli frame dalla GIF in ingresso e per convertirli in formato PPM.
+
+\lstinputlisting[language=Bash,frame=L,numbers=left,title=\rawcode{extractFrames.sh}]{\coderepo/extractFrames.sh}
+\newpage
+\subsection{imageCompress.sh}\label{code:imageCompress}
+Questo script legge i singoli frame dell'animazione in ingresso e rappresenta il tensore risultante in formato TT. Infine restituisce i frame approssimati.
+
+In particolare \rawcode{imageCompress.py} popola inizialmente il tensore completo e poi lo approssima iterativamente in formato TT utilizzando l'algoritmo \emph{TT-cross} all'interno della funzione \rawcode{dynCross()}.
+
+Le funzioni \rawcode{readFrame()} e \rawcode{writeFrame()} si occupano rispettivamente della lettura e scrittura dei frame. La funzione \rawcode{strPixelRound()} e il suo corrispettivo vettoriale \rawcode{vectorStrPixelRound()} servono per \emph{appiattire} i valori in output sull'intervallo $[0,255]$ in modo da soddisfare il formato PPM.
+
+Le dimensioni dei frame in ingresso sono dedotte utilizzando \rawcode{framesParametersCheck()}, mentre \rawcode{testRandomElement()} e \rawcode{testApproximation} si occupano di valutare l'\emph{errore} dell'approssimazione.
+
+\lstinputlisting[language=Python,frame=L,numbers=left,title=\rawcode{imageCompress.py}]{\coderepo/imageCompress.py}
+\newpage
+\subsection{reMergeFrames.sh}\label{code:reMergeFrames}
+Questo script utilizza \rawcode{convert} per unire i frame PPM in uscita dalla rappresentazione TT in una nuova animazione GIF.
+
+\lstinputlisting[language=Bash,frame=L,numbers=left,title=\rawcode{reMergeFrames.sh}]{\coderepo/reMergeFrames.sh}
+\newpage
+\subsection{timing.py}\label{code:timing}
+Questo script calcola il tempo reale e il tempo CPU del processo tra due eventi e ne gestisce il logging.
+
+\lstinputlisting[language=Python,frame=L,numbers=left,title=\rawcode{timing.py}]{\coderepo/timing.py}
 %%%
 \end{document}
