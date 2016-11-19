@@ -182,8 +182,8 @@ Two important corollaries follow from this theorem:
   \end{proof}
 \end{Cor}
 
-\begin{Cor}
-  From \eqref{teo:ttsvd_approx} it also follows that if the SVD \todo{Aggiungere in chapter 1 cos'è la SVD, definiz e proprietà} of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
+\begin{Cor} \label{cor:tt_tsvd_error}
+  From \eqref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
 \end{Cor}
 
 \begin{lstlisting}[title=TT-SVD compression algorithm]

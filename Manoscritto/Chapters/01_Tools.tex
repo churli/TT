@@ -161,6 +161,7 @@ Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A
   If A is rank-$k$, then all $\sigma_1, \ldots, \sigma_k$ are different from $0$, while $\sigma_{k+1}, \ldots, \sigma_n$ are equal to $0$. This again comes from noticing that $rk(A) = rk(A^t A)$ and the rank of $A^t A$ is equal to the number of its non-zero eigenvalues. From the previous remark we have that this is also the number of non-zero singular values of $A$.
 \end{Oss}
 
-When computing the SVD we may end up having, as per previous remark \ref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
+When computing the SVD we may end up having, as per previous remark \eqref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
 In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix.
+This technique is used later in this work, see \eqref{cor:tt_tsvd_error}, for controlling the approximation error when constructing the Tensor Train decomposition.
 %EOF
