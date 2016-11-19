@@ -121,3 +121,46 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
 \end{Def}
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
+\section{Matrix Singular Values Decomposition}
+Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. SVD is ubiquitous when working with matrices and often used as a way to obtain lower-rank matrix approximations \cite{SVDbestapprox}.
+
+In our work SVD is used on specific tensor unfoldings, in order to build the Tensor Train representation of a tensor. Also, having a tool which in some way extends and generalizes SVD to higher dimensions is the main reason behind the development of TT and the research for other tensor decompositions in general.
+
+Below we report the definition and some basic properties of the SVD.\todo{Maybe to be removed as it's just to push the theorem on next page...}
+
+\begin{Teo}[Singular Values Decomposition] \label{teo:svd}
+  Let $m \geq n$ and $A \in \R^{m \times n}$. Then there exist $U \in \R^{m \times n}$ and $V \in \R^{n \times n}$ orhtogonal matrices and $\Sigma \in \R^{m \times n}$ such that
+  \[
+  \Sigma =
+  \begin{bmatrix}
+    \sigma_1 &&&\\
+    & \sigma_2 &&\\
+    && \ddots &\\
+    &&& \sigma_n
+  \end{bmatrix}
+  ; \qquad \text{where} \; \sigma_i \geq \sigma_j \; \forall i < j
+  \]
+  and that it holds $A = U \Sigma V^t$.
+\end{Teo}
+Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A$.
+\begin{Oss}
+  This is, in a sense, a spectral decomposition. We can see this by looking at $A^t A$:
+  \[
+  A^t A = V^t \Sigma U^t U \Sigma V = V^t
+  \begin{bmatrix}
+    \sigma_1^2 &&&\\
+    & \sigma_2^2 &&\\
+    && \ddots &\\
+    &&& \sigma_n^2
+  \end{bmatrix}
+  V
+  \]
+  Since $A^t A$ is symmetric, its eigenvalues $\lambda_i$ are real. If we take them in descending order, we have that $\sigma_i = \sqrt{\lambda_i}$ for all $i = 1, \ldots, n$.
+\end{Oss}
+\begin{Oss} \label{oss:svdrank}
+  If A is rank-$k$, then all $\sigma_1, \ldots, \sigma_k$ are different from $0$, while $\sigma_{k+1}, \ldots, \sigma_n$ are equal to $0$. This again comes from noticing that $rk(A) = rk(A^t A)$ and the rank of $A^t A$ is equal to the number of its non-zero eigenvalues. From the previous remark we have that this is also the number of non-zero singular values of $A$.
+\end{Oss}
+
+When computing the SVD we may end up having, as per previous remark \ref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
+In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix.
+%EOF
