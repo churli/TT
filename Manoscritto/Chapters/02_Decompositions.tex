@@ -34,7 +34,8 @@ This does not hold for higher order tensors. For instance consider a third-order
 \end{equation*}
 We would like to be able to get a best rank-k approximation of \X by summing k factors of the CP decomposition. However this is not possible and it was shown by an example \cite{kolda2001orthogonal} where the best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
 
-Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor. \todo{Opportuna citazione qui.} %\todo{Qui rivedi bene, perchè forse è meglio metterla solo sulla storia delle successioni che convergono ad altri ranghi} %\todo{Inoltre questa roba l'ha scoperta Bini, quindi vedi un po' il suo articolo}
+Tensors can be even more exciting: we can have a rank-three tensor \X arbitrarily well approximated by a sequence ${\X_k}$ of rank-two tensors \cite{bini1980approximate}. Necessarily, the best approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor.
+More generally, we call a \emph{border tensor} a rank-$s$ tensor that admit a sequence of tensors which rank is at most $r < s$. The least value $r_k$ for which such sequence exist is called \emph{border rank} of the tensor.
 
 \section{Tucker decomposition}
 The idea behind the Tucker decomposition is to decompose the input tensor into a \emph{core} tensor multiplied by a matrix along each mode.
