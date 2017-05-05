@@ -15,7 +15,7 @@ So if we have a $d$-way tensor \A, we can refer to its elements as
 \begin{equation*}
   \A(i_1,\ldots,i_d)
 \end{equation*}
-From this definition it\todo{Ask Laura if this form is correct} follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
+From this definition it follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
 
 \begin{Def}
   The higher-order analogue of matrix rows and columns are called \emph{fibers}. The \emph{i-th fiber} of a tensor \A is the vector of elements given by fixing all the indices but the i-th.
@@ -32,8 +32,6 @@ From this definition it\todo{Ask Laura if this form is correct} follows that vec
   \]
 \end{Def}
 
-\todo{Vale la pena di aggiungere anche il prodotto scalare?}
-
 %% \begin{Def}
 %%   A $d$-way tensor \A is \emph{rank one} if it can be written as the outer product of $d$ vectors:
 %%   \[
@@ -46,7 +44,7 @@ From this definition it\todo{Ask Laura if this form is correct} follows that vec
 %% \end{Def}
 
 \section{Unfoldings}
-An important concept in the tensor world which will be heavily used in the tensor train decomposition is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
+An important concept in the tensor world, which is at the heart of many decompositions, including the tensor train decomposition, is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
@@ -67,7 +65,7 @@ A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the ou
 \end{equation}
 Elementwise this translates to:
 \begin{equation}
-  a_{i_1,i_2,\ldots,i_n} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
+  a_{i_1,i_2,\ldots,i_d} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
 \end{equation}
 This can be seen as a generalization of the fact that
 \begin{equation*}
@@ -77,7 +75,6 @@ is a rank-one matrix.
 
 \section{Matrix Kronecker and Hadamard products}
 \emph{Kronecker} and \emph{Hadamard} matrix products are important basic notations and they can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
-%\paragraph{Kronecker product}
 \begin{Def}[Kronecker product]
   Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
   \begin{equation} \label{def:kronecker}
@@ -92,7 +89,6 @@ is a rank-one matrix.
 \end{Def}
 The result of the Kronecker product is thus an $IK \times JL$ matrix obtained by multiplying each element of $A$ by the entire matrix $B$.
 
-%\paragraph{Hadamard product}
 \begin{Def}[Hadamard product]
   The Hadamard product is the elementwise matrix product. If $A$ and $B$ are both $I \times J$ matrices, their Hadamard product $A \circ B$ is defined by
   \begin{equation} \label{def:hadamard}
@@ -107,14 +103,18 @@ The result of the Kronecker product is thus an $IK \times JL$ matrix obtained by
 \end{Def}
 
 \section{Tensor-by-matrix product}
-We can define a tensor-by-matrix product in several ways. In this work we will always refer to \e{mode-k contraction} or \e{mode-k multiplication}.\todo{Forse si può omettere?}
+We can define a tensor-by-matrix product in several ways. In this work we will always refer to \e{mode-k contraction} or \e{mode-k multiplication}.
 
 \begin{Def} \label{def:tensor-matrix-product}
   Given a $d$-way tensor $\A \in I_1 \times \cdots \times I_d$ with elements $\A(i_1,\ldots,i_d)$ and a matrix $U \in I_\alpha \times I_k$ with elements $U(\alpha,i_k)$, we define the \e{mode-k multiplication}
   \begin{equation*}
     \A \times_k U
   \end{equation*}
-  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place.}, yielding a tensor $\B \in I_1 \times \cdots \times I_\alpha \times \cdots \times I_d$ as follows
+  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place.}, yielding a tensor
+  \begin{equation*}
+    \B \in I_1 \times \cdots \times I_{k-1} \times I_\alpha \times I_{k+1} \times \cdots \times I_d
+  \end{equation*}
+  as follows
   \begin{equation*}
     \A \times_k U = B(i_1,\ldots,\alpha,\ldots,i_d) = \sum_{i_k = 1}^{n_k} A(i_1,\ldots,i_k,\ldots,i_d) U(\alpha,i_k)
   \end{equation*}
@@ -122,11 +122,11 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
 \section{Matrix Singular Values Decomposition}
-Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. SVD is ubiquitous when working with matrices and often used as a way to obtain lower-rank matrix approximations \cite{SVDbestapprox}.
+Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. The SVD is ubiquitous when working with matrices and is often used as a way to obtain lower-rank matrix approximations. Specifically it is proven that, given any target rank $k$, the SVD truncated\footnote{truncated SVD is explained later in this paragraph} at rank $k$ yields the best rank-$k$ approximation of the initial matrix \cite{SVDbestapprox}.
 
 In our work SVD is used on specific tensor unfoldings, in order to build the Tensor Train representation of a tensor. Also, having a tool which in some way extends and generalizes SVD to higher dimensions is the main reason behind the development of TT and the research for other tensor decompositions in general.
 
-Below we report the definition and some basic properties of the SVD.\todo{Maybe to be removed as it's just to push the theorem on next page...}
+Below we report the definition and some basic properties of the SVD.
 
 \begin{Teo}[Singular Values Decomposition] \label{teo:svd}
   Let $m \geq n$ and $A \in \R^{m \times n}$. Then there exist $U \in \R^{m \times n}$ and $V \in \R^{n \times n}$ orhtogonal matrices and $\Sigma \in \R^{m \times n}$ such that
@@ -161,7 +161,11 @@ Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A
   If A is rank-$k$, then all $\sigma_1, \ldots, \sigma_k$ are different from $0$, while $\sigma_{k+1}, \ldots, \sigma_n$ are equal to $0$. This again comes from noticing that $rk(A) = rk(A^t A)$ and the rank of $A^t A$ is equal to the number of its non-zero eigenvalues. From the previous remark we have that this is also the number of non-zero singular values of $A$.
 \end{Oss}
 
+\paragraph{Truncated SVD}
 When computing the SVD we may end up having, as per previous remark \eqref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
-In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix.
+In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix and as already mentioned, this is the best rank-$k$ approximation of the matrix where $k$ is the rank of the truncated SVD.
+
+If we instead have a specific target rank $k$ and we need to get a $k$-rank approximation of the matrix, we can simply keep the first $k$ singular values and force all the remaining ones to $0$, obtaining again the best rank-$k$ approximation possible.
+
 This technique is used later in this work, see \eqref{cor:tt_tsvd_error}, for controlling the approximation error when constructing the Tensor Train decomposition.
 %EOF
