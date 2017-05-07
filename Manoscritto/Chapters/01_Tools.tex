@@ -48,6 +48,8 @@ An important concept in the tensor world, which is at the heart of many decompos
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
+It is important to note that the Frobenius norm is preserved by the unfolding process, i.e. the Frobenius norm of any unfolding is the same of the Frobenius norm of the tensor.
+
 In this work we will leverage the following unfolding:
 
 \begin{Def}
@@ -57,6 +59,8 @@ In this work we will leverage the following unfolding:
   \end{equation}
 where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ indices enumerate the columns of $A_k$.
 \end{Def}
+
+We can note that if the tensor $\A$ is $n_1 \times \cdots \times n_d$, then the $k$-th unfolding $A_k$ is a $(n_1 \cdots n_k) \times (n_{k+1} \cdots n_d) $ matrix.
 
 \section{Rank-one tensor}
 A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
@@ -122,14 +126,14 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
 \section{Matrix Singular Values Decomposition}
-Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. The SVD is ubiquitous when working with matrices and is often used as a way to obtain lower-rank matrix approximations. Specifically it is proven that, given any target rank $k$, the SVD truncated\footnote{truncated SVD is explained later in this paragraph} at rank $k$ yields the best rank-$k$ approximation of the initial matrix \cite{SVDbestapprox}.
+Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. The SVD is ubiquitous when working with matrices and is often used as a way to obtain lower-rank matrix approximations. Specifically the Eckart-Young theorem proves that, given any target rank $k$, the SVD truncated\footnote{truncated SVD is explained later in this paragraph} at rank $k$ yields the best rank-$k$ approximation of the initial matrix \cite{SVDbestapprox}.
 
 In our work SVD is used on specific tensor unfoldings, in order to build the Tensor Train representation of a tensor. Also, having a tool which in some way extends and generalizes SVD to higher dimensions is the main reason behind the development of TT and the research for other tensor decompositions in general.
 
 Below we report the definition and some basic properties of the SVD.
 
 \begin{Teo}[Singular Values Decomposition] \label{teo:svd}
-  Let $m \geq n$ and $A \in \R^{m \times n}$. Then there exist $U \in \R^{m \times n}$ and $V \in \R^{n \times n}$ orhtogonal matrices and $\Sigma \in \R^{m \times n}$ such that
+  Let $m \geq n$ and $A \in \R^{m \times n}$. Then there exist $U \in \R^{m \times m}$ and $V \in \R^{n \times n}$ orhtogonal\footnote{$U$ is orthogonal if $U^TU = UU^T = I$} matrices and $\Sigma \in \R^{m \times n}$ such that
   \[
   \Sigma =
   \begin{bmatrix}

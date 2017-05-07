@@ -19,7 +19,7 @@ The question we want to answer in this chapter is: \e{Can we exploit this advant
 \paragraph{Tensor train cross-approximation}
 Here we are going to describe a low-rank tensor approximation techinique using a subset of few, well-chosen, elements.
 The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
-The outcoming algorithm is called \e{TT-cross} and it is shown \todo{Dimostrare!} that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
+The outcoming algorithm is called \e{TT-cross} and it is shown that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
 
 \section{Skeleton decomposition for matrices}
 First of all, we need to introduce the skeleton decomposition for the exact matrix case. We are not going to give any proof of its properties here and the interested reader can find them on \cite{goreinov1997theory,gantmacher1959matrix}.
@@ -43,7 +43,7 @@ From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly i
 We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g.\ when its $\eps$-rank is $r$.
 How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
-An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \todo{Add ref!}. There are cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose. The \e{maxvol} \todo{References on maxvol to be added here!} algorithm is what is currently used in the implementation of the TT-cross algorithm.
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \cite{goreinov2001maximal}. We can also leverage cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose \cite{tyrtyshnikov2000incomplete,bebendorf2000approximation}. The \e{maxvol} algorithm \cite{goreinov2010find} is what is currently used in the implementation of the TT-cross algorithm.
 
 The high-level strategy that is used with matrices is the following.
 
@@ -88,7 +88,7 @@ and similarly to the TT-SVD case, we can set the first tensor carriage as
   G_1 = C\hat{A}_1^{-1}
 \end{equation*}
 
-We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus \todo{Add proof}. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \todo{add refs here, can be found at page 9 of tt-cross paper}.
+We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \cite{tyrtyshnikov2000incomplete,goreinov2010find}.
 
 The next step is to iterate further on the $R$ term and represent it in the TT format. $R$ consists of $r_1$ rows of $A_1$ and it can be reshaped into a subtensor $\tensor{R}$ of $\A$:
 \begin{equation*}
@@ -96,7 +96,7 @@ The next step is to iterate further on the $R$ term and represent it in the TT f
 \end{equation*}
 We can now concatenate indices $\alpha_1$ and $i_2$ in one long index $\alpha_1i_2$: in this way $\tensor{R}$ can be seen as a tensor of dimensionality $d-1$ and size $r_1n_2 \times n_2 \times \cdots \times n_d$.
 
-Similarly to as shown in proof of \ref{teo:ttsvd}, if the unfoldings $A_k$ have ranks $r_k$, then the corresponding compression ranks for $\tensor{R}$ cannot be larger and, in case the TT representation of $\A$ is exact, these compression ranks must be equal to $r_k$.\todo{Clarify and prove this.}
+Similarly to as shown in proof of \ref{teo:ttsvd}, if the unfoldings $A_k$ have ranks $r_k$, then the corresponding compression ranks for $\tensor{R}$ cannot be larger and, in case the TT representation of $\A$ is exact, these compression ranks must be equal to $r_k$.
 
 In order to obtain the second carriage, we consider again the first unfolding of the new, reshaped, subtensor \tensor{R}:
 \begin{equation*}
@@ -108,7 +108,7 @@ Now suppose that we know a set
 \begin{equation*}
   \J_2 = [j_l^{(\alpha_2)}], \quad \alpha_2 = 1,\ldots,r_2, \quad l = 2,\ldots,d
 \end{equation*}
-of $(d-2)$-tuples, indicating the columns containing a submatrix of quasi-maximal volume in $R_2$. In order to obtain the skeleton decomposition of $R_2$, we use these linearly independent \todo{Is it proven that columns containing a quasi-maximal submatrix are linearly independent?} columns to make matrix $C_2$ of size $r_1 n_2 \times r_2$. Computing its entries
+of $(d-2)$-tuples, indicating the columns containing a submatrix of quasi-maximal volume in $R_2$. In order to obtain the skeleton decomposition of $R_2$, we use these linearly independent columns to make matrix $C_2$ of size $r_1 n_2 \times r_2$. Computing its entries
 \begin{equation*}
   C_2(\alpha_1 i_2; \alpha_2) = R(\alpha_1 i_2,j_3^{(\alpha_2)},\ldots,,j_d^{(\alpha_2)})
 \end{equation*}
@@ -118,15 +118,15 @@ that, in terms of the initial array are
 \end{equation*}
 where the indices $i_1^{(\alpha_1)}$ belong to set $\I_1$ computed at the previous step.
 
-As before, we find the rows containing a quasi-maximal volume submatrix \todo{Clarify the definition of a quasi-maximal volume submatrix of a matrix!} in $C_2$ and we construct the skeleton decomposition by using $C_2$ and some row matrix with $r_2$ rows. Again this row matrix gives rise to a new subtensor of size $r_2n_3 \times n_4 \times n_d$, which plays the same role and will be handled in the same way as $\tensor{R}$.
+As before, we find the rows containing a quasi-maximal volume submatrix in $C_2$ and we construct the skeleton decomposition by using $C_2$ and some row matrix with $r_2$ rows. Again this row matrix gives rise to a new subtensor of size $r_2n_3 \times n_4 \times n_d$, which plays the same role and will be handled in the same way as $\tensor{R}$.
 
-The row indices that determine the quasi-maximal volume submatrix in $C_2$ are chosen among the values of the long indices $\alpha_1i_2$ where $\alpha_1$ corresponds to \emph{one-dimensional} indices in $\I_1$. These can thus be considered as long indices of the form $i_1^{(\alpha_2)}i_2^{(\alpha_2)}$ and can be generalized straightforwardly to all further unfoldings.
+The row indices that define the quasi-maximal volume submatrix in $C_2$ are chosen among the values of the long indices $\alpha_1i_2$ where $\alpha_1$ corresponds to \emph{one-dimensional} indices in $\I_1$. These can thus be considered as long indices of the form $i_1^{(\alpha_2)}i_2^{(\alpha_2)}$ and can be generalized straightforwardly to all further unfoldings.
 
 At the $k$-th step we have a subtensor $\tensor{R}$ of dimensionality $d-k+1$ and size $r_{k-1}n_k \times n_{k+1} \times \ldots \times n_d$. Its definition as subset of entries of the initial tensor $\A$ is the following:
 \begin{equation*}
   R(\alpha_{k-1}n_k,n_{k+1},\ldots,n_d) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,i_{k+1},\ldots,i_d)
 \end{equation*}
-The first $k-1$ indices, which we call \emph{left indices}, are taken as $(k-1)$-tuples from the already computed entries of the \emph{left index set} \todo{(?) sicuramente le entries degli steps precedenti sono conosciute}
+The first $k-1$ indices, which we call \emph{left indices}, are taken as $(k-1)$-tuples from the already computed entries of the \emph{left index set}
 \begin{equation*}
   \I_{k-1} = [i_s^{(\alpha_{k-1})}],\quad \alpha_{k-1} = 1,\ldots,r_{k-1},\quad s = 1,\ldots,k-1
 \end{equation*}
@@ -146,6 +146,7 @@ Now the next \emph{left index set} is defined by the row positions of the quasi-
 
 The new tensor carriage $\G_k$ is then obtained by reshaping the result of $C_k \hat{R}^{-1}$
 
+\paragraph{Recap}
 Let's now recap the entire procedure. If we know the index sets $\J_k$
 \begin{equation}
   \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d
@@ -219,11 +220,39 @@ With the above we have proven the following theorem:
 
 It is important to note that this theorem is formally valid only in the exact low-rank case. The choice of using quasi-maximal volume submatrices was not necessay in the above proof and the only important factor was having all the intersection submatrices non-singular.
 
-Moving to a numerically viable algorithm requires a careful selection of \emph{sufficiently good} submatrices among those that are non-singular.\todo{Here report a hint about approximate skeleton and errors involved}
+Moving to a numerically viable algorithm requires a careful selection of \emph{sufficiently good} submatrices among those that are non-singular.
+
+Also, a practical algorithm would involve skeleton approximations of a given rank, rather than exact decompositions. We have to note that there is currently no formal result giving a bound on the TT-approximation error based on approximation errors on the unfoldings given by performing approximate skeleton decompositions. However, there is experimental evidence \cite{tt-cross} suggesting this approach has good stability properties.
 
 \section{A TT-cross algorithm}
-TODO!\todo{Write down this algorithm, please...}
+\todo{Write something here from page 12, tt-cross paper \cite{tt-cross}}
+\begin{lstlisting}[float, caption=Low-rank approximation algorithm, label=algo:cross-approx, title=Low-rank approximation algorithm]
+  # $A$ is a $n \times m$ matrix
+  # $r$ is the target rank upper bound
+  # $\delta$ is the stopping accuracy parameter
+  lowRankApprox($A$, $r$, $\delta$)
+    # Initialization
+    $\J = 1, \ldots, r$, $A_0 = 0_{n \times m}$, $k = 0$
+    do
+      # Row cicle
+      $R = A(:,\J)$
+      # Compute QR
+      $R = QT$, with $Q$ a $n \times r$ matrix
+      # Now get the column indices of the quasi-maximal volume submatrix
+      $\I$ = maxvol($Q$)
+      # Column cycle
+      $C = A(\I,:)$
+      $C = C^T$, so now $C$ is $m \times r$
+      # Compute QR
+      $C = QT$, with $Q$ a $m \times r$ matrix
+      # Now get the row indices of the quasi-maximal volume submatrix
+      $\J$ = maxvol($Q$)
+      # Compute the new approximation
+      $\hat{Q} = Q(\J,:)$
+      $A_{k+1} = A(:,\J)(Q\hat{Q}^{-1})^T$
+      $k = k+1$
+    while $||A_k - A_{k-1}||_F > \delta ||A_k||_F$
+    return $A(\I,:)$, $\J$
+\end{lstlisting}
 
-
-%%EOF\todo{Continua... a pagina 12 dell'articolo}
 %EOF
