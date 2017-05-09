@@ -12,8 +12,10 @@ def log(s, elapsed=None, previous=None):
     #print line
     if previous:
         print secondsToStr(curtime), '-', s, '-', "Timediff from event at ", secondsToStr(previous), " = ", secondsToStr(curtime-previous)
+        return curtime, secondsToStr(curtime-previous)
     elif elapsed:
         print secondsToStr(curtime), '-', s, '-', "Elapsed time", " = ", secondsToStr(curtime-elapsed)
+        return curtime, secondsToStr(curtime-elapsed)
     else:
         print secondsToStr(curtime), '-', s
     #print line

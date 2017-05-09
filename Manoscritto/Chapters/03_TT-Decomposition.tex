@@ -36,8 +36,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
   Then there exists a TT-decomposition with TT-ranks $r^{(tt)}_k$ such that $r^{(tt)}_k \leq r_k = rk(A_k) \; \forall k$.
 
   \begin{proof}
-    Let \todo{Dimostrazione da rivedere (vedi \cite{tt-cross}).}
-    $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore 
+    Let $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore 
     % the SVD of $A_1$
     % \begin{equation*}
     %   A_1 = U \Sigma S^T = UV^T
@@ -68,7 +67,7 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     This yields the next core tensor $G_2(\alpha_1,i_2,\alpha_2)$.
     We can now continue similarly by considering $V'$ as a $(d-2)$-dimensional tensor and so on, yielding all the cores up to $G_d(\alpha_{d-1},i_d)$ and therefore the entire TT-decomposition.
 
-    We now have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r^{(tt)}_k \leq r_k$, therefore \A can be represented as\todo{Skeleton decomp.?}
+    We now have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r^{(tt)}_k \leq r_k$, therefore \A can be represented as
     \begin{equation*}
       A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)
     \end{equation*}
@@ -152,8 +151,7 @@ Since the SVD is used, we can leverage its properties: at each step, we can appr
 
 Two important corollaries follow from this theorem:
 \begin{Cor}
-  If \A admits a canonical approximation with $R$ terms %\todo{Che minchia è, una CP con R addendi?}
-  and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
+  If \A admits a canonical approximation with $R$ terms and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
 \end{Cor}
 \begin{Cor}
   Given a tensor \A and a set of rank bounds $r_k$, the best approximation\footnote{In the Frobenius norm} $\A^{best}$ of \A with TT-ranks bounded by $r_k$ always exists and the approximation $\B$ computed by the TT-SVD agorithm is \e{quasi-optimal}, i.e.
@@ -168,8 +166,7 @@ Two important corollaries follow from this theorem:
     \end{equation*}
     where $TT(r_k)$ is the set of all the tensor trains with TT-ranks bounded by $r_k$. By definition of infimum there exists a sequence of tensor trains $\B^{(s)} : s \in \NN$ such that $lim_{s\to\infty} ||\A - \B||_F = \eps$.
 
-    The elements of $\B^{(s)}$ are bounded and %\todo{Perchè averli bounded ci serve? BOLZANO-WEIERSTRASS!!!}
-    there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
+    The elements of $\B^{(s)}$ are bounded and there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
     \begin{equation*}
       rk(\B^{(s_t)}_k) \le r_k \quad \forall k
     \end{equation*}
@@ -361,7 +358,7 @@ Looking at the index forms of the above equations, we can see that $Q_k$ and $R_
 
 %\paragraph{Putting all the pieces together}
 
-\todo{Aggiungere qualcosa sulle altre modes? (cfr. pag.2304 Oseledets)}
+%\todo{Aggiungere qualcosa sulle altre modes? (cfr. pag.2304 Oseledets)}
 
 \begin{lstlisting}[float, caption=TT-rounding algorithm, label=algo:tt-round, title=TT-rounding algorithm]
   ttRound($A$,$\eps$):
