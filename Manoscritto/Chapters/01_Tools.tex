@@ -9,7 +9,7 @@ A \emph{tensor} is a multidimensional array. Following this simple definition, t
 The idea of tensor generalizes those of \emph{matrix} and \emph{vector}, making it possible to naturally represent data having a multi-way origin.
 
 \begin{Def}
-  The \emph{order}, or number of \emph{ways} or \emph{modes}, of a tensor is its number of dimensions, i.e.\ its number of indices.
+  The \emph{order}, or number of \emph{ways} or \emph{modes}, of a tensor is its number of dimensions, i.e., its number of indices.
 \end{Def}
 So if we have a $d$-way tensor \A, we can refer to its elements as
 \begin{equation*}
@@ -27,9 +27,9 @@ From this definition it follows that vectors are tensors of order \emph{one} and
 
 \begin{Def}
   We can define the \emph{norm} of a tensor as a general form of the matrix Frobenius norm:
-  \[
-  \|\A\|_F = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_d = 1}^{I_d}\A^2(i_1 i_2 \cdots i_d)}
-  \]
+  \begin{equation*}
+  \|\A\|_F = \sqrt{\sum_{i_1 = 1}^{I_1}\sum_{i_2 = 1}^{I_2}\cdots\sum_{i_d = 1}^{I_d}\A^2(i_1 i_2 \cdots i_d)}\, .
+  \end{equation*}
 \end{Def}
 
 %% \begin{Def}
@@ -48,7 +48,7 @@ An important concept in the tensor world, which is at the heart of many decompos
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
-It is important to note that the Frobenius norm is preserved by the unfolding process, i.e. the Frobenius norm of any unfolding is the same of the Frobenius norm of the tensor.
+It is important to note that the Frobenius norm is preserved by the unfolding process, i.e., the Frobenius norm of any unfolding is the same of the Frobenius norm of the tensor.
 
 In this work we will leverage the following unfolding:
 
@@ -60,17 +60,17 @@ In this work we will leverage the following unfolding:
 where the first $k$ indices enumerate the rows of $A_k$, while the last $d - k$ indices enumerate the columns of $A_k$.
 \end{Def}
 
-We can note that if the tensor $\A$ is $n_1 \times \cdots \times n_d$, then the $k$-th unfolding $A_k$ is a $(n_1 \cdots n_k) \times (n_{k+1} \cdots n_d) $ matrix.
+We can note that if the tensor $\A$ is $n_1 \times \cdots \times n_d$, then the $k$-th unfolding $A_k$ is an $(n_1 \cdots n_k) \times (n_{k+1} \cdots n_d) $ matrix.
 
 \section{Rank-one tensor}
 A $d$-way tensor \A is said to be \emph{rank-one} if it can be written as the outer product of \d vectors:
-\begin{equation}
-  \A = v^{(1)} \circ v^{(2)} \circ \cdots \circ v^{(d)}
-\end{equation}
+\begin{equation*}
+  \A = v^{(1)} \circ v^{(2)} \circ \cdots \circ v^{(d)}\, .
+\end{equation*}
 Elementwise this translates to:
-\begin{equation}
-  a_{i_1,i_2,\ldots,i_d} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}
-\end{equation}
+\begin{equation*}
+  a_{i_1,i_2,\ldots,i_d} = v_{i_1}^{(1)} v_{i_2}^{(2)} \cdots v_{i_d}^{(d)}\, .
+\end{equation*}
 This can be seen as a generalization of the fact that
 \begin{equation*}
   M = u v^t
@@ -80,7 +80,7 @@ is a rank-one matrix.
 \section{Matrix Kronecker and Hadamard products}
 \emph{Kronecker} and \emph{Hadamard} matrix products are important basic notations and they can be straighforwardly generalized to tensors. We now briefly define them as reference for the following chapters.
 \begin{Def}[Kronecker product]
-  Let $A$ an $I \times J$ and $B$ a $K \times L$ matrices, their Kronecker product $A \otimes B$ is defined by
+  Let $A$ and $B$ be an $I \times J$ and a $K \times L$ matrix respectively. Their Kronecker product $A \otimes B$ is defined by
   \begin{equation} \label{def:kronecker}
     A \otimes B =
     \begin{bmatrix}
@@ -88,7 +88,7 @@ is a rank-one matrix.
       a_{21}B & a_{22}B & \cdots & a_{2J}B \\
       \vdots & \vdots & \ddots & \cdots \\
       a_{I1}B & a_{I2}B & \cdots & a_{IJ}B
-    \end{bmatrix}
+    \end{bmatrix}\, .
   \end{equation}
 \end{Def}
 The result of the Kronecker product is thus an $IK \times JL$ matrix obtained by multiplying each element of $A$ by the entire matrix $B$.
@@ -102,7 +102,7 @@ The result of the Kronecker product is thus an $IK \times JL$ matrix obtained by
       a_{21}b_{21} & a_{22}b_{22} & \cdots & a_{2J}b_{2J} \\
       \vdots & \vdots & \ddots & \cdots \\
       a_{I1}b_{I1} & a_{I2}b_{I2} & \cdots & a_{IJ}b_{IJ}
-    \end{bmatrix}
+    \end{bmatrix}\, .
   \end{equation}
 \end{Def}
 
@@ -120,7 +120,7 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
   \end{equation*}
   as follows
   \begin{equation*}
-    \A \times_k U = B(i_1,\ldots,\alpha,\ldots,i_d) = \sum_{i_k = 1}^{n_k} A(i_1,\ldots,i_k,\ldots,i_d) U(\alpha,i_k)
+    \A \times_k U = B(i_1,\ldots,\alpha,\ldots,i_d) = \sum_{i_k = 1}^{n_k} A(i_1,\ldots,i_k,\ldots,i_d) U(\alpha,i_k)\, .
   \end{equation*}
 \end{Def}
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
@@ -133,7 +133,7 @@ In our work SVD is used on specific tensor unfoldings, in order to build the Ten
 Below we report the definition and some basic properties of the SVD.
 
 \begin{Teo}[Singular Values Decomposition] \label{teo:svd}
-  Let $m \geq n$ and $A \in \R^{m \times n}$. Then there exist $U \in \R^{m \times m}$ and $V \in \R^{n \times n}$ orhtogonal\footnote{$U$ is orthogonal if $U^TU = UU^T = I$} matrices and $\Sigma \in \R^{m \times n}$ such that
+  Let $m \geq n$ and $A \in \RR^{m \times n}$. Then there exist $U \in \RR^{m \times m}$ and $V \in \RR^{n \times n}$ orthogonal\footnote{$U$ is orthogonal if $U^TU = UU^T = I$} matrices and $\Sigma \in \RR^{m \times n}$ such that
   \[
   \Sigma =
   \begin{bmatrix}
@@ -166,8 +166,8 @@ Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A
 \end{Oss}
 
 \paragraph{Truncated SVD}
-When computing the SVD we may end up having, as per previous remark \eqref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
-In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix and as already mentioned, this is the best rank-$k$ approximation of the matrix where $k$ is the rank of the truncated SVD.
+When computing the SVD we may end up having, in view of Remark \ref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
+In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix and, as already mentioned, this is the best rank-$k$ approximation of the matrix where $k$ is the rank of the truncated SVD.
 
 If we instead have a specific target rank $k$ and we need to get a $k$-rank approximation of the matrix, we can simply keep the first $k$ singular values and force all the remaining ones to $0$, obtaining again the best rank-$k$ approximation possible.
 

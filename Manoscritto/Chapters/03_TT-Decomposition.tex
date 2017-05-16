@@ -11,14 +11,14 @@ We define the \emph{TT-decomposition} of a given tensor \A as follows:
 \begin{Def}
   Let \A a $d$-dimensional tensor. The \emph{TT-decomposition} of \A will be given by a set of third order tensors $\G_1,\G_2,\dots,\G_d$ such as
   \begin{equation} \label{def:TT}
-    \A(i_1,i_2,\dots,i_d) = G_1(i_1)G_2(i_2)\cdots G_d(i_d)
+    \A(i_1,i_2,\dots,i_d) = G_1(i_1)G_2(i_2)\cdots G_d(i_d)\, .
   \end{equation}
   Tensor $\G_1,\G_2,\dots,\G_d$ are called \emph{carriages} or \emph{cores} of the decomposition.
 \end{Def}
 
 Since, for each $k$, $\G_k$ is a third order tensor, each $G_k(i_k)$ is a matrix slice of it. Defining each $G_k(i_k)$ as a $r_{k-1} \times r_k$ matrix and given that our original tensor \A is $n_1 \times \cdots \times n_d$, we have that each carriage $\G_k$ can be treated as a $r_{k-1} \times n_k \times r_k$ tensor.
 
-As we can see from \ref{def:TT}, the result is a $r_0 \times r_d$ matrix. Since we want to have a scalar result (i.e.\ the tensor element we are considering), we have to set $r_0 = r_d = 1$ as boundary condition.
+As we can see from \eqref{def:TT}, the result is a $r_0 \times r_d$ matrix. Since we want to have a scalar result (i.e.\ the tensor element we are considering), we have to set $r_0 = r_d = 1$ as boundary condition.
 
 The ranks $r_k$ are called \emph{compression ranks} or \emph{TT-ranks}. We will see how compression ranks can be computed and what their role is in aproximate representations.
 
@@ -28,25 +28,25 @@ We can also write the TT-decomposition of \A in elementwise form as:
 \end{equation}
 
 \section{Theoretical results}
-We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $\G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \ref{def:TT}.
+We want to see now some fundamental properties of the TT-decomposition. Let \A a $d$-dimensional $n_1 \times \cdots \times n_d$ tensor. It is said to be in the TT format with cores $\G_k$ of size $r_{k-1} \times n_k \times r_k$ for $k=1,\ldots ,d$, with $r_0 = r_d = 0$, if its elements are defined by \eqref{def:TT}.
 
 \begin{Teo} \label{teo:ttsvd}
-  Let \A a $d$-dimensional tensor and let, for each $k$, $A_k$ its standard $k$-th unfolding matrix defined in \ref{def:unfolding}.
+  Let \A be a $d$-dimensional tensor and let, for each $k$, $A_k$ its standard $k$-th unfolding matrix defined in \ref{def:unfolding}.
 
   Then there exists a TT-decomposition with TT-ranks $r^{(tt)}_k$ such that $r^{(tt)}_k \leq r_k = rk(A_k) \; \forall k$.
 
   \begin{proof}
-    Let $A_1$ the first unfolding matrix of \A. By the theorem's hypoteses $rk(A_1)~=~r_1$, therefore 
+    Let $A_1$ the first unfolding matrix of \A. By the theorem hypoteses $rk(A_1)~=~r_1$, therefore 
     % the SVD of $A_1$
     % \begin{equation*}
     %   A_1 = U \Sigma S^T = UV^T
     % \end{equation*}
     % where $V = \Sigma S$, will have $r_1$ singular values, 
-    $A_1$ admits a dyadic representation $A_1 = UV^T$, with $U$ being a $n_1 \times r_1$ matrix and $V$ a $(n_2 \cdots n_d) \times r_1$\footnote{That such a representation exist can be easily proven by the use of SVD: $A_1 = U \Sigma S^T = UV^T$ where $V = S \Sigma^T$. Both $U$ and $V$ have $r_1 = rk(A_1)$ columns since $\Sigma$ contains exactly $r_1$ non-zero singular values},
+    $A_1$ admits a dyadic representation $A_1 = UV^T$, with $U$ being a $n_1 \times r_1$ matrix and $V$ a $(n_2 \cdots n_d) \times r_1$\footnote{That such a representation exists can be easily proven by the use of SVD: $A_1 = U \Sigma S^T = UV^T$ where $V = S \Sigma^T$. Both $U$ and $V$ have $r_1 = rk(A_1)$ columns since $\Sigma$ contains exactly $r_1$ non-zero singular values.},
     %
     which is expressed elementwise as
     \begin{equation*}
-      A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V(\alpha_1;i_2,\ldots,i_d)
+      A_1(i_1;i_2,\ldots,i_d) = \sum_{\alpha_1 = 1}^{r_1} U(i_1,\alpha_1) V(\alpha_1;i_2,\ldots,i_d)\, .
     \end{equation*}
     We note that the matrix $U$ can also be seen as a $1 \times n_1 \times r_1$ tensor, which gives us the first core $G_1$ of the TT decomposition we are building.
 
@@ -56,20 +56,20 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     \end{equation}
     and elementwise as
     \begin{equation*}
-      V(i_2,\ldots,i_d;\alpha_1) = \sum_{i_1 = 1}^{n_1} A_1^T(i_2,\ldots,i_d;i_1) W(i_1,\alpha_1)
+      V(i_2,\ldots,i_d;\alpha_1) = \sum_{i_1 = 1}^{n_1} A_1^T(i_2,\ldots,i_d;i_1) W(i_1,\alpha_1)\, .
     \end{equation*}
     We can now consider $V$ as a tensor indexed by $(\alpha_1 i_2)$ as one long index and by all the remaining $i_3, \ldots, i_d$, obtaining a $(d-1)$-dimensional tensor \V.
 
     The tensor \V has its own unfoldings, which will be denoted by $V_2,\ldots,V_d$. Assuming that $rk(V_k) \leq r_k$ holds, then we can apply the same procedure as above, so
     \begin{equation*}
-      V(\alpha_1 i_2;i_3,\ldots,i_d) = \sum_{\alpha_2=1}^{r_2} G_2(\alpha_1 i_2;\alpha_2) V'(\alpha_2;i_3,\ldots,i_d)
+      V(\alpha_1 i_2;i_3,\ldots,i_d) = \sum_{\alpha_2=1}^{r_2} G_2(\alpha_1 i_2;\alpha_2) V'(\alpha_2;i_3,\ldots,i_d)\, .
     \end{equation*}
     This yields the next core tensor $G_2(\alpha_1,i_2,\alpha_2)$.
     We can now continue similarly by considering $V'$ as a $(d-2)$-dimensional tensor and so on, yielding all the cores up to $G_d(\alpha_{d-1},i_d)$ and therefore the entire TT-decomposition.
 
     We now have to prove the assumption $rk(V_k) \leq r_k$. Indeed, the $k$-th TT-rank of \A is equal to $r^{(tt)}_k \leq r_k$, therefore \A can be represented as
     \begin{equation*}
-      A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)
+      A(i_1,\ldots,i_d) = \sum_{\beta=1}^{r_k} F(i_1,\ldots,i_k,\beta) G(\beta,i_{k+1},\ldots,i_d)\, .
     \end{equation*}
     Using this, together with \eqref{eq:Vdecomp}, we obtain
     \begin{align*}
@@ -79,110 +79,15 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     \end{align*}
     where
     \begin{equation*}
-      H(\alpha_1 i_2,\ldots,i_k,\beta) = \sum_{i_1 = 1}^{n_1} W(i_1, \alpha_1) F(i_1,\ldots,i_k,\beta)
+      H(\alpha_1 i_2,\ldots,i_k,\beta) = \sum_{i_1 = 1}^{n_1} W(i_1, \alpha_1) F(i_1,\ldots,i_k,\beta)\, .
     \end{equation*}
     This separates row and column indices of $V_k$, yielding
     \begin{equation*}
-      rank(V_k) \leq r_k
+      rank(V_k) \leq r_k\, .
     \end{equation*}
   \end{proof}
   
 \end{Teo}
-
-The above proof of theorem \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD} (\ref{algo:tt-svd}).
-
-Since the SVD is used, we can leverage its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure, giving us a bound on the error of the TT approximation which depends on the error introduced by each SVD approximation on the unfoldings.
-
-\begin{Teo} \label{teo:ttsvd_approx}
-  Suppose that the unfoldings $A_k$ of the tensor \A are rank-$r_k$ only approximately, i.e.\ they satisfy
-
-  \begin{equation} \label{teo:ttsvd_approx:ip:1}
-  A_k = R_k + E_k, \quad rk(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1
-  \end{equation}
-
-  Then the TT-SVD yields a tensor \B in the TT format with TT-ranks $r_k$ and such that
-
-  \begin{equation}
-    ||\A - \B ||_F \le \sqrt{\sum_{k=1}^{d-1} \epsilon_k^2}
-  \end{equation}
-  
-  \begin{proof}
-    This proof proceeds by induction. For $d=2$ it follows directly from the properties of the SVD. Then we consider an arbitrary $d > 2$ and we assume that the property holds up to $d - 1$.  Now the first unfolding $A_1$ can be decomposed as
-    \begin{equation*}
-    A_1 = U_1 \Sigma V_1^T + E_1 = U_1 B_1 + E_1
-    \end{equation*}
-    where $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\B_1$ having elements $B_1(\alpha_1i_2,i_3,\ldots,i_d)$. This tensor $\B_1$ will be further decomposed in the TT-SVD algorithm: $B_1$ will be approximated by matrix $\hat{B}_1$.
-
-    The global TT-SVD approximation error can be decomposed as
-    \begin{equation*}
-      \begin{split}
-        ||\A-\B||_F^2 &= ||A_1 - U_1\hat{B}_1||_F^2 = ||A_1 - U_1(\hat{B}_1 + B_1 - B_1)||_F^2 \\
-         &= ||A_1 - U_1 B_1||_F^2 + ||U_1(B_1 - \hat{B}_1)||_F^2
-      \end{split}
-    \end{equation*}
-    and since, from the SVD definition, $U_1$ is orthonormal columns, we have
-    \begin{equation} \label{teo:ttsvd_approx:proof:bound}
-      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2
-    \end{equation}
-
-    The matrix $B_1$ is obtained from $A_1$ as
-    \begin{equation*}
-    B_1 = U_1^T A_1
-    \end{equation*}
-
-    If we now consider $B_{1,k}$ the $k$-th unfolding of the $(d-1)$-dimensional tensor $\B_1$, from the orthonormality of $U_1$, for each $k=2,\ldots,d-1$ we have\footnote{It's useful to recall here that the Frobenius norm is invariant under unfolding.}
-    \begin{equation*}
-      \begin{split}
-        ||B_{1,k} - R_k||_F^2 &= ||U_1^T A_1 - R_k||_F^2 = ||A_k - R_k||_F^2\\
-         &= \eps_k^2
-      \end{split}
-    \end{equation*}
-    so the $B_{1,k}$ unfoldings satisfy \ref{teo:ttsvd_approx:ip:1} and by induction we have
-    \begin{equation*}
-      ||B_1 - \hat{B}_1 ||_F^2 \le \sum_{k=2}^{d-1} \eps_k^2
-    \end{equation*}
-
-    If we put this together with \ref{teo:ttsvd_approx:proof:bound} we have
-    \begin{equation*}
-      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2 = \sum_{k=1}^{d-1} \eps_k^2
-    \end{equation*}
-  \end{proof}
-\end{Teo}
-
-Two important corollaries follow from this theorem:
-\begin{Cor}
-  If \A admits a canonical approximation with $R$ terms and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
-\end{Cor}
-\begin{Cor}
-  Given a tensor \A and a set of rank bounds $r_k$, the best approximation\footnote{In the Frobenius norm} $\A^{best}$ of \A with TT-ranks bounded by $r_k$ always exists and the approximation $\B$ computed by the TT-SVD agorithm is \e{quasi-optimal}, i.e.
-  \begin{equation*}
-    ||\A - \B||_F \le \sqrt{d-1} ||\A - \A^{best}||_F
-  \end{equation*}
-
-  \begin{proof}
-    Let
-    \begin{equation*}
-     \eps = \inf_{\tensor{C} \in TT(r_k)} ||\A - \tensor{C}||_F
-    \end{equation*}
-    where $TT(r_k)$ is the set of all the tensor trains with TT-ranks bounded by $r_k$. By definition of infimum there exists a sequence of tensor trains $\B^{(s)} : s \in \NN$ such that $lim_{s\to\infty} ||\A - \B||_F = \eps$.
-
-    The elements of $\B^{(s)}$ are bounded and there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than by $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
-    \begin{equation*}
-      rk(\B^{(s_t)}_k) \le r_k \quad \forall k
-    \end{equation*}
-    and thus
-    \begin{equation*}
-      rk(\B^{min}_k) \le r_k \quad \forall k
-    \end{equation*}
-    Moreover, $||\A - \B^{min}||_F = \eps$, so $\B^{min}$ is actually the best approximation $\A^{best}$.
-
-    Finally, we note that $\eps_k \le \eps$, since each unfolding can be approximated at least with accuracy $\eps$, and the quasi-optimality bound follows directly from \ref{teo:ttsvd_approx}.
-  \end{proof}
-\end{Cor}
-
-\begin{Cor} \label{cor:tt_tsvd_error}
-  From \eqref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the treshold to $\delta = \frac{\eps}{d-1}$.
-\end{Cor}
 
 \begin{lstlisting}[float, caption=TT-SVD compression algorithm, label=algo:tt-svd, title=TT-SVD compression algorithm]
   ttSvd($A$,$\eps$):
@@ -208,22 +113,117 @@ Two important corollaries follow from this theorem:
     return $G_1, G_2, \ldots, G_d$
 \end{lstlisting}
 
+The above proof of Theorem \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD} and a pseudocode version can be seen at Algorithm \ref{algo:tt-svd}.
+
+Since the SVD is used, we can leverage its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure, giving us a bound on the error of the TT approximation which depends on the error introduced by each SVD approximation on the unfoldings.
+
+\begin{Teo} \label{teo:ttsvd_approx}
+  Suppose that the unfoldings $A_k$ of the tensor \A are approximately rank-$r_k$, i.e., they satisfy
+
+  \begin{equation} \label{teo:ttsvd_approx:ip:1}
+  A_k = R_k + E_k, \quad rk(R_k) = r_k, \quad ||E_k||_F = \epsilon_k \quad:\quad k = 1,\ldots,d-1\, .
+  \end{equation}
+
+  Then the TT-SVD yields a tensor \B in the TT format with TT-ranks $r_k$ and such that
+
+  \begin{equation*}
+    ||\A - \B ||_F \le \sqrt{\sum_{k=1}^{d-1} \epsilon_k^2}\, .
+  \end{equation*}
+  
+  \begin{proof}
+    This proof proceeds by induction. For $d=2$ it follows directly from the properties of the SVD. Then we consider an arbitrary $d > 2$ and we assume that the property holds up to $d - 1$.  Now the first unfolding $A_1$ can be decomposed as
+    \begin{equation*}
+    A_1 = U_1 \Sigma V_1^T + E_1 = U_1 B_1 + E_1
+    \end{equation*}
+    where $U_1$ is $n_1 \times r_1$ and has orthonormal columns, $||E_1||_F = \epsilon_1$ and $B_1$ is naturally associated with a $(d-1)$-dimensional tensor $\B_1$ having elements $B_1(\alpha_1i_2,i_3,\ldots,i_d)$. This tensor $\B_1$ will be further decomposed in the TT-SVD algorithm: $B_1$ will be approximated by matrix $\hat{B}_1$.
+
+    The global TT-SVD approximation error can be decomposed as
+    \begin{equation*}
+      \begin{split}
+        ||\A-\B||_F^2 &= ||A_1 - U_1\hat{B}_1||_F^2 = ||A_1 - U_1(\hat{B}_1 + B_1 - B_1)||_F^2 \\
+         &= ||A_1 - U_1 B_1||_F^2 + ||U_1(B_1 - \hat{B}_1)||_F^2
+      \end{split}
+    \end{equation*}
+    and since, from the SVD definition, $U_1$ has orthonormal columns, we have
+    \begin{equation} \label{teo:ttsvd_approx:proof:bound}
+      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2\, .
+    \end{equation}
+
+    The matrix $B_1$ is obtained from $A_1$ as
+    \begin{equation*}
+      B_1 = U_1^T A_1\, .
+    \end{equation*}
+
+    If we now consider $B_{1,k}$ the $k$-th unfolding of the $(d-1)$-dimensional tensor $\B_1$, from the orthonormality of $U_1$, for each $k=2,\ldots,d-1$ we have\footnote{It's useful to recall here that the Frobenius norm is invariant under unfolding.}
+    \begin{equation*}
+      \begin{split}
+        ||B_{1,k} - R_k||_F^2 &= ||U_1^T A_1 - R_k||_F^2 = ||A_k - R_k||_F^2\\
+         &= \eps_k^2
+      \end{split}
+    \end{equation*}
+    so the $B_{1,k}$ unfoldings satisfy \eqref{teo:ttsvd_approx:ip:1} and by induction we have
+    \begin{equation*}
+      ||B_1 - \hat{B}_1 ||_F^2 \le \sum_{k=2}^{d-1} \eps_k^2\, .
+    \end{equation*}
+
+    If we put this together with \eqref{teo:ttsvd_approx:proof:bound} we have
+    \begin{equation*}
+      ||\A - \B||_F^2 \le \eps_1^2 + ||B_1 - \hat{B}_1 ||_F^2 = \sum_{k=1}^{d-1} \eps_k^2\, .
+    \end{equation*}
+  \end{proof}
+\end{Teo}
+
+Two important corollaries follow from this theorem:
+\begin{Cor}
+  If \A admits a canonical approximation with $R$ terms and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
+\end{Cor}
+\begin{Cor}
+  Given a tensor \A and a set of rank bounds $r_k$, the best approximation\footnote{In the Frobenius norm} $\A^{best}$ of \A with TT-ranks bounded by $r_k$ always exists and the approximation $\B$ computed by the TT-SVD agorithm is \e{quasi-optimal}, i.e.,
+  \begin{equation*}
+    ||\A - \B||_F \le \sqrt{d-1} ||\A - \A^{best}||_F\, .
+  \end{equation*}
+
+  \begin{proof}
+    Let
+    \begin{equation*}
+     \eps = \inf_{\tensor{C} \in TT(r_k)} ||\A - \tensor{C}||_F
+    \end{equation*}
+    where $TT(r_k)$ is the set of all the tensor trains with TT-ranks bounded by $r_k$. By definition of infimum there exists a sequence of tensor trains $\B^{(s)} : s \in \NN$ such that $lim_{s\to\infty} ||\A - \B||_F = \eps$.
+
+    The elements of $\B^{(s)}$ are bounded and there is some subsequence $\B^{(s_t)}$ converging elementwise to a tensor $\B^{min}$. Their unfolding matrices converge too. Now, for each $k$, the set of matrices having rank not greater than $r_k$ is closed and since $\B^{(s_t)} \in TT(r_k)$
+    \begin{equation*}
+      rk(\B^{(s_t)}_k) \le r_k \quad \forall k
+    \end{equation*}
+    and thus
+    \begin{equation*}
+      rk(\B^{min}_k) \le r_k \quad \forall k\, .
+    \end{equation*}
+    Moreover, $||\A - \B^{min}||_F = \eps$, so $\B^{min}$ is actually the best approximation $\A^{best}$.
+
+    Finally, we note that $\eps_k \le \eps$, since each unfolding can be approximated at least with accuracy $\eps$, and the quasi-optimality bound follows directly from \ref{teo:ttsvd_approx}.
+  \end{proof}
+\end{Cor}
+
+\begin{Cor} \label{cor:tt_tsvd_error}
+  From \eqref{teo:ttsvd_approx} it also follows that if the SVD of the unfoldings are truncated at $\delta$, the approximation error of the whole TT will be $\delta \sqrt{d-1}$. So to obtain any prescribed accuracy $\eps$ on the TT whe have to set the threshold to $\delta = \frac{\eps}{d-1}$.
+\end{Cor}
+
 \subsection{How many parameters?}
 Let us take an $n_1 \times \cdots \times n_d$ tensor $\A \in I_1 \times \cdots \times I_d$. The number of parameters used to represent it in the full format is $n_1 \cdots n_d$. If we assume , $\forall k$, $n_k  = n$, we have an $n^d$ number of parameters used.
 
-If \A is instead represented in the TT format, as in \ref{def:TTindex}, with TT-ranks $r_k$ we have that the number of parameters used is
+If \A is instead represented in the TT format, as in \eqref{def:TTindex}, with TT-ranks $r_k$ we have that the number of parameters used is
 \begin{equation*}
-  \sum_{k=1}^d r_{k-1} n_k r_k
+  \sum_{k=1}^d r_{k-1} n_k r_k\, .
 \end{equation*}
 Since we know that $r_0 = r_d = 1$ and assuming that, $\forall k$, $r_k = r$, we have the following estimate
 \begin{equation*}
   %n_1 r_1 + r_{d-1} n_d + \sum_{k=2}^{d-1} r_{k-1} n_k r_k =
-  2nr + (d-2)nr^2
+  2nr + (d-2)nr^2\, .
 \end{equation*}
 
 Using a Tucker decomposition on each of the three-dimesional TT-cores this can be lowered further to
 \begin{equation*}
-  dnr + (d-2)r^3
+  dnr + (d-2)r^3\, .
 \end{equation*}
 
 \section{Rounding in the TT format}
@@ -232,13 +232,13 @@ We have seen how a full tensor can be converted into the TT format using the TT-
 It is thus interesting considering the case of having a tensor in an already structured format. More specifically, we can assume having a tensor in the TT format already, but stored with suboptimal ranks $r_k$. This is an important case since, as will be shown later, such tensors can result from performing basic linear algebra operations in TT format. In this case ranks $r_k$ have to be reduced while mantaining the prescribed accuracy: what we need here is a \e{rounding} algorithm, to recompress the tensor to optimal ranks while keeping the TT format.
 
 \paragraph{Rounding technique}
-Let \A in the TT format:
+Let \A be in the TT format:
 \begin{equation*}
   \A(1_1,\ldots,i_d) = G_1(i_1) \cdots G_d(i_d)
 \end{equation*}
 and assume its ranks $r_k$ are \e{increased} with respect to the optimal ranks $r_k^\prime$. We want now to estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
 
-First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section (\ref{algo:tt-round}).
+First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section.
 
 The first unfolding matrix $A_1$ can be written as
 \begin{equation} \label{eq:unfolding_dyadic}
@@ -248,11 +248,11 @@ where
 \begin{equation} \label{def:UV}
   \begin{split}
     U(i_1,\alpha_1) &= G_1(i_1,\alpha_1)\\
-    V(i_2,\ldots,i_d;\alpha_1) &= G_2(\alpha_1,i_2) G_3(i_3) \cdots G_d(i_d)
+    V(i_2,\ldots,i_d;\alpha_1) &= G_2(\alpha_1,i_2) G_3(i_3) \cdots G_d(i_d)\, .
   \end{split}
 \end{equation}
 
-We can compute the SVD of the unfolding $A_1$ making advantage of its representation \eqref{eq:unfolding_dyadic}. First we compute QR decompositions of $U$ and $V$
+We can compute the SVD of the unfolding $A_1$ making advantage of its representation \eqref{eq:unfolding_dyadic}. First we compute the QR decompositions of $U$ and $V$
 \begin{equation*}
   \begin{split}
     U &= Q_u R_u\\
@@ -269,7 +269,7 @@ and we compute its SVD
 \end{equation*}
 where $\Sigma$ is an $\hat{r}\times\hat{r}$ diagonal matrix, $X$ and $Y$ are $r \times \hat{r}$ matrices with orthonormal columns and $\hat{r}$ is the $\eps$-rank of $P$. This gives that $\hat{r}$ is also the $\eps$-rank of $A_1$.
 
-So we have that
+So we find that
 \begin{equation*}
   \begin{split}
     \hat{U} &= Q_u X\\
@@ -280,21 +280,21 @@ are matrices of dominant singular vectors of $A_1$.
 
 \paragraph{Structured QR decomposition}
 To be able to compute the SVD we thus have to go through the QR decompositions of the factor matrices $U$ and $V$.
-The $U$ matrix is small, as we can see in \ref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
+The $U$ matrix is small, as we can see in \eqref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
 
 However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT format, while the small R factor will be stored explicitly. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
 \begin{Lemma}
-  Let a tensor \Z expressed as:
+  Let a tensor \Z be expressed as:
   \begin{equation*}
     \Z(\alpha_1,i_2,\ldots,i_d) = Q_2(i_2) \cdots Q_d(i_d)
   \end{equation*}
-  where for each $k = 2,\ldots,d$, $Q_k(i_k)$ is an $r_{k-1} \times r_k$ matrix\footnote{For fixed $i_k$ with $k=2,\ldots,d$, the product is a $r_1$-long vector indexed by $\alpha_1$} and it satisfies the following orthogonality condition\footnote{By $I_s$ we denote the $s \times s$ identity matrix}
+  where for each $k = 2,\ldots,d$, $Q_k(i_k)$ is an $r_{k-1} \times r_k$ matrix\footnote{For fixed $i_k$ with $k=2,\ldots,d$, the product is an $r_1$-long vector indexed by $\alpha_1$} and it satisfies the following orthogonality condition\footnote{By $I_s$ we denote the $s \times s$ identity matrix}
   \begin{equation} \label{eq:orth_cond}
-    \sum_{i_k} Q_k(i_k) Q_k^{\top}(i_k) = I_{r_{k-1}}
+    \sum_{i_k} Q_k(i_k) Q_k^{\top}(i_k) = I_{r_{k-1}}\, .
   \end{equation}
-  Then the $r_1 \times \prod_{k=2}^d$ first unfolding of \Z is a matrix $Z$ with orthonormal rows, i.e.
+  Then the $r_1 \times \prod_{k=2}^d$ first unfolding of \Z is a matrix $Z$ with orthonormal rows, i.e.,
   \begin{equation*}
-    (Z Z^T)_{\alpha_1,\hat{\alpha}_1} = \sum_{i_2,\ldots,i_d} Z(\alpha_1,i_2,\ldots,i_d) Z(\hat{\alpha}_1,i_2,\ldots,i_d) = \delta(\alpha_1,\hat{\alpha}_1)
+    (Z Z^T)_{\alpha_1,\hat{\alpha}_1} = \sum_{i_2,\ldots,i_d} Z(\alpha_1,i_2,\ldots,i_d) Z(\hat{\alpha}_1,i_2,\ldots,i_d) = \delta(\alpha_1,\hat{\alpha}_1)\, .
   \end{equation*}
 
   \begin{proof}
@@ -308,17 +308,17 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
         &= \sum_{i_2,\ldots,i_d} \Big( Q_2(i_2) \cdots Q_{d-1}(i_{d-1}) \Big)
         \Big( Q_{d-1}^T(i_{d-1}) \cdots Q_2^T(i_2) \Big) \\
         &= \cdots = \sum_{i_2} Q_2(i_2) Q_2^{\top}(i_2) \\
-        &= I_{r_1}
+        &= I_{r_1} \, .
       \end{split}
     \end{equation*}
   \end{proof}
 \end{Lemma}
 
-Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \ref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
+Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \eqref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
 
 Let us start with $V$ written as
 \begin{equation*}
-  V(i_1,\ldots,i_d) = G_2(i_2) \cdots G_d(i_d)
+  V(i_1,\ldots,i_d) = G_2(i_2) \cdots G_d(i_d)\, .
 \end{equation*}
 Now, considering $G_d(i_d)$ as an $r_{d-1} \times n_d$ matrix (since $r_d = 1$) and orthogonalizing its rows, we can represent $G_d(i_d)$ as
 \begin{equation*}
@@ -331,7 +331,7 @@ We now have
 \end{equation*}
 with
 \begin{equation*}
-  G^\prime_{d-1}(i_{d-1}) = G_{d-1}(i_{d-1}) R_d
+  G^\prime_{d-1}(i_{d-1}) = G_{d-1}(i_{d-1}) R_d\, .
 \end{equation*}
 This was the first step of the sweep. Suppose now that we already have a representation of the form
 \begin{equation*}
@@ -345,13 +345,13 @@ or, in index form
 \begin{equation*}
   G^\prime_k (\alpha_{k-1},i_k,\alpha_k) = \sum_{\beta_k} R(\alpha_k,\beta_k) Q_k(\beta_{k-1},i_k,\alpha_k)
 \end{equation*}
-where $R_k$ is a matrix not depending on $i_k$ and holds
+where $R_k$ is a matrix not depending on $i_k$ and it holds
 \begin{equation*}
   \sum_{i_k} Q_k(i_k) Q_k^T(i_k) = I_{r_k}
 \end{equation*}
 or, in index form
 \begin{equation*}
-  \sum_{i_k,\alpha_k} Q_k(\beta_{k-1},i_k,\alpha_k)Q_k(\hat{\beta}_k,i_k,\alpha_k) = \delta(\beta_k,\hat{\beta}_k)
+  \sum_{i_k,\alpha_k} Q_k(\beta_{k-1},i_k,\alpha_k)Q_k(\hat{\beta}_k,i_k,\alpha_k) = \delta(\beta_k,\hat{\beta}_k)\, .
 \end{equation*}
 
 Looking at the index forms of the above equations, we can see that $Q_k$ and $R_k$ can be computed by reshaping the $r_{k-1} \times n_k \times r_k$ tensor $G_k$ into a $r_{k-1} \times n_k r_k$ matrix and then orthogonalizing this matrix.

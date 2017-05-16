@@ -11,7 +11,7 @@ The functions we considered are
   h(x_1,\ldots,x_d) &= \sum_{i=1}^{d} \sqrt{|x_i|}\\
 \end{align*}
 $n$ was equal to $10$, $d$ ranged from $3$ to $7$ and $\epsilon$ was $1^{-10}$.
-The results are shown in the below tables \ref{tab:ttsvd-sum}, \ref{tab:ttsvd-sinsum} and \ref{tab:ttsvd-sumsqrtabs}.
+The results are shown in Tables \ref{tab:ttsvd-sum}, \ref{tab:ttsvd-sinsum} and \ref{tab:ttsvd-sumsqrtabs}.
 
 \begin{center}
   \begin{tabular}[t]{cccccrr}
@@ -52,13 +52,13 @@ The results are shown in the below tables \ref{tab:ttsvd-sum}, \ref{tab:ttsvd-si
   \captionof{table}{\label{tab:ttsvd-sumsqrtabs}Results of using TT-SVD algorithm on $h(x_1,\ldots,x_d) = \sum_{i=1}^{d} \sqrt{|x_i|}$.}
 \end{center}
 
-From these results we can clearly see how the number of parameters involved doesn't grow exponentially in $d$ and it can be comparatively very small in order to maintain the prescribed accuracy.
+From these results we can clearly see how the number of parameters involved does not grow exponentially in $d$ and it can be comparatively very small in order to maintain the prescribed accuracy.
 
 %Cross
 \paragraph{TT-Cross}
 For what concerns TT-Cross, we have again considered the evenly-spaced $n~\times~\cdots~\times~n$ grid on $[-\pi,\pi\,]^d$. We have then invoked the TT-Cross algorithm, using the simple rank-one tensor $T_0(i_1,\ldots,i_d) = 1 \quad \forall i_1,\ldots,i_d$ as a first approximation and the chosen multidimensional function for evaluating the tensor on the relevant grid points.
 
-Since in this case we doesn't have to build or store any tensor in the full format, we can push the dimensionality much higher (up to $d = 200$ in our case), while still being able to keep the tensor in memory and to manipulate it.
+Since in this case we does not have to build or store any tensor in the full format, we can push the dimensionality much higher (up to $d = 200$ in our case), while still being able to keep the tensor in memory and to manipulate it.
 
 The functions we considered in this case are
 \begin{align*}
@@ -66,7 +66,7 @@ The functions we considered in this case are
   g(x_1,\ldots,x_d) &= sin(\sum_{i=1}^{d} x_i)\\
 \end{align*}
 $n$ was equal to $10$, $d$ ranged from $10$ to $200$ and $\epsilon$ was $1^{-10}$.
-The results are shown in the below table \ref{tab:ttcross}.
+The results are shown in Table \ref{tab:ttcross}.
 
 \begin{center}
   \begin{tabular}[t]{ccccrcr}

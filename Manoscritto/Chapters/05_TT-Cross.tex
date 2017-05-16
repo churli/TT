@@ -17,7 +17,7 @@ Having to deal with a black-box tensor can result in a relevant advantage: we ca
 The question we want to answer in this chapter is: \e{Can we exploit this advantage? Can we find a way to have an arbitrary good approximation of the tensor just by using a limited subset of its element?}
 
 \paragraph{Tensor train cross-approximation}
-Here we are going to describe a low-rank tensor approximation techinique using a subset of few, well-chosen, elements.
+Here we are going to describe a low-rank tensor approximation technique using a subset of few, well-chosen, elements.
 The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
 The outcoming algorithm is called \e{TT-cross} and it is shown that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
 
@@ -55,7 +55,7 @@ Since the previous step also gives us the set of row indices containing $\hat{A}
 
 \section{From skeletons to trains}
 Now that we have seen the skeleton decomposition for matrices, how can we use it to compute a \e{tensor-train} approximation?
-The basic idea is to replace the SVD with the skeleton decomposition in the proof of \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to leverage the properties of the skeleton decomposition.
+The basic idea is to replace the SVD with the skeleton decomposition in the proof of Theorem \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to leverage the properties of the skeleton decomposition.
 
 Considering again the strategy described above for matrices, we can notice that only one set of indices, either $\J$ or $\I$, is required at the beginning. This is going to be very helpful in the tensor case.
 
@@ -71,12 +71,12 @@ where $\alpha_1$ is the column number and $l$ is the mode, so each of the $r_1$ 
 The unfolding $A_1$ has a skeleton decomposition where the column matrix $C$ has size $n_1 \times r_1$ and is made of $r_1$ columns of $A_1$.
 It can be computed as
 \begin{equation*}
-  C(i_1,\alpha_1) = A(i_1,j_2^{(\alpha_1)},\ldots,j_d^{(\alpha_1)})
+  C(i_1,\alpha_1) = A(i_1,j_2^{(\alpha_1)},\ldots,j_d^{(\alpha_1)})\, .
 \end{equation*}
 
 Using the \emph{maxvol} algorithm we can then compute a submatrix of $C$ having quasi-maximal volume, $\hat{A}_1$. It will also yield the corresponding row-indices set
 \begin{equation*}
-  \I_1 = [I_1^{(\alpha_1)}], \quad \alpha_1 = 1,\ldots,r_1
+  \I_1 = [I_1^{(\alpha_1)}], \quad \alpha_1 = 1,\ldots,r_1\, .
 \end{equation*}
 
 Matrix $A_1$ is now represented as
@@ -85,18 +85,18 @@ Matrix $A_1$ is now represented as
 \end{equation*}
 and similarly to the TT-SVD case, we can set the first tensor carriage as
 \begin{equation*}
-  G_1 = C\hat{A}_1^{-1}
+  G_1 = C\hat{A}_1^{-1}\, .
 \end{equation*}
 
 We can now notice that, if $\hat{A}_1$ is of maximal volume in $C$, then $G_1$ has elements not higher than 1 in modulus. This property on the elements of $G_1$ holds when $\hat{A}_1$ is the output of \emph{maxvol} \cite{tyrtyshnikov2000incomplete,goreinov2010find}.
 
 The next step is to iterate further on the $R$ term and represent it in the TT format. $R$ consists of $r_1$ rows of $A_1$ and it can be reshaped into a subtensor $\tensor{R}$ of $\A$:
 \begin{equation*}
-  R(\alpha_1,i_2,\ldots,i_d) = A(i_1^{(\alpha_1)},i_2,\ldots,i_d)
+  R(\alpha_1,i_2,\ldots,i_d) = A(i_1^{(\alpha_1)},i_2,\ldots,i_d)\, .
 \end{equation*}
 We can now concatenate indices $\alpha_1$ and $i_2$ in one long index $\alpha_1i_2$: in this way $\tensor{R}$ can be seen as a tensor of dimensionality $d-1$ and size $r_1n_2 \times n_2 \times \cdots \times n_d$.
 
-Similarly to as shown in proof of \ref{teo:ttsvd}, if the unfoldings $A_k$ have ranks $r_k$, then the corresponding compression ranks for $\tensor{R}$ cannot be larger and, in case the TT representation of $\A$ is exact, these compression ranks must be equal to $r_k$.
+Similarly to as shown in proof of Theorem \ref{teo:ttsvd}, if the unfoldings $A_k$ have ranks $r_k$, then the corresponding compression ranks for $\tensor{R}$ cannot be larger and, in case the TT representation of $\A$ is exact, these compression ranks must be equal to $r_k$.
 
 In order to obtain the second carriage, we consider again the first unfolding of the new, reshaped, subtensor \tensor{R}:
 \begin{equation*}
@@ -124,64 +124,64 @@ The row indices that define the quasi-maximal volume submatrix in $C_2$ are chos
 
 At the $k$-th step we have a subtensor $\tensor{R}$ of dimensionality $d-k+1$ and size $r_{k-1}n_k \times n_{k+1} \times \ldots \times n_d$. Its definition as subset of entries of the initial tensor $\A$ is the following:
 \begin{equation*}
-  R(\alpha_{k-1}n_k,n_{k+1},\ldots,n_d) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,i_{k+1},\ldots,i_d)
+  R(\alpha_{k-1}n_k,n_{k+1},\ldots,n_d) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,i_{k+1},\ldots,i_d)\, .
 \end{equation*}
 The first $k-1$ indices, which we call \emph{left indices}, are taken as $(k-1)$-tuples from the already computed entries of the \emph{left index set}
 \begin{equation*}
-  \I_{k-1} = [i_s^{(\alpha_{k-1})}],\quad \alpha_{k-1} = 1,\ldots,r_{k-1},\quad s = 1,\ldots,k-1
+  \I_{k-1} = [i_s^{(\alpha_{k-1})}],\quad \alpha_{k-1} = 1,\ldots,r_{k-1},\quad s = 1,\ldots,k-1\, .
 \end{equation*}
 The first unfolding of the current subtensor $\tensor{R}$ at the $k$-th step is
 \begin{equation*}
-  R_k = [R(\alpha_{k-1}i_k;i_{k+1},\ldots,i_d)]
+  R_k = [R(\alpha_{k-1}i_k;i_{k+1},\ldots,i_d)]\, .
 \end{equation*}
 Again, columns containing a submatrix of quasi-maximal volume are supposed to be known and taken from the set of $(d-k)$-tuples
 \begin{equation*}
-  \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d
+  \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d\, .
 \end{equation*}
 Obviously these columns contain a submatrix $C_k$ of size $r_{k-1}n_k \times r_k$ with entries
 \begin{equation*}
-  C_k(\alpha_{k-1}i_k,\alpha_k) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,j_{k+1}^{(\alpha_k)},\ldots,j_d^{(\alpha_k)})
+  C_k(\alpha_{k-1}i_k,\alpha_k) = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,j_{k+1}^{(\alpha_k)},\ldots,j_d^{(\alpha_k)})\, .
 \end{equation*}
 Now the next \emph{left index set} is defined by the row positions of the quasi-maximal volume submatrix in $C_k$, which we can now denote as $\hat{R}^{-1}$.
 
-The new tensor carriage $\G_k$ is then obtained by reshaping the result of $C_k \hat{R}^{-1}$
+The new tensor carriage $\G_k$ is then obtained by reshaping the result of $C_k \hat{R}^{-1}$.
 
 \paragraph{Recap}
 Let's now recap the entire procedure. If we know the index sets $\J_k$
-\begin{equation}
+\begin{equation*}
   \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d
-\end{equation}
+\end{equation*}
 corresponding to the columns that contain quasi-maximal submatrices in the unfolding matrices $A_k$ and if the values $r_k = rank(A_k)$ are the compression ranks for the TT decomposition we are trying to obtain, then then number of elements fo $\A$ that are required in order to compute such TT decomposition is
 \begin{equation*}
-  n_1 r_1 + n_2 r_1 r_2 + \ldots + n_{d-1} r_{d-2} r_{d-1} + n_d r_{d-1}
+  n_1 r_1 + n_2 r_1 r_2 + \ldots + n_{d-1} r_{d-2} r_{d-1} + n_d r_{d-1}\, .
 \end{equation*}
 This means that if $n_k = n$ and $r_k = r$ for all $k$, then the number of elements that have to be computed are $\ord(dnr^2)$.
 In addition to this, we also have to perform $d$ searches for a quasi-maximal volume submatrix in matrices that have size $nr \times r$. Using the \emph{maxvol} algorithm we can achieve this is $\ord(dnr^3)$ operations.
 As a side note, we should also add that usually evaluating a function in $d$ variables takes at least $\ord(d)$ operations, which would make the whole method scale quadratically in $d$. In case of a very large number of dimensions $d$ this could be problematic and it would be useful to find and use a specific fast method for computing the subtensor
-\begin{equation}
-  C_k = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,j_{k+1}^{(\alpha_k)},\ldots,j_d^{(\alpha_k)})
-\end{equation}
+\begin{equation*}
+  C_k = A(i_1^{(\alpha_{k-1})},i_2^{(\alpha_{k-1})},\ldots,i_{k-1}^{(\alpha_{k-1})},i_k,j_{k+1}^{(\alpha_k)},\ldots,j_d^{(\alpha_k)})\, .
+\end{equation*}
 
 The computation of the TT decomposition's carriages also yields the \emph{left index sets} $\I_k$. As opposed to the \emph{right index sets} $J_k$, which are assumed to be given at the beginning, these are not arbitrary and depend on each other. Each $\I_k$ is of the form
-\begin{equation}
+\begin{equation*}
   \I_k = [i_k^{(\alpha_k)}], \quad \alpha_k = 1,\ldots,k \quad k = 1,\ldots,d-1
-\end{equation}
+\end{equation*}
 and relates to $\I_{k-1}, \forall k \geq 2$ as
-\begin{equation}
-  (i_1,i_2,\ldots,i_{k-1},i_k) \in \I_k \implies (i_1,i_2,\ldots,i_{k-1}) \in \I_{k-1}, \quad k=2,\ldots,d-1
-\end{equation}
+\begin{equation*}
+  (i_1,i_2,\ldots,i_{k-1},i_k) \in \I_k \implies (i_1,i_2,\ldots,i_{k-1}) \in \I_{k-1}, \quad k=2,\ldots,d-1\, .
+\end{equation*}
 A sequence matching this definition will be called a \emph{left-nested sequence}.
 
 A similar definition can be given for a \emph{right-nested sequence} of right-index sets $\J_k$, although in the above construction it was not assumed for the sequence $\J_k$:
-\begin{equation}
-  (j_{k+1},j_{k+2},\ldots,j_d) \in \J_k \implies (j_{k+2},\ldots,j_d) \in \J_{k+1}, \quad k=1,\ldots,d-2
-\end{equation}
+\begin{equation*}
+  (j_{k+1},j_{k+2},\ldots,j_d) \in \J_k \implies (j_{k+2},\ldots,j_d) \in \J_{k+1}, \quad k=1,\ldots,d-2\, .
+\end{equation*}
 
 With the above we have proven the following theorem:
 \begin{Teo}
   Let $\A$ be an arbitrary $d$-dimensional tensor of size $n_1 \times \cdots \times n_d$ having compression ranks
   \begin{equation*}
-    r_k = rank(A_k), \quad A_k = A(i_1 i_2 \ldots i_k;i_{k+1} \ldots i_d)
+    r_k = rank(A_k), \quad A_k = A(i_1 i_2 \ldots i_k;i_{k+1} \ldots i_d)\, .
   \end{equation*}
   Assume that right-index sets
   \begin{equation*}
@@ -206,16 +206,16 @@ With the above we have proven the following theorem:
     C_k(\alpha_k,i_k,\beta_k) = A(i_1^{(\alpha_k)},\ldots,i_{k-1}^{(\alpha_k)},i_k,j_{k-1}^{(\beta_k)},\ldots,j_d^{(\beta_k)})
   \end{equation*}
   by using the tensor-train interpolation formula
-  \begin{align}
+  \begin{align*}
     A(i_1,\ldots,i_d) =& \sum_{\alpha_1,\ldots,\alpha_{d-1}} \left[ \, \hat{C}_1(i_1,\alpha_1) \hat{C}_2(\alpha_1,i_2,\alpha_2) \quad \cdots \right. \nonumber \\
     &\cdots \quad \left. \hat{C}_{d-1}(\alpha_{d-2},i_{d-1},\alpha_{d-1}) \hat{C}_d(\alpha_{d-1},i_d) \, \right]
-  \end{align}
+  \end{align*}
   where tensor carriages $\hat{\C}_k$ are obtained from $\C_k$ by the following scaling.\footnote{The general $k$-th tensor-by-matrix multiplication is defined in \ref{def:tensor-matrix-product}. Here computing $\C_k \times_3 \hat{A}_{-1}$ is equivalent to taking the second unfolding of $\C_k$, computing the product $\hat{\C}_k(\alpha_{k-1},i_k;\alpha_k) = \C_k(\alpha_{k-1},i_k;\alpha_k) \cdot \hat{A}_k^{-1}$ and reshaping the result back to a 3-way tensor $\hat{C}_k = \hat{\C}_k(\alpha_{k-1},i_k,\alpha_k)$.}:
-  \begin{align}
+  \begin{align*}
     \hat{\C}_1 &= \C_1 \hat{A}_1^{-1} \nonumber \\
     \hat{\C}_k &= \C_k \times_3 \hat{A}_k^{-1}, \quad k = 2, \ldots, d-1 \\
     \hat{\C}_d &= \C_d \nonumber
-  \end{align}
+  \end{align*}
 \end{Teo}
 
 It is important to note that this theorem is formally valid only in the exact low-rank case. The choice of using quasi-maximal volume submatrices was not necessay in the above proof and the only important factor was having all the intersection submatrices non-singular.

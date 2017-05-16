@@ -1,21 +1,21 @@
 \chapter{Decompositions}
-Here we briefly present two important tensor decomposition mainly for their historycal interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their suitability to real world applications \cite{tensorreview}.
+Here we briefly present two important tensor decompositions mainly for their historical interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their suitability to real world applications \cite{tensorreview}.
 
 \section{Canonical Decomposition (CANDECOMP/CP)}
 The core idea behind the Canonical Decomposition\footnote{This decomposition has been historically called either Canonical Decomposition (CANDECOMP) or Parallel Factors (PARAFAC) and often abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
-\begin{equation}
+\begin{equation*}
   \X \approx \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
-\end{equation}
+\end{equation*}
 where $R \in \NN$ and $a_r^{(i)} \in \RR^{I_i}$. So each of the rank-one components is built as outer product of \N vectors.
 
-We can also express the CP decomposition in a more concise matricized form.
+We can also express the CP decomposition in a more concise matrix form.
 Let us group the vectors used in the CP to form a matrix for each mode \mate{i} as follows:
 \begin{equation*}
-  A^{(i)} = [ a^{(i)}_1 a^{(i)}_2 \cdots a^{(i)}_R ]
+  A^{(i)} = [ a^{(i)}_1 a^{(i)}_2 \cdots a^{(i)}_R ].
 \end{equation*}
 We can then use the following notation to express the CP decomposition:
 \begin{equation*}
-  \X \approx \llbracket A^{(1)}, A^{(2)}, \ldots, A^{(N)} \rrbracket = \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
+  \X \approx \llbracket A^{(1)}, A^{(2)}, \ldots, A^{(N)} \rrbracket = \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}\, .
 \end{equation*}
 
 \subsection{Tensor Rank}
@@ -89,12 +89,12 @@ This does not hold for higher order tensors. For instance consider a third-order
 \begin{equation*}
   \X = \sum_{r=1}^R a_r \circ b_r \circ c_r
 \end{equation*}
-We would like to be able to get a best rank-$k$ approximation of \X by summing some specific subset of $k$ factors of the CP decomposition. However this is not possible and it was shown in \cite{kolda2001orthogonal} by reporting a specific tensor whose best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
+We would like to be able to get a best rank-$k$ approximation of \X by summing some specific subset of $k$ factors of the CP decomposition. However this is not possible and it was shown in \cite{kolda2001orthogonal} by reporting a specific case whose best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
 
 Tensors can be even more exciting: a best rank-$k$ approximation may not even exist and we can have a rank-$k$ tensor \X arbitrarily well approximated by a sequence ${\X_i}$ of rank-$s$ tensors with $s < k$. This is called \emph{degeneracy} and our rank-$k$ tensor would be called \emph{degenerate}.
 The earliest example of degeneracy is from \cite{bini1980approximate} where an explicit example of a sequence of rank-$5$ tensors converging to a rank-$6$ tensor is presented.
 
-We may encouter degeneracy when trying to find a fixed rank best aproximation of a tensor. For example, if we want to find the best rank-$2$ approximation of a rank-$3$ tensor, we can find a sequence of rank-$2$ tensors approximating the rank-$3$ tensor with increasing precision. In this case, necessarily, the best rank-$2$ approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor.
+We may encounter degeneracy when trying to find a fixed rank best aproximation of a tensor. For example, if we want to find the best rank-$2$ approximation of a rank-$3$ tensor, we can find a sequence of rank-$2$ tensors approximating the rank-$3$ tensor with increasing precision. In this case, necessarily, the best rank-$2$ approximation lies on the boundary between the space of rank-two tensors and the space of rank-three tensors. But the the space of rank-two tensors is not closed and the sequence may converge to a rank-three tensor.
 
 More generally, we call a \emph{border tensor} a rank-$s$ tensor that admit a sequence of tensors which rank is at most $r < s$. The least value $r_b$ for which such sequence exist is called \emph{border rank} of the tensor.
 
@@ -106,7 +106,7 @@ The three-way case example, where $\X \in \R^{I \times J \times K}$ is:
 \end{equation*}
 and in the elementwise form:
 \begin{equation*}
-  x_{ijk} \approx \sum_{p=1}^P \sum_{q=1}^Q \sum_{r=1}^R g_{pqr} a_{ip} b_{jq} c_{kr}
+  x_{ijk} \approx \sum_{p=1}^P \sum_{q=1}^Q \sum_{r=1}^R g_{pqr} a_{ip} b_{jq} c_{kr}\, .
 \end{equation*}
 
 $P, Q$ and $R$ are the number of components (i.e.\ columns) of the factor matrices $A, B$ and $C$ respectively. When $P,Q,R$ are smaller than $I,J,K$, the core \G can be thought of as a compressed version of the input tensor \X.
