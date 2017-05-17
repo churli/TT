@@ -13,7 +13,7 @@ The idea of tensor generalizes those of \emph{matrix} and \emph{vector}, making 
 \end{Def}
 So if we have a $d$-way tensor \A, we can refer to its elements as
 \begin{equation*}
-  \A(i_1,\ldots,i_d)
+  \A(i_1,\ldots,i_d)\, .
 \end{equation*}
 From this definition it follows that vectors are tensors of order \emph{one} and matrices are tensors of order \emph{two}.
 
@@ -44,7 +44,7 @@ From this definition it follows that vectors are tensors of order \emph{one} and
 %% \end{Def}
 
 \section{Unfoldings}
-An important concept in the tensor world, which is at the heart of many decompositions, including the tensor train decomposition, is the operation of \emph{unfolding}\footnote{also called \emph{matricization} or \emph{flattening}}.
+An important concept in the tensor world, which is at the heart of many decompositions, including the tensor train decomposition, is the operation of \emph{unfolding}.\footnote{Also called \emph{matricization} or \emph{flattening}.}
 
 \emph{Unfolding} is the process of reordering the elements of a $d$-way tensor into a matrix. An \emph{unfolding matrix} of the tensor will be the result of this operation. Unfoldings can be performed using arbitrary algorithms, although some unfoldings show more useful properties than others.
 
@@ -53,7 +53,7 @@ It is important to note that the Frobenius norm is preserved by the unfolding pr
 In this work we will leverage the following unfolding:
 
 \begin{Def}
-  Let \A a $d$-way tensor. We define the \emph{k-th unfolding} matrix of \A as:
+  Let \A a $d$-way tensor. We define the \emph{k-th unfolding} matrix of \A~as:
   \begin{equation} \label{def:unfolding}
     A_k = A_k(i_1,\dots,i_k;i_{k+1},\dots,i_d) = A(i_1,\dots,i_d)
   \end{equation}
@@ -114,7 +114,7 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
   \begin{equation*}
     \A \times_k U
   \end{equation*}
-  as the contraction over the $k$-th axis\footnote{$\alpha$ is on the $k$-th place.}, yielding a tensor
+  as the contraction over the $k$-th axis,\footnote{$\alpha$ is on the $k$-th place.} yielding a tensor
   \begin{equation*}
     \B \in I_1 \times \cdots \times I_{k-1} \times I_\alpha \times I_{k+1} \times \cdots \times I_d
   \end{equation*}
@@ -126,14 +126,14 @@ We can define a tensor-by-matrix product in several ways. In this work we will a
 This can be seen as performing the product of each mode-$k$ fiber by the matrix $U$.
 
 \section{Matrix Singular Values Decomposition}
-Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or \emph{SVD}. The SVD is ubiquitous when working with matrices and is often used as a way to obtain lower-rank matrix approximations. Specifically the Eckart-Young theorem proves that, given any target rank $k$, the SVD truncated\footnote{truncated SVD is explained later in this paragraph} at rank $k$ yields the best rank-$k$ approximation of the initial matrix \cite{SVDbestapprox}.
+Matrices admit a very powerful decomposition format: the \emph{Singular Values Decomposition}, or SVD. The SVD is ubiquitous when working with matrices and is often used as a way to obtain lower-rank matrix approximations. Specifically the Eckart-Young theorem proves that, given any target rank $k$, the SVD truncated\footnote{Truncated SVD is explained later in this paragraph.} at rank $k$ yields the best rank-$k$ approximation of the initial matrix \cite{SVDbestapprox}.
 
 In our work SVD is used on specific tensor unfoldings, in order to build the Tensor Train representation of a tensor. Also, having a tool which in some way extends and generalizes SVD to higher dimensions is the main reason behind the development of TT and the research for other tensor decompositions in general.
 
 Below we report the definition and some basic properties of the SVD.
 
 \begin{Teo}[Singular Values Decomposition] \label{teo:svd}
-  Let $m \geq n$ and $A \in \RR^{m \times n}$. Then there exist $U \in \RR^{m \times m}$ and $V \in \RR^{n \times n}$ orthogonal\footnote{$U$ is orthogonal if $U^TU = UU^T = I$} matrices and $\Sigma \in \RR^{m \times n}$ such that
+  Let $m \geq n$ and $A \in \RR^{m \times n}$. Then there exist $U \in \RR^{m \times m}$ and $V \in \RR^{n \times n}$ orthogonal\footnote{$U$ is orthogonal if $U^TU = UU^T = I$.} matrices and $\Sigma \in \RR^{m \times n}$ such that
   \[
   \Sigma =
   \begin{bmatrix}
@@ -149,7 +149,7 @@ Below we report the definition and some basic properties of the SVD.
 Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A$.
 \begin{Oss}
   This is, in a sense, a spectral decomposition. We can see this by looking at $A^t A$:
-  \[
+  \begin{equation*}
   A^t A = V^t \Sigma U^t U \Sigma V = V^t
   \begin{bmatrix}
     \sigma_1^2 &&&\\
@@ -157,19 +157,19 @@ Diagonal elements $\sigma_i$ of $\Sigma$ are called \emph{singular values} of $A
     && \ddots &\\
     &&& \sigma_n^2
   \end{bmatrix}
-  V
-  \]
+  V\, .
+  \end{equation*}
   Since $A^t A$ is symmetric, its eigenvalues $\lambda_i$ are real. If we take them in descending order, we have that $\sigma_i = \sqrt{\lambda_i}$ for all $i = 1, \ldots, n$.
 \end{Oss}
 \begin{Oss} \label{oss:svdrank}
   If A is rank-$k$, then all $\sigma_1, \ldots, \sigma_k$ are different from $0$, while $\sigma_{k+1}, \ldots, \sigma_n$ are equal to $0$. This again comes from noticing that $rk(A) = rk(A^t A)$ and the rank of $A^t A$ is equal to the number of its non-zero eigenvalues. From the previous remark we have that this is also the number of non-zero singular values of $A$.
 \end{Oss}
 
-\paragraph{Truncated SVD}
+\paragraph{Truncated SVD.}
 When computing the SVD we may end up having, in view of Remark \ref{oss:svdrank}, a set of zero singular values and a set of non-zero ones. However, often matrices show an entire set of non-zero singular values, with the last ones being very small and close to zero.
 In this case it is often chosen to \emph{truncate} the SVD by forcing to $0$ all the singular values that are below a certain threshold. This yields a lower-rank approximation of our matrix and, as already mentioned, this is the best rank-$k$ approximation of the matrix where $k$ is the rank of the truncated SVD.
 
 If we instead have a specific target rank $k$ and we need to get a $k$-rank approximation of the matrix, we can simply keep the first $k$ singular values and force all the remaining ones to $0$, obtaining again the best rank-$k$ approximation possible.
 
-This technique is used later in this work, see \eqref{cor:tt_tsvd_error}, for controlling the approximation error when constructing the Tensor Train decomposition.
+This technique is used later in this work, see Corollary \ref{cor:tt_tsvd_error}, for controlling the approximation error when constructing the Tensor Train decomposition.
 %EOF

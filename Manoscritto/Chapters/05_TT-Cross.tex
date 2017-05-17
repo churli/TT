@@ -1,9 +1,9 @@
 \chapter{TT-Cross}
 So far we have seen how a given tensor can be:
 \begin{itemize}
-\item compressed from the \e{full format} to the TT format
+\item compressed from the full format to the TT format
 \item manipulated via various operations directly into the TT format
-\item \e{rounded} (i.e.\ recompressed) without leaving the TT format
+\item rounded (i.e.\ recompressed) without leaving the TT format.
 \end{itemize}
 
 However, we still have a very relevant dependency on either the full representation format or the canonical decomposition as unique ways to input data to the TT format.
@@ -16,7 +16,7 @@ Having to deal with a black-box tensor can result in a relevant advantage: we ca
 
 The question we want to answer in this chapter is: \e{Can we exploit this advantage? Can we find a way to have an arbitrary good approximation of the tensor just by using a limited subset of its element?}
 
-\paragraph{Tensor train cross-approximation}
+\paragraph{Tensor train cross-approximation.}
 Here we are going to describe a low-rank tensor approximation technique using a subset of few, well-chosen, elements.
 The fundamental idea, described in \cite{tt-cross}, is to extend the dyadic (skeleton) decomposition for matrices to higher dimensions using the TT format.
 The outcoming algorithm is called \e{TT-cross} and it is shown that, if TT ranks are bounded by $r$, then only $\ord(dnr^2)$ carefully-chosen elements are required in order to completely recover the tensor.
@@ -37,17 +37,17 @@ First of all, we need to introduce the skeleton decomposition for the exact matr
   \end{itemize}
 \end{Teo}
 
-From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly independent rows and $r$ linearly independent columns\footnote{The total amount of elements that have to be stored for a rank-$r$, $m \times n$ matrix, is $r(m+n-r)$.}.
+From this it follows that a rank-$r$ matrix can be recovered from $r$ linearly independent rows and $r$ linearly independent columns.\footnote{The total amount of elements that have to be stored for a rank-$r$, $m \times n$ matrix, is $r(m+n-r)$.}
 
-\paragraph{An approximate skeleton}
+\paragraph{An approximate skeleton.}
 We want now to use this skeleton decomposition in the case where the matrix $A$ is only approximately of rank $r$, e.g.\ when its $\eps$-rank is $r$.
 How should we choose the $r$ rows and $r$ colums to use? Is there a way yielding better results than others?
 
-An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume (i.e.\ determinant in modulus) \cite{goreinov2001maximal}. We can also leverage cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose \cite{tyrtyshnikov2000incomplete,bebendorf2000approximation}. The \e{maxvol} algorithm \cite{goreinov2010find} is what is currently used in the implementation of the TT-cross algorithm.
+An answer is to pick such rows and columns in a way that their intersection submatrix has maximal volume\footnote{Having maximal volume means having maximal determinant in modulus.} \cite{goreinov2001maximal}. We can also leverage cross-approximation techniques allowing us to compute quasi-optimal sets of rows and columns for this purpose \cite{tyrtyshnikov2000incomplete,bebendorf2000approximation}. The \e{maxvol} algorithm \cite{goreinov2010find} is what is currently used in the implementation of the TT-cross algorithm.
 
 The high-level strategy that is used with matrices is the following.
 
-First choose a subset of either rows or columns containing a submatrix of sufficiently large volume. E.g. consider a set $\J = [i_k], k=1,\ldots,r$ of column indices suitable for this purpose.
+First choose a subset of either rows or columns containing a submatrix of sufficiently large volume. E.g.\ consider a set $\J = [i_k], k=1,\ldots,r$ of column indices suitable for this purpose.
 
 Knowing $\J$, we can compute the elements of the $n \times r$ column matrix $C = A(:,\J)$. This obviously takes $nr$ element evaluations.
 Using the \e{maxvol} algorithm we can then obtain a submatrix $\hat{A}$ of quasi-maximal volume in $C$ with $\ord(nr^2)$ operations.
@@ -55,11 +55,11 @@ Since the previous step also gives us the set of row indices containing $\hat{A}
 
 \section{From skeletons to trains}
 Now that we have seen the skeleton decomposition for matrices, how can we use it to compute a \e{tensor-train} approximation?
-The basic idea is to replace the SVD with the skeleton decomposition in the proof of Theorem \ref{teo:ttsvd} and therefore to adapt the \e{TT-SVD} compression algorithm in order to leverage the properties of the skeleton decomposition.
+The basic idea is to replace the SVD with the skeleton decomposition in the proof of Theorem \ref{teo:ttsvd} and therefore to adapt the TT-SVD compression algorithm in order to leverage the properties of the skeleton decomposition.
 
 Considering again the strategy described above for matrices, we can notice that only one set of indices, either $\J$ or $\I$, is required at the beginning. This is going to be very helpful in the tensor case.
 
-\paragraph{TT-cross}
+\paragraph{TT-cross.}
 Given a tensor $\A = A(i_1,\ldots,i_d)$, let us consider the first unfolding matrix $A_1$ and its rank $r_1$. We know that there is a subset of $r_1$ linearly independent columns in $A_1$, so let us take $\J_1$ as the set of their indices.
 
 Since each column of $A_1$ is naturally pointed to a multi-index $(i_2,\ldots,i_d)$, $\J_1$ is actually a set of $(d-1)$-tuples and can be written as:
@@ -100,7 +100,7 @@ Similarly to as shown in proof of Theorem \ref{teo:ttsvd}, if the unfoldings $A_
 
 In order to obtain the second carriage, we consider again the first unfolding of the new, reshaped, subtensor \tensor{R}:
 \begin{equation*}
-  R_2 = R(\alpha_1i_2;i_3,\ldots,i_d)
+  R_2 = R(\alpha_1i_2;i_3,\ldots,i_d)\, .
 \end{equation*}
 
 %Page 79 of article
@@ -146,7 +146,7 @@ Now the next \emph{left index set} is defined by the row positions of the quasi-
 
 The new tensor carriage $\G_k$ is then obtained by reshaping the result of $C_k \hat{R}^{-1}$.
 
-\paragraph{Recap}
+\paragraph{Recap.}
 Let's now recap the entire procedure. If we know the index sets $\J_k$
 \begin{equation*}
   \J_k = [j_l^{(\alpha_k)}],\quad \alpha_k = 1,\ldots,r_k,\quad l = k+1,\ldots,d
@@ -198,7 +198,7 @@ With the above we have proven the following theorem:
     \begin{equation*}
       \hat{A}_k(\alpha_k,\beta_k) = A(i_1^{(\alpha_k)}, \ldots, i_k^{(\alpha_k)}; j_k^{(\beta_k)}, \ldots, j_d^{(\beta_k)}), \quad \alpha_k,\beta_k = 1,\ldots,r_k
     \end{equation*}
-    are all non-singular
+    are all non-singular.
   \end{itemize}
 
   Then \A can be recovered from three-dimensional $r_{k-1} \times n_k \times r_k$ tensors $\C_k$ having elements
@@ -210,12 +210,12 @@ With the above we have proven the following theorem:
     A(i_1,\ldots,i_d) =& \sum_{\alpha_1,\ldots,\alpha_{d-1}} \left[ \, \hat{C}_1(i_1,\alpha_1) \hat{C}_2(\alpha_1,i_2,\alpha_2) \quad \cdots \right. \nonumber \\
     &\cdots \quad \left. \hat{C}_{d-1}(\alpha_{d-2},i_{d-1},\alpha_{d-1}) \hat{C}_d(\alpha_{d-1},i_d) \, \right]
   \end{align*}
-  where tensor carriages $\hat{\C}_k$ are obtained from $\C_k$ by the following scaling.\footnote{The general $k$-th tensor-by-matrix multiplication is defined in \ref{def:tensor-matrix-product}. Here computing $\C_k \times_3 \hat{A}_{-1}$ is equivalent to taking the second unfolding of $\C_k$, computing the product $\hat{\C}_k(\alpha_{k-1},i_k;\alpha_k) = \C_k(\alpha_{k-1},i_k;\alpha_k) \cdot \hat{A}_k^{-1}$ and reshaping the result back to a 3-way tensor $\hat{C}_k = \hat{\C}_k(\alpha_{k-1},i_k,\alpha_k)$.}:
+  where tensor carriages $\hat{\C}_k$ are obtained from $\C_k$ by the following scaling:\footnote{The general $k$-th tensor-by-matrix multiplication is defined in \ref{def:tensor-matrix-product}. Here computing $\C_k \times_3 \hat{A}_{-1}$ is equivalent to taking the second unfolding of $\C_k$, computing the product $\hat{\C}_k(\alpha_{k-1},i_k;\alpha_k) = \C_k(\alpha_{k-1},i_k;\alpha_k) \cdot \hat{A}_k^{-1}$ and reshaping the result back to a 3-way tensor $\hat{C}_k = \hat{\C}_k(\alpha_{k-1},i_k,\alpha_k)$.}
   \begin{align*}
     \hat{\C}_1 &= \C_1 \hat{A}_1^{-1} \nonumber \\
     \hat{\C}_k &= \C_k \times_3 \hat{A}_k^{-1}, \quad k = 2, \ldots, d-1 \\
     \hat{\C}_d &= \C_d \nonumber
-  \end{align*}
+  \end{align*}\, .
 \end{Teo}
 
 It is important to note that this theorem is formally valid only in the exact low-rank case. The choice of using quasi-maximal volume submatrices was not necessay in the above proof and the only important factor was having all the intersection submatrices non-singular.

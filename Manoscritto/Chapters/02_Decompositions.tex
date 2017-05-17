@@ -1,8 +1,8 @@
 \chapter{Decompositions}
 Here we briefly present two important tensor decompositions mainly for their historical interest. These were the first tensor decompositions to be developed and have helped discovering important theoretical properties of tensors, however these have relevant numerical problems that limit their suitability to real world applications \cite{tensorreview}.
 
-\section{Canonical Decomposition (CANDECOMP/CP)}
-The core idea behind the Canonical Decomposition\footnote{This decomposition has been historically called either Canonical Decomposition (CANDECOMP) or Parallel Factors (PARAFAC) and often abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it as
+\section{Canonical decomposition (CANDECOMP/CP)}
+The core idea behind the Canonical decomposition\footnote{This decomposition has been historically called either Canonical decomposition (CANDECOMP) or Parallel Factors (PARAFAC) and often abbreviated as \emph{CP}.} is to factorize a tensor into a sum of rank-one components. For example let \X an \N-th order tensor, we can factorize it~as
 \begin{equation*}
   \X \approx \sum_{r = 1}^R a_r^{(1)} \circ a_r^{(2)} \circ \cdots \circ a_r^{(N)}
 \end{equation*}
@@ -35,7 +35,7 @@ For example consider the following tensor $\A$ defined by its frontal slices as:
   \begin{bmatrix}
     0 & 1\\
     -1 & 0
-  \end{bmatrix}
+  \end{bmatrix}\, .
 \end{equation*}
 This is proven to have rank $3$ over $\RR$ and rank $2$ over $\CC$. Its CP rank decomposition is $\X = \llbracket A, B, C \rrbracket$ where over $\RR$
 \begin{equation*}
@@ -75,19 +75,19 @@ while over $\CC$ the factors are
   \begin{bmatrix}
     1 & 1\\
     i & -i
-  \end{bmatrix}
+  \end{bmatrix}\, .
 \end{equation*}
 Further details over this example can be found in \cite{tensorreview,kruskalstatement,ten1991kruskal,kruskal1989rank}.
 
 Related to this, another difference between tensors and matrices lies in the fact that there is no general and straightforward agorithm to determine the tensor rank and the problem has been proven to be NP-hard\cite{rankNP}\footnote{It is proven in \cite{rankNP} that computing the rank of a three-dimensional tensor over any finite field is NP-complete. Over the rational numbers the problem is NP-hard.}.
 
-\paragraph{Low-rank aproximation}
+\paragraph{Low-rank aproximation.}
 Another interesting difference between matrices and higher order tensors involves the approximation of a tensor by lower rank elements.
 A well known result for matrices \cite{SVDbestapprox} shows that a best rank-k approximation is given by the leading k factors of the SVD\footnote{Here we assume the standard definition of SVD having the singular values ordered in descending magnitude}.
 
 This does not hold for higher order tensors. For instance consider a third-order tensor of rank \R having the following CP decomposition:
 \begin{equation*}
-  \X = \sum_{r=1}^R a_r \circ b_r \circ c_r
+  \X = \sum_{r=1}^R a_r \circ b_r \circ c_r\, .
 \end{equation*}
 We would like to be able to get a best rank-$k$ approximation of \X by summing some specific subset of $k$ factors of the CP decomposition. However this is not possible and it was shown in \cite{kolda2001orthogonal} by reporting a specific case whose best rank-one approximation of a cubic tensor is not a factor in the best rank-two approximation.
 
