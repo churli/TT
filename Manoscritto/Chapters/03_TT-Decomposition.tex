@@ -1,10 +1,10 @@
 \chapter{Tensor-Train decomposition}
 
-The \emph{Tensor-Train decomposition} is the main topic of this work. It is a novel representation which was presented in this form by Oseledets in \cite{oseledets2011tt} although the format was already presented in a recursive form by the same author in \cite{oseledetstyrty2009}.
+The \emph{Tensor-Train decomposition} is the main topic of this work. It is a novel representation which was presented in this form by Oseledets in~\cite{oseledets2011tt} although the format was already presented in a recursive form by the same author in~\cite{oseledetstyrty2009}.
 
 The idea behind the \emph{tensor train decomposition}, or simply \emph{TT-decomposition}, is to have a way of representing a higher order tensor using a sequence of third order tensors. This will prove to be useful, since we can use the \emph{Tucker} decomposition on these third order factors to further lower the number of parameters involved.
 
-In this chapter we will go through some basic theoretical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in \cite{oseledets2011tt}, but it will not be discussed here as it is out of the purpose of this work.
+In this chapter we will go through some basic theoretical results, we will see how to compress a \e{full tensor} into the TT format and how to \e{round} a tensor approximation in the TT format. An algorithm to perform CP to TT conversion exists and is described in~\cite{oseledets2011tt}, but it will not be discussed here as it is out of the purpose of this work.
 
 We define the \emph{TT-decomposition} of a given tensor \A as follows:
 
@@ -113,9 +113,9 @@ We want to see now some fundamental properties of the TT-decomposition. Let \A a
     return $G_1, G_2, \ldots, G_d$
 \end{lstlisting}
 
-The above proof of Theorem \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD} and a pseudocode version can be seen at Algorithm \ref{algo:tt-svd}.
+The above proof of Theorem \ref{teo:ttsvd} is constructive and yields an algorithm for computing the TT-decomposition of a given tensor using $d$ sequential SVDs on the auxiliary unfolding matrices.\footnote{The SVD is used to compute the dyadic decomposition of $A_k$.} This \e{full-to-TT} compression algorithm is called \e{TT-SVD}~\cite{oseledets2011tt} and a pseudocode version can be seen at Algorithm \ref{algo:tt-svd}.
 
-Since the SVD is used, we can leverage its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem lets us estimate the error that is introduced with this procedure, giving us a bound on the error of the TT approximation which depends on the error introduced by each SVD approximation on the unfoldings.
+Since the SVD is used, we can leverage its properties: at each step, we can approximate $A_k$ with a lower-rank matrix via the SVD to have an approximate TT representation of the tensor. The following theorem~\cite{oseledets2011tt} lets us estimate the error that is introduced with this procedure, giving us a bound on the error of the TT approximation which depends on the error introduced by each SVD approximation on the unfoldings.
 
 \begin{Teo} \label{teo:ttsvd_approx}
   Suppose that the unfoldings $A_k$ of the tensor \A are approximately rank-$r_k$, i.e., they satisfy
@@ -173,7 +173,7 @@ Since the SVD is used, we can leverage its properties: at each step, we can appr
   \end{proof}
 \end{Teo}
 
-Two important corollaries follow from this theorem:
+Three important corollaries~\cite{oseledets2011tt} follow from this theorem:
 \begin{Cor}
   If \A admits a canonical approximation with $R$ terms and accuracy $\eps$, then there exists a TT-approximation of \A with TT-ranks $r_k < R$ and accuracy $\sqrt{d-1} \eps$.
 \end{Cor}
@@ -221,7 +221,7 @@ Since we know that $r_0 = r_d = 1$ and assuming that, $\forall k$, $r_k = r$, we
   2nr + (d-2)nr^2\, .
 \end{equation*}
 
-Using a Tucker decomposition on each of the three-dimesional TT-cores this can be lowered further to
+Using a Tucker decomposition on each of the three-dimesional TT-cores this can be lowered~\cite{oseledets2011tt} further to
 \begin{equation*}
   dnr + (d-2)r^3\, .
 \end{equation*}
@@ -229,7 +229,7 @@ Using a Tucker decomposition on each of the three-dimesional TT-cores this can b
 \section{Rounding in the TT format}
 We have seen how a full tensor can be converted into the TT format using Algorithm~\ref{algo:tt-svd}, TT-SVD. However it is not always possible, on real world machines, to have a full tensor to start with: the available memory can be insufficient to store all the elements and even computing all entries of the tensor can be a way too expensive task when dealing with high dimensionality.
 
-It is thus interesting considering the case of having a tensor in an already structured format. More specifically, we can assume having a tensor in the TT format already, but stored with suboptimal ranks $r_k$. This is an important case since, as will be shown later, such tensors can result from performing basic linear algebra operations in TT format. In this case ranks $r_k$ have to be reduced while mantaining the prescribed accuracy: what we need here is a \e{rounding} algorithm, to recompress the tensor to optimal ranks while keeping the TT format.
+It is thus interesting considering the case of having a tensor in an already structured format. More specifically, we can assume having a tensor in the TT format already, but stored with suboptimal ranks $r_k$. This is an important case since, as will be shown later, such tensors can result from performing basic linear algebra operations in TT format. In this case ranks $r_k$ have to be reduced while mantaining the prescribed accuracy: what we need here is a \e{rounding} algorithm~\cite{oseledets2011tt}, to recompress the tensor to optimal ranks while keeping the TT format.
 
 \paragraph{Rounding technique.}
 Let \A be in the TT format:
@@ -282,7 +282,7 @@ are matrices of dominant singular vectors of $A_1$.
 To be able to compute the SVD we thus have to go through the QR decompositions of the factor matrices $U$ and $V$.
 The $U$ matrix is small, as we can see in \eqref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
 
-However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT format, while the small R factor will be stored explicitly. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
+However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT format, while the small R factor will be stored explicitly~\cite{oseledets2011tt}. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
 \begin{Lemma}
   Let a tensor \Z be expressed as:
   \begin{equation*}
@@ -314,7 +314,7 @@ However the $V$ matrix is very large and we will have to compute its QR in a sma
   \end{proof}
 \end{Lemma}
 
-Using the above lemma we can now design a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \eqref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
+Using the above lemma we can now get a fast algorithm for a structured QR decomposition of the matrix V, assuming it is in the TT format as defined in \eqref{def:UV}. The idea is to perform a single right-to-left orthogonalization sweep through all the cores.
 
 Let us start with $V$ written as
 \begin{equation*}
