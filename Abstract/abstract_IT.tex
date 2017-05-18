@@ -16,9 +16,9 @@
 \subsection*{Abstract}
 \end{center}
 
-Presentiamo un metodo di rappresentazione di tensori --~array multidimensionali~-- che è allo stesso tempo semplice, compatto e computazionalmente utilizzabile, chiamato \emph{Tensor Train Decomposition}.
+Presentiamo un metodo di rappresentazione di tensori ---~array multidimensionali~--- che è allo stesso tempo semplice, compatto e computazionalmente utilizzabile, chiamato \emph{Tensor Train Decomposition}.
 
-Questo metodo non soffre inerentemente del \emph{curse of dimensionality} - non dipende quindi esponenzialmente dal numero di dimensioni - e il suo calcolo si basa su approssimazioni di rango basso di particolari matrici associate al tensore stesso (\emph{dispiegamenti} o \emph{unfolding matrices}).
+Questo metodo non soffre inerentemente del \emph{curse of dimensionality} ---~non dipende quindi esponenzialmente dal numero di dimensioni~--- e il suo calcolo si basa su approssimazioni di rango basso di particolari matrici associate al tensore stesso (\emph{dispiegamenti} o \emph{unfolding matrices}).
 Questo permette di sfruttare metodi solidi di approssimazione di matrici, come la \emph{Singular Values Decomposition}, per ottenere un algoritmo di approssimazione del tensore che dimostriamo essere stabile.
 
 Nella tesi partiamo con una introduzione sui tensori, dando le definizioni, le proprietà di base e gli strumenti che ci serviranno in seguito.
@@ -33,4 +33,10 @@ Questo approccio, chiamato TT-Cross, sfrutta la possibilità di calcolare tramit
 
 Concludiamo infine con una serie di esempi numerici che mostrano il basso numero di parametri necessari, rispetto alla rappresentazione esplicita, per immagazzinare l'approssimazione di alcuni tensori ottenuti valutando funzioni multidimensionali su una multi-grid. In particolare, illustriamo come si possano rappresentare agevolmente tensori a 100 o 200 dimensioni su una comune workstation.
 
+I risultati principali presentati sulla Tensor Train Decomposition fanno riferimento agli articoli \cite{oseledetstyrty2009,oseledets2011tt,tt-cross}. Le definizioni e le proprietà generali dei tensori fanno invece riferimento principalmente alla review \cite{tensorreview}.
+
+\vspace{2cm}
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
 \end{document}
