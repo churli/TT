@@ -238,7 +238,7 @@ Let \A be in the TT format:
 \end{equation*}
 and assume its ranks $r_k$ are \e{increased} with respect to the optimal ranks $r_k^\prime$. We want now to estimate these optimal ranks $r_k^\prime \le r_k$ while keeping the prescribed accuracy $\eps$.
 
-First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section.
+First, we try to compute $r_1^\prime$ and reduce our TT representation to this rank value. Our goal is to use the SVD on the unfoldings to discover the optimal ranks and to compute the new \e{recompressed} cores. A full description of the agorithm will be given at the end of this section.%\todo{Really? Double-check please...}
 
 The first unfolding matrix $A_1$ can be written as
 \begin{equation} \label{eq:unfolding_dyadic}
@@ -278,8 +278,20 @@ So we find that
 \end{equation*}
 are matrices of dominant singular vectors of $A_1$.
 
+So if we have a fast and efficient way to compute the QR decompositions of $U$ and $V$, we can have an efficient SVD of the unfoldings. We will see how to achieve it in the next paragraph.
+Let's now assume to have this fast QR.
+
+Using $\hat{U}$ and $\hat{V}$ we obtain that the rank-$\hat{r}$ approximation of the first unfolding is
+\begin{equation*}
+  \hat{A}_1 = \hat{U} \hat{V}^T.
+\end{equation*}
+
+More importantly, we can now obtain the first core of the rounded TT representation of $\A$ by setting $G_1 = \hat{U}$.
+
+In order to proceed further and compute the second core we now just have to decompose $\hat{V}$ the same way as we did for $A_1$ and so forth for all the other cores.
+
 \paragraph{Structured QR decomposition.}
-To be able to compute the SVD we thus have to go through the QR decompositions of the factor matrices $U$ and $V$.
+We have seen that the ability to compute the QR decompositions of the factor matrices $U$ and $V$ is a prerequisite for the rounding algorithm.
 The $U$ matrix is small, as we can see in \eqref{def:UV}, so its QR decomposition can be computed directly with a standard algorithm.
 
 However the $V$ matrix is very large and we will have to compute its QR in a smarter way. The idea is to incrementally compute the Q factor, keeping it in the TT format, while the small R factor will be stored explicitly~\cite{oseledets2011tt}. The tool we need to do this is the following lemma, showing that if the TT-cores satisfy certain othogonality properties, then the first unfolding will have orthogonal columns.
@@ -379,4 +391,4 @@ Looking at the index forms of the above equations, we can see that $Q_k$ and $R_
     #Return the cores of the rounded TT
     return $G_1, G_2, \ldots, G_d$
 \end{lstlisting}
-%eof
+%eof  
