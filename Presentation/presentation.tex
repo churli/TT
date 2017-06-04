@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[compress]{beamer}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
@@ -7,6 +7,7 @@
 \usepackage{adjustbox} % for \adjincludegraphics
 \usepackage{soul}
 \usepackage{color}
+\usepackage{animate}
 
 \usepackage{../Manoscritto/Styles/commands}
 
@@ -21,6 +22,7 @@
 %\usecolortheme{wolverine}
 %\useoutertheme[right]{sidebar}
 \setbeamercovered{dynamic}
+\setbeamertemplate{theorems}[numbered]
 \theoremstyle{definition}
 \newtheorem{definizione}{Definizione}
 \theoremstyle{plain}
@@ -33,6 +35,7 @@
 \end{frame}
 
 \section{Tensori}
+\subsection{Introduzione}
 \begin{frame}
 \frametitle{Cosa sono i Tensori?}
 \begin{itemize}
@@ -47,51 +50,64 @@
 
 \begin{frame}
 \frametitle{Interesse e applicazioni}
-I tensori trovano applicazione in contesti ad elevata dimensionalita', come:
+I tensori trovano applicazione in contesti ad elevata dimensionalità, come:
 \begin{itemize}
 \item Deep Learning
 \item Chimica computazionale
 \item Analisi di segnali
-\item PDE \nota{Vedi come mettere, tipo "Integrazione di PDE"}
+\item Soluzione di PDE
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Tensors are hard}
-I tensori sono ingombranti: $n \times n \times \cdots \times n \rightarrow n^d$
+\frametitle{Curse of dimensionality}
+I tensori sono ingombranti: \alert{$n \times n \times \cdots \times n \rightarrow n^d$}
 \begin{itemize}
-\item Aumento esponenziale della memoria rispetto alla dimensionalita'
+\item Aumento esponenziale del numero di elementi rispetto alla dimensionalità
 \item Raggiungiamo facilmente i limiti fisici del calcolatore
 \end{itemize}
 
-\vspace{5mm}
-
-$\longrightarrow$ \emph{Curse of dimensionality}
-
 % \vspace{5mm}
-
-% Per poter gestire computazionalmente i tensori in modo efficace servono metodi solidi di approssimazione.
+% $\longrightarrow$ \emph{Curse of dimensionality}
 \end{frame}	
 
 \subsection{Definizioni e strumenti}
 \begin{frame}
 \frametitle{Definizioni e strumenti}
 \begin{itemize}
-\item \nota{Fibre e fette}
+\item Fibre e fette
 \item Unfolding
 \item Rango
 \end{itemize}
 \end{frame}
 
 \begin{frame}
+\frametitle{Fibre e fette}
+Le \emph{fibre} di un tensore sono vettori di elementi ottenute fissando tutti gli indici tranne uno.
+Analoghe a righe e colonne nelle matrici.
+
+\begin{center}
+	\includegraphics[width=0.4\textwidth]{Img/fibers.jpg}
+\end{center}
+
+\pause
+Le \emph{fette} di un tensore sono matrici di elementi ottenute fissando tutti gli indici tranne due.
+
+\begin{center}
+	\includegraphics[width=0.4\textwidth]{Img/slices.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}
 \frametitle{Unfolding}
-\emph{Unfolding} o \emph{matricizzazione} e' il processo di riportare gli elementi di un tensore su una matrice.
+\emph{Unfolding} o \emph{matricizzazione} è il processo di riportare gli elementi di un tensore su una matrice.
 
 \begin{center}
 	\includegraphics[width=0.5\textwidth]{Img/unfolding.jpg}
 \end{center}
 
-Preso un tensore \A, il $k$-esimo unfolding e' dato dal considerare i primi k indici e i restanti come due multi-indici:
+\pause
+Preso un tensore \A, il \emph{$k$-esimo unfolding} è dato dal considerare i primi k indici e i restanti come due multi-indici:
 \begin{equation*}
 	A_k = A_k(
 	\underbrace{I}_{i_1,\dots,i_k}
@@ -103,10 +119,11 @@ Preso un tensore \A, il $k$-esimo unfolding e' dato dal considerare i primi k in
 
 \begin{frame}
 \frametitle{Rango}
-Il \emph{rango} di un tensore e' il minimo numero di tensori di rango $1$ la cui somma da' il tensore di partenza.
+Il \emph{rango} di un tensore è il minimo numero di tensori \emph{rango-$1$} la cui somma dà il tensore di partenza.
 
+\pause
 \vspace{5mm}
-Un $d$-tensore di \emph{rango} $1$ e' il risultato del prodotto esterno di $d$ vettori:
+Un $d$-tensore di \emph{rango} $1$ è il risultato del prodotto esterno di $d$ vettori:
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -162,13 +179,14 @@ Storicamente le decomposizioni principali presentate sono state:
 Teoricamente valide, ma computazionalmente problematiche:
 \begin{itemize}
 	\item Mancanza di algoritmi di decomposizione stabili.
-	\item Dipendenza esponenziale del numero di parametri rispetto alla dimensionalita' del tensore.
+	\item Dipendenza esponenziale del numero di parametri rispetto alla dimensionalità del tensore.
 \end{itemize}
 \end{frame}
 
 \section{Tensor Train}
+\subsection{Tensor Train}
 \begin{frame}
-\frametitle{Una decomposizione migliore e' possibile?}
+\frametitle{Una decomposizione migliore è possibile?}
 Vorremmo una decomposizione computazionalmente maneggevole:
 \begin{itemize}
 \item La memoria occupata non deve dipendere esponenzialmente dal grado del tensore (fissato l'errore)
@@ -181,7 +199,14 @@ Vorremmo una decomposizione computazionalmente maneggevole:
 \frametitle{Tensor Train Decomposition (TT)}
 $\A$ tensore $d$-dimensionale, $\G_i$ \emph{core} $3$-dimensionali:
 \begin{equation*}
-	\A = \G_1 \G_2 \cdots \G_d
+	\A = 
+	\underbrace{\G_1}_{1 \times n_1 \times r_1} 
+	\times 
+	\underbrace{\G_2}_{r_1 \times n_2 \times r_2} 
+	\times 
+	\cdots 
+	\times 
+	\underbrace{\G_d}_{r_{d-1} \times n_d \times 1}
 \end{equation*}
 Otteniamo ogni elemento del tensore tramite moltiplicazione delle matrici $G_k(i_k)$\,:
 \begin{equation*}
@@ -202,7 +227,7 @@ Ad esempio: $\A(2,4,2,3) = \raisebox{-0.5\height}{\includegraphics[width=0.4\tex
 \begin{frame}
 \frametitle{Come calcolare la TT?}
 %Abbiamo alcuni risultati:
-\begin{teorema}
+\begin{teorema}[Oseledets, 2011]
 Sia \A un $d$-tensore e sia, per ogni $k$, $A_k$ il $k$-esimo unfolding.
 Allora esiste una decomposizione TT con ranghi $r_k^{(tt)}$ t.c. $r_k^{(tt)} \leq rk(A_k) \, \forall k$
 \end{teorema}
@@ -210,49 +235,65 @@ Allora esiste una decomposizione TT con ranghi $r_k^{(tt)}$ t.c. $r_k^{(tt)} \le
 \vspace{5mm}
 La dimostrazione di questo teorema:
 \begin{itemize}
-	\item e' costruttiva
-	\item ci fornisce l'algoritmo \emph{TT-SVD}
-	\item si basa sull'approssimazione delle matrici di unfolding
+	\item è costruttiva
+	\item fornisce l'algoritmo \emph{TT-SVD}
+	\item è basata sull'approssimazione delle matrici di unfolding
 \end{itemize}
-
-\nota{Metti reference a Oseledets}
 \end{frame}
 
 \begin{frame}
 \frametitle{Come calcolare la TT? (2)}
-\begin{teorema}
+\begin{teorema}[Oseledets, 2011]
 Poniamo che gli unfolding $A_k$ di \A abbiano $\epsilon$-rango $r_k$.
 Allora l'algoritmo TT-SVD produce un tensore \B in formato TT, con ranghi $r_k$ e t.c. 
 \begin{equation*}
     ||\A - \B ||_F \le \epsilon \sqrt{d-1}\, .
 \end{equation*}
-
-\nota{Metti reference a Oseledets}
 \end{teorema}
 
 \vspace{5mm}
 Questo risultato:
 \begin{itemize}
-	\item assicura la stabilita' dell'algoritmo TT-SVD
+	\item assicura la stabilità dell'algoritmo TT-SVD
 	\item fornisce la soglia di approssimazione sulle SVD per ottenere la precisione desiderata sulla TT
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{TT-SVD in pillole}
-\nota{Inserisci qui uno schema di base dell'algo TT-SVD}
+%\nota{Inserisci qui uno schema di base dell'algo TT-SVD}
+\begin{enumerate}
+	\item Calcoliamo la soglia di troncamento SVD: $\delta = \frac{\epsilon}{\sqrt{d-1}} ||\A||_F$
+	\item Per ogni dimensione $k$
+		\begin{enumerate}
+			\item Facciamo primo unfolding del tensore $\rightarrow C$
+			\item Calcoliamo $SVD_{\delta}(C) \rightarrow U,S,V$
+			\item Il core corrente $G_k$ è dato dall'opportuno reshape di $U$
+			\item Procediamo considerando come tensore il reshape di $SV^T$
+		\end{enumerate}
+\end{enumerate}
 \end{frame}
 
 \subsection{Operazioni in TT}
 \begin{frame}
-\frametitle{Operazioni e rounding in TT}
-Molte operazioni di algebra lineare sono facilmente calcolabili direttamente in formato TT:
+\frametitle{Rounding e algebra lineare}
+è possibile \emph{arrotondare} ad una nuova precisione un tensore in formato TT:
 \begin{itemize}
-\item Item 1
-\item Item 2
+	\item \emph{Rounding}
+\end{itemize}
+
+\pause
+\vspace{3mm}
+Le operazioni di algebra lineare sono facilmente calcolabili in formato TT:
+\begin{itemize}
+\item Somma
+\item Moltiplicazione per scalare
+\item Prodotto scalare
+\item Norma di Frobenius
 \end{itemize}
 \end{frame}
 
+\subsection{Numero di parametri}
 \begin{frame}
 \frametitle{Quanto spazio?}
 \begin{equation*}
@@ -265,15 +306,15 @@ Molte operazioni di algebra lineare sono facilmente calcolabili direttamente in 
 \end{equation*}	
 
 \vspace{5mm}
-Se poniamo $\,r_k \leq r\,$ e $\,n_k \leq n\,$ per $\,k = 1,\ldots,d\,$, il numero di parametri e' maggiorato da
+Se $\,r_k \leq r\,$ e $\,n_k \leq n\,$ per ogni $\,k$, otteniamo:
 \begin{equation*}
-	2nr + (d-2)nr^2
+	2nr + (d-2)nr^2 = \mathcal{O}(dnr^2)
 \end{equation*}
 
 Quindi:
 \begin{itemize}
-	\item non c'e' dipendenza esponenziale dall'ordine del tensore
-	\item lo spazio occupato dipende molto dalla precisione scelta
+	\item Non c'è dipendenza esponenziale dall'ordine del tensore
+	\item Dipendenza è principalmente sulla precisione scelta
 \end{itemize}
 \end{frame}
 
@@ -281,44 +322,85 @@ Quindi:
 \begin{frame}
 \frametitle{Abbiamo raggiunto i nostri obiettivi?}
 \begin{itemize}
-\item La memoria occupata non dipende esponenzialmente dal grado del tensore $\rightarrow$ {$\color{blue} 2nr + (d-2)nr^2$} \color{black}
+\item La memoria occupata non dipende esponenzialmente dal grado del tensore $\rightarrow$ {$\color{blue} \mathcal{O}(dnr^2)$} \color{black}
 \item Esiste algoritmo di approssimazione e decomposizione stabile $\rightarrow$ \textcolor{blue}{Teorema 1 + Teorema 2}
-\item E' possibile eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Title}
-\begin{itemize}
-\item Item 1
-\item Item 2
+\item è possibile eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
 \end{itemize}
 \end{frame}
 
 \section{TT-Cross}
+\subsection{Oltre i limiti di dimensionalità}
 \begin{frame}
-\frametitle{Title}
-\begin{itemize}
-\item Item 1
-\item Item 2
-\end{itemize}
+\frametitle{Non proprio...}
+\pause
+\alert{Tutto~funziona~solo~se~possiamo~immagazzinare~il~tensore~di~partenza.}
 \end{frame}
 
-\section{Esempio}
 \begin{frame}
-\frametitle{Title}
-\begin{itemize}
-\item Item 1
-\item Item 2
-\end{itemize}
+\frametitle{Approssimazione iterativa di tensori \emph{black-box}}
+In alcuni casi possiamo avere un tensore di cui si possano calcolare gli elementi a partire dalle coordinate $\rightarrow$ \emph{black-box}
+
+\vspace{10mm}
+Vorremmo poter costruire l'approssimazione TT iterativamente, calcolando e utilizzando solo alcuni elementi alla volta.
 \end{frame}
 
+\begin{frame}
+\frametitle{TT-Cross}
+Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattando TT-SVD secondo la seguente idea:
+\begin{itemize}
+	\item \emph{Skeleton decomposition} al posto della SVD
+	\item Approssimiamo gli unfolding tramite un subset limitato di righe e di colonne $\rightarrow$ algoritmo \emph{maxvol}
+	\item Si dimostra che il numero di elementi da calcolare per approssimare l'intero tensore è $\mathcal{O}(dnr^2)$
+\end{itemize}
+
+\vspace{5mm}
+(Oseledets, Tyrtyshnikov, 2011)
+\end{frame}
+
+\section{Conclusioni}
+\subsection{Esempio su immagini}
+\begin{frame}
+\frametitle{Esempio su immagini}
+%\alert{Inseriamo le gif di esempio?}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+	% \animategraphics[loop,width=\linewidth]{10}{Img/cats_orig.d/cats_orig-}{0}{117}
+	% \vspace{3mm}
+	% \animategraphics[loop,width=\linewidth]{10}{Img/cats_4.d/cats_4-}{0}{117}
+	\animategraphics[loop,width=\linewidth]{10}{Img/cats_orig.d/cats_orig-}{45}{70}
+	\vspace{3mm}
+	\animategraphics[loop,width=\linewidth]{10}{Img/cats_4.d/cats_4-}{45}{70}
+\end{column}
+\begin{column}{0.5\textwidth}
+	% \animategraphics[loop,width=\linewidth]{10}{Img/cats_1.d/cats_1-}{0}{117}
+	% \vspace{3mm}
+	% \animategraphics[loop,width=\linewidth]{10}{Img/cats_7.d/cats_7-}{0}{117}
+		\animategraphics[loop,width=\linewidth]{10}{Img/cats_1.d/cats_1-}{45}{70}
+	\vspace{3mm}
+	\animategraphics[loop,width=\linewidth]{10}{Img/cats_7.d/cats_7-}{45}{70}
+\end{column}
+\end{columns}
+\end{frame}
+
+\subsection{Conclusioni}
 \begin{frame}
 \frametitle{Conclusioni}
-I tensori sono oggetti che ci permettono di trattare problemi multidimensionali.
+\begin{itemize}
+	\item I tensori sono oggetti che ci permettono di trattare problemi multidimensionali.
+	\item La Tensor Train Decomposition ci permette di rendere computazionalmente accessibili questi problemi anche a dimensionalità prima inaccessibili.
+	\item L'approccio TT-Cross permette di trattare tensori la cui dimensionalità rende impossibile anche solo immagazzinarne la rappresentazione esplicita.
+\end{itemize}
 
-La TT ci permette di rendere computazionalmente accessibili questi problemi.
-In particolare, in scenari di elevata dimensionalita', il procedimento di TT-CROSS rende possibile trattare problemi prima impensabili.
+\pause
+\vspace{2mm}
+\begin{center}
+	\Huge Grazie!
+\end{center}
 \end{frame}
+
+% \subsection{Fine}
+% \begin{frame}
+% Grazie!
+% \end{frame}
 
 \end{document}
