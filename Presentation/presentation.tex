@@ -42,9 +42,9 @@
 \item Array multidimensionali
 \item Generalizzazione di vettori e matrici
 \end{itemize}
-\vspace{3mm}
+\vspace{1mm}
 \begin{center}
-	\includegraphics[width=.5\textwidth]{Img/tensors.jpg}
+	\includegraphics[width=0.6\textwidth]{Img/tensors.jpg}
 \end{center}
 \end{frame}
 
@@ -53,8 +53,8 @@
 I tensori trovano applicazione in contesti ad elevata dimensionalità, come:
 \begin{itemize}
 \item Deep Learning
-\item Chimica computazionale
 \item Analisi di segnali
+\item Fisica e chimica computazionali
 \item Soluzione di PDE
 \end{itemize}
 \end{frame}
@@ -78,6 +78,7 @@ I tensori sono ingombranti: \alert{$n \times n \times \cdots \times n \rightarro
 \item Fibre e fette
 \item Unfolding
 \item Rango
+\item SVD
 \end{itemize}
 \end{frame}
 
@@ -144,14 +145,19 @@ Un $d$-tensore di \emph{rango} $1$ è il risultato del prodotto esterno di $d$ v
 \end{columns}
 \end{frame}
 
-% \begin{frame}
-% \frametitle{Problemi}
-% \begin{itemize}
-% \item Curse of dimensionality
-% \item Determinazione del rango
-% \item Degenerazione
-% \end{itemize}
-% \end{frame}
+\begin{frame}
+\frametitle{Decomposizione a valori singolari (SVD)}
+La SVD ci permette di fattorizzare una matrice $A$ in:
+\begin{equation*}
+	A = U \Sigma V^T
+\end{equation*}
+\begin{itemize}
+	\item $U$ e $V$ sono matrici ortonormali
+	\item $\Sigma$ è matrice diagonale	
+	\item Elementi di $\Sigma$ sono $\sigma_1 > \sigma_2 > \cdots > \sigma_r > 0$
+	\item \emph{Troncando} $\Sigma$ otteniamo approssimazione di rango minore
+\end{itemize}
+\end{frame}
 
 \subsection{Decomposizioni}
 \begin{frame}
@@ -189,7 +195,7 @@ Teoricamente valide, ma computazionalmente problematiche:
 \frametitle{Una decomposizione migliore è possibile?}
 Vorremmo una decomposizione computazionalmente maneggevole:
 \begin{itemize}
-\item La memoria occupata non deve dipendere esponenzialmente dal grado del tensore (fissato l'errore)
+\item La memoria occupata non deve dipendere esponenzialmente dalla dimensionalità del tensore (fissato l'errore)
 \item Deve avere un algoritmo di approssimazione e decomposizione stabile
 \item Necessario poter eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
 \end{itemize}
@@ -235,9 +241,9 @@ Allora esiste una decomposizione TT con ranghi $r_k^{(tt)}$ t.c. $r_k^{(tt)} \le
 \vspace{5mm}
 La dimostrazione di questo teorema:
 \begin{itemize}
-	\item è costruttiva
-	\item fornisce l'algoritmo \emph{TT-SVD}
-	\item è basata sull'approssimazione delle matrici di unfolding
+	\item \`E costruttiva
+	\item Fornisce l'algoritmo \emph{TT-SVD}
+	\item \`E basata sull'approssimazione delle matrici di unfolding
 \end{itemize}
 \end{frame}
 
@@ -254,8 +260,8 @@ Allora l'algoritmo TT-SVD produce un tensore \B in formato TT, con ranghi $r_k$ 
 \vspace{5mm}
 Questo risultato:
 \begin{itemize}
-	\item assicura la stabilità dell'algoritmo TT-SVD
-	\item fornisce la soglia di approssimazione sulle SVD per ottenere la precisione desiderata sulla TT
+	\item Assicura la stabilità dell'algoritmo TT-SVD
+	\item Fornisce la soglia di approssimazione sulle SVD per ottenere la precisione desiderata sulla TT
 \end{itemize}
 \end{frame}
 
@@ -277,7 +283,7 @@ Questo risultato:
 \subsection{Operazioni in TT}
 \begin{frame}
 \frametitle{Rounding e algebra lineare}
-è possibile \emph{arrotondare} ad una nuova precisione un tensore in formato TT:
+\`E possibile \emph{arrotondare} ad una nuova precisione un tensore in formato TT:
 \begin{itemize}
 	\item \emph{Rounding}
 \end{itemize}
@@ -289,7 +295,7 @@ Le operazioni di algebra lineare sono facilmente calcolabili in formato TT:
 \item Somma
 \item Moltiplicazione per scalare
 \item Prodotto scalare
-\item Norma di Frobenius
+\item Norma
 \end{itemize}
 \end{frame}
 
@@ -324,7 +330,7 @@ Quindi:
 \begin{itemize}
 \item La memoria occupata non dipende esponenzialmente dal grado del tensore $\rightarrow$ {$\color{blue} \mathcal{O}(dnr^2)$} \color{black}
 \item Esiste algoritmo di approssimazione e decomposizione stabile $\rightarrow$ \textcolor{blue}{Teorema 1 + Teorema 2}
-\item è possibile eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
+\item \`E possibile eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
 \end{itemize}
 \end{frame}
 
@@ -346,10 +352,9 @@ Vorremmo poter costruire l'approssimazione TT iterativamente, calcolando e utili
 
 \begin{frame}
 \frametitle{TT-Cross}
-Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattando TT-SVD secondo la seguente idea:
+Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattando TT-SVD:
 \begin{itemize}
-	\item \emph{Skeleton decomposition} al posto della SVD
-	\item Approssimiamo gli unfolding tramite un subset limitato di righe e di colonne $\rightarrow$ algoritmo \emph{maxvol}
+	\item Approssimiamo gli unfolding tramite un loro sottoinsieme di righe e di colonne $\rightarrow$ algoritmo \emph{maxvol}
 	\item Si dimostra che il numero di elementi da calcolare per approssimare l'intero tensore è $\mathcal{O}(dnr^2)$
 \end{itemize}
 
