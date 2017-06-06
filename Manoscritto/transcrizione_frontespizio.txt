@@ -1,0 +1,13 @@
+UNIVERSITÀ DI PISA
+Corso di Laurea in Matematica
+
+Tesi di Laurea
+
+TENSOR TRAIN DECOMPOSITION
+A TENSOR REPRESENTATION FORMAT
+FOR HIGH-DIMENSIONAL PROBLEMS
+
+Relatore:          Candidato:
+Prof. Dario Bini   Tommaso Bianucci
+
+ANNO ACCADEMICO 2016-2017

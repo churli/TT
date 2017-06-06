@@ -1,10 +1,15 @@
 #!/bin/bash
 
-ECHECK=$(ps aux | grep "evince Out/tesi.pdf" | awk '{print $2}')
+PDF_FILE="$1"
+COMPILE_TARGET="$2"
+BIBCOMPILE_TARGET="$3"
+# PDF_FILE="tesi.pdf"
+
+ECHECK=$(ps aux | grep "evince Out/${PDF_FILE}" | awk '{print $2}')
 if [ "$ECHECK" ]; then
     EPID="$ECHECK"
 else
-    evince Out/tesi.pdf &
+    evince Out/${PDF_FILE} &
     EPID="$!"
 fi
 
@@ -13,7 +18,7 @@ OLDCITE=$(find . -name "*.tex" -exec cat '{}' 2>/dev/null \; | grep -o "\\\cite{
 while true; do
     ERUN=`ps aux | awk '{print $2}' | grep "^$EPID$"`
     if [ ! "$ERUN" ]; then
-	evince Out/tesi.pdf &
+	evince Out/${PDF_FILE} &
 	EPID="$!"
     fi
     CUR=$(find . -name "*.tex" -exec cat '{}' 2>/dev/null \; | md5sum | grep -o "^[^ ]*")
@@ -21,11 +26,11 @@ while true; do
     if [[ "$CUR" != "$OLD" ]]; then
 	if [[ "${CITE}" == "${OLDCITE}" ]]; then
 	    echo "Starting target COMPILE"
-	    make compileauto
+	    make ${COMPILE_TARGET}
 	    echo "Target COMPILE completed"
 	else
 	    echo "Starting target BIBCOMPILE"
-	    make bibcompileauto
+	    make ${BIBCOMPILE_TARGET}
 	    echo "Target BIBCOMPILE completed"
 	fi
 	OLD=$CUR
