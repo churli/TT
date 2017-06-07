@@ -155,7 +155,7 @@ La SVD ci permette di fattorizzare una matrice $A$ in:
 	\item $U$ e $V$ sono matrici ortonormali
 	\item $\Sigma$ è matrice diagonale	
 	\item Elementi di $\Sigma$ sono $\sigma_1 > \sigma_2 > \cdots > \sigma_r > 0$
-	\item \emph{Troncando} $\Sigma$ otteniamo approssimazione di rango minore
+	\item \emph{Troncando} $\Sigma$ otteniamo approssimazione di rango inferiore
 \end{itemize}
 \end{frame}
 
@@ -386,7 +386,8 @@ Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattan
 % \end{column}
 % \end{columns}
 \begin{center}
-	\animategraphics[loop,width=\linewidth]{10}{Img/cats_grid.d/cats_grid-}{0}{117}
+	% \animategraphics[loop,width=\linewidth]{10}{Img/cats_grid.d/cats_grid-}{0}{117}
+	\animategraphics[loop,width=\linewidth]{10}{Img/cats_grid.d/cats_grid-}{0}{0}
 \end{center}
 \end{frame}
 
@@ -395,7 +396,7 @@ Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattan
 \frametitle{Conclusioni}
 \begin{itemize}
 	\item I tensori sono oggetti che ci permettono di trattare problemi multidimensionali.
-	\item La Tensor Train Decomposition ci permette di rendere computazionalmente accessibili questi problemi anche a dimensionalità prima inaccessibili.
+	\item La Tensor Train Decomposition ci permette di rendere computazionalmente accessibili questi problemi anche a dimensionalità prima intrattabili.
 	\item L'approccio TT-Cross permette di trattare tensori la cui dimensionalità rende impossibile anche solo immagazzinarne la rappresentazione esplicita.
 \end{itemize}
 
