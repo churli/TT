@@ -1,71 +1,82 @@
 [Slide 1]:
-	Buongiorno, oggi parliamo di tensori e di come rappresentarli e maneggiarli efficientemente da un punto di vista computazionale.
-	Vedremo cos'e' un tensore e parleremo della decomposizione Tensor Train e dei vantaggi che offre.
+	Buongiorno, nela mia presentazione vi parlero' di tensori e di come rappresentarli e maneggiarli efficientemente da un punto di vista computazionale.
+	Vedremo cos'e' un tensore, definiremo alcuni strumenti e parleremo della decomposizione Tensor Train e dei vantaggi che offre.
 [Slide 2]:
-	I tensori sono array multidimensionali, che generalizzano vettori -- uni-dimensionali -- e matrici -- bi-dimensionali -- ad un numero qualsiasi di indici.
+	I tensori sono array multidimensionali, quindi insiemi di elementi multi-indicizzati, che generalizzano vettori e matrici ad un numero qualsiasi di indici.
 [Slide 3]:
 	I tensori permettono di rappresentare naturalmente dati multidimensionali.
-	Trovano applicazione in tutti i settori scientifici e computazionali in cui si devono gestire dati multidimensionali.
+	Trovano applicazione in tutti i settori scientifici e computazionali in cui si deve gestire questo tipo di dati.
 	Ad esempio:
-	- Nelle reti neurali artificiali, per rappresentare le connessioni tra i diversi nodi.
+	- Nelle reti neurali artificiali, per rappresentare le connessioni tra i diversi nodi che le compongono.
 	- Nella neurobiologia, per processare i segnali degli elettrodi per EEG.
-	- Nelle simulazioni di meccanica quantistica, che coinvolgono un numero elevato di dimensioni.
-	- Nella soluzione di equazioni alle derivate parziali multidimensionali.
+	- Nelle simulazioni di meccanica quantistica, che coinvolgono un alto numero di dimensioni.
 [Slide 4]:
 	Il problema dei tensori e' che sono molto ingombranti.
 	Il numero di elementi cresce esponenzialmente al crescere del numero di dimensioni.
-	Questo fa si che si raggiungano i limiti fisici di calcolo molto rapidamente e rende impossibile lavorare su problemi di elevata dimensionalita'.
+	Questo fa si che, molto velocemente, si raggiungano i limiti fisici di calcolo e rende impossibile lavorare su problemi di elevata dimensionalita'.
+
+	Quindi e' importante trovare modi per rappresentare i tensori tramite loro approssimazioni "compatte".
 [Slide 5]:
 	Vediamo ora alcuni concetti e strumenti che ci serviranno in seguito.
-[Slide 6-7]:
-	Le fibre sono gli analoghi di righe e colonne per le matrici.
-	Si ottengono quindi fissando tutti gli indici tranne 1.
-	Le fette sono l'analogo bi-dimensionale e sono proprio come ci immagineremmo delle "fette".
-	Qui possiamo vedere le fette di un tensore tri-dimensionale.
+# [Slide 6-7]: (fibre e fette)
+# 	Le fibre sono gli analoghi di righe e colonne per le matrici.
+# 	Si ottengono quindi fissando tutti gli indici tranne 1.
+# 	
+# 	Le fette sono l'analogo bi-dimensionale e sono proprio come ci immagineremmo delle "fette".
+# 	Qui possiamo vedere le fette di un tensore tri-dimensionale.
 [Slide 8-9]:
 	Unfolding e' il processo di riportare gli elementi di un tensore su una matrice e con la parola "unfolding" si denota anche la matrice che ne deriva.
-	Un unfolding puo' essere fatto con un procedimento arbitrario.
+	Un unfolding puo' essere eseguito con un procedimento arbitrario.
+	
 	Definiamo come "k-esimo unfolding" (canonico) quello dato dal considerare i primi k indici come un unico multi-indice (riga) e i restanti d-k come un secondo multi-indice (colonna).
 [Slide 10-11]:
-	Definiamo come rango di un tensore il minimo numero di tensori "rango-1" che sommati danno il tensore di partenza.
+	Definiamo il rango di un tensore come il minimo numero di tensori "rango-1" che sommati danno il tensore di partenza.
+	
 	Un tensore d-dimensionale e' "rango-1" se e' il risultato del prodotto esterno di d vettori.
-[Slide 12]:
+	Questo e' l'analogo del costruire una matrice di rango 1 come u * v^T
+[Slide 12]: 
 	La Decomposizione a Valori Singolari -- proposta inizialmente dal matematico ottocentesco Eugenio Beltrami -- ci permette di fattorizzare una matrice A nel prodotto di due matrici ortonormali e di una diagonale.
 	Gli elementi della matrice diagonale
 		- prendono il nome di valori singolari,
 		- sono non negativi
 		- Il numero di quelli non-zero ci da il rango della matrice
-	Se "tronchiamo" Sigma prendendo solo i k valori singolari maggiori, otteniamo la migliore approssimazione di A di rango k.
+	Se "tronchiamo" Sigma prendendo solo i k valori singolari maggiori, otteniamo la migliore approssimazione di rango k della matrice A.
 [Slide 13]:
-	Le decomposizioni finora piu' usate sono la decomposizione CP e Tucker.
-	Queste decomposizioni pero' non sono "maneggevoli" da un punto di vista computazionale.
+	Cosi' come le decomposizioni sono molto importanti per le matrici, lo stesso accade per i tensori.
+
+	Le decomposizioni di tensori finora piu' usate sono la decomposizione CP e Tucker.
+	Non entreremo ora nei loro dettagli, ma quello che succede e' che queste decomposizioni non sono "maneggevoli" da un punto di vista computazionale.
 	Infatti:
 		- CP Non ha algoritmi di decomposizione stabili
-		- Tucker mantiene comunque dipendenza esponenziale rispetto alla dimensionalita'
+		- Tucker mantiene comunque dipendenza esponenziale rispetto alla dimensionalita' che la rende adatta solo in bassa dimensione
 [Slide 14]:
-	Vorremmo una decomposizione in cui l'utilizzo di memoria non sia intrinsecamente esponenziale, ma possa essere "regolato" tramite la precisione di approssimazione.
-	Questa dovrebbe avere un algoritmo di decomposizione stabile e robusto.
-	E dovrebbe permettere di poter applicare operazioni "comuni" di algebra lineare senza dover abbandonare il formato.
+	Vorremmo una decomposizione con buone proprieta' computazionali, in cui l'utilizzo di memoria non sia intrinsecamente esponenziale, ma possa essere "regolato" tramite la precisione di approssimazione.
+	Inoltre dovrebbe avere un algoritmo di decomposizione stabile e robusto.
+	Infine dovrebbe permettere di poter applicare operazioni "comuni" di algebra lineare senza dover abbandonare il formato.
 [Slide 15]:
 	La decomposizione che proponiamo e' la Tensor Train Decomposition.
 	
 	Consideriamo un tensore d-dimensionale A.
 	Possiamo rappresentarlo utilizzando d tensori 3-dimensionali G_i detti "core" o "carrozze", da cui il nome Tensor Train.
-	Ognuno di questi core ha una dimensione "spaziale" n_i -- l'i-esimo indice del tensore -- e due dimensioni ausiliarie r_{i-1}, r_i che permettono di farne il prodotto tra loro.
-	I valori di r_i prendono il nome di ranghi-TT e dipendono dalla precisione di approssimazione.
+
+	Ognuno di questi core ha una dimensione "spaziale" n_i -- l'i-esimo indice del tensore originario -- e due dimensioni ausiliarie r_{i-1}, r_i che permettono di farne il prodotto tra loro.
+	I valori di r_i prendono il nome di ranghi-TT e dipendono, come vedremo, dalla precisione di approssimazione.
 
 	Vediamo come si ottiene un elemento del tensore di partenza: fissando tutti gli indici nei vari core, otteniamo un prodotto di d matrici, in cui le dimensioni iniziale e finale sono forzate a 1, in modo da avere un risultato scalare.
 
 	Qui possiamo vedere un esempio: prendiamo le fette 2,4,2,3 rispettivamente e ne facciamo il prodtto, per ottenere l'elemento A(2,4,2,3).
 
-	Ma quali sono le proprieta' della decomposizione TT? Come possiamo in pratica ottenerla?
+	Vediamo ora quali sono le proprieta' della decomposizione TT e come possiamo ottenerla in pratica
 [Slide 16]:
-	Abbiamo due risultati: il primo ci dice che, per ogni k, il k-esimo rango TT e' minore o uguale del rango della k-esima matrice di unfolding.
-	Questo ci da una forte relazione tra il rango matriciale (su cui abbiamo il solido algoritmo SVD) e i ranghi-TT del tensore.
-	Inoltre la dimostrazione di questo teorema ci fornisce un algoritmo di decomposizione -- TT-SVD -- basato su ll'approssimazione degli unfolding.
+	Abbiamo due risultati: il primo ci dice che, per ogni dimensione k, il k-esimo rango TT e' minore o uguale al rango della k-esima matrice di unfolding.
+	# Questo ci da una forte relazione tra il rango matriciale (su cui abbiamo il solido algoritmo SVD) e i ranghi-TT del tensore.
+	Questo, vedremo, ci fornisce un limite al numero di parametri necessari.
+	
+	Inoltre la dimostrazione di questo teorema e' costruttiva e ci fornisce un algoritmo di decomposizione -- TT-SVD -- basato sull'approssimazione delle matrici unfolding.
 [Slide 17]:
 	Il secondo teorema fornisce un limite all'errore dell'approssimazione, mettendolo in relazione con l'errore fatto nell'approssimare gli unfolding.
-	Questo assicura che l'algoritmo TT-SVD e' stabile e ci da un modo per calcolare la soglia di approssimazione per gli unfolding per ottenere la precisione desiderata sul tensore.
+
+	Questo assicura che l'algoritmo e' stabile e ci da un modo per calcolare la soglia di errore da usare nell'approssimazione delle matrici di unfolding per ottenere la precisione desiderata sul tensore.
 [Slide 18]:
 	Vediamo come funziona, ad alto livello, l'agoritmo TT-SVD:
 	- Iniziamo calcolando la soglia per l'approssimazione degli unfolding
@@ -74,11 +85,11 @@
 		- Di questo unfolding facciamo la SVD ottenendo i fattori U S V
 		- Il core corrente (k-esimo) della TT si ottiene facendo il reshape di U nelle 3 dimensioni opportune
 		- Invece S e V trasposto vengono riorganizzati in un tensore indicizzato dai restanti d-k indici e viene passato alla prossima iterazione del ciclo
-	- Cosi' via fino in fondo
+	- Cosi' via fino in fondo, ottenendo tutti i core della decomposizione
 [Slide 19-20]:
 	Ora che abbiamo il tensore in formato TT, possiamo farci varie operazioni.
-	Una fondamentale e' quella di riduzione della precisione di approssimazione, che riduce i ranghi-TT al minimo necessario.
-	Questa si chiama rounding ed e' particolarmente utile perche' alcune operazioni sotto, come la somma, vanno ad incrementare i ranghi e richiedono un successivo "arrotondamento" del risultato.
+	Una fondamentale e' quella dell'arrotondamento (rounding), che riduce i ranghi-TT al minimo necessario data una certa precisione.
+	Questa e' particolarmente utile perche' alcune operazioni sotto, come la somma, vanno ad incrementare i ranghi-TT e richiedono un successivo "arrotondamento" del risultato.
 
 	Altre operazioni sono la somma, moltiplicazione per uno scalare, prodotto scalare, la norma, ecc...
 [Slide 21]:
@@ -88,7 +99,7 @@
 	Quindi, ricapitolando, abbiamo:
 	- Rimosso la dipendenza esponenziale da d
 	- Un algoritmo di decomposizione stabile
-	- Possibilita' di eseguire operazioni NEL formato TT
+	- Possibilita' di eseguire operazioni direttamente NEL formato TT
 
 	...quindi abbiamo ottenuto quello che cercavamo, giusto?
 [Slide 23-24]:
@@ -103,9 +114,9 @@
 
 	E in questo caso, abbiamo a disposizione un algoritmo che costruisce l'approssimazione iterativamente, utilizzando solo un sottoinsieme di elementi.
 [Slide 26]:
-	Questo algoritmo prende il nome di TT-CROSS, che modifica ed estende l'idea dietro TT-SVD:
+	Questo algoritmo prende il nome di TT-CROSS, che modifica ed estende l'idea che sta alla base dell'algoritmo visto in precedenza:
 	- Approssimiamo gli unfolding tramite un sottoinsieme di righe e colonne, invece che usare la SVD.
-		La scelta di queste righe e colonne e' fatta tramite un algoritmo chiamato MAXVOL. (lo diciamo?)
+		La scelta di queste righe e colonne e' ovviamente fatta in modo opportuno.
 	- Si puo' vedere che questo metodo permette di approssimare il tensore con un numero di valutazioni di funzione nell'ordine di dnr^2.
 [Slide 27]:
 	Vediamo ora un semplice esempio per avere un'idea intuitiva di come la decomposizione TT approssimi i dati di un tensore.
@@ -114,13 +125,17 @@
 	- Ogni fotogramma e' in realta' composto da 3 fotogrammi diversi, 1 per ogni colore primario
 	- Il tempo (numero del fotogramma) scandisce il quarto indice
 
+	<AVVIA_IMMAGINE>
+
 	Vediamo cosa succede con diversi livelli di approssimazione.
 	Innanzitutto notiamo come ci siano delle "bande" lungo le dimensioni.
 	Ma vediamo come queste bande si mostrino anche nella dimensione temporale sotto la forma di immagini fantasma, che anticipano o ripetono eventi "sul frame sbagliato".
 
 	Questo e' ovviamente solo un esempio illustrativo e TT non e' un formato ottimizzato per la compressione video.
+	Ma questo ci da un'idea intuitiva di come la TT manipoli il contenuto dei tensori.
 [Slide 28-29]:
 	Concludiamo questa presentazione ripercorrendo cosa abbiamo visto:
 	- I tensori ci permettono di rappresentare dati e problemi multidimensionali e per questo sono oggetto di interesse in varie discipline scientifiche e computazionali.
 	- La Tensor Train Decomposition rende computazionalmente accessibili le alte dimensionalita'
-	- Grazie all'algoritmo TT-CROSS possiamo trattare problemi il cui numero di dimensioni sarebbe troppo elevato anche soltanto per immagazzinare il tensore in prima istanza. Questo nel caso gli elementi del tensore possano essere calcolati con una procedura.
+	- Grazie all'algoritmo TT-CROSS possiamo trattare problemi il cui numero di dimensioni sarebbe troppo elevato anche soltanto per immagazzinare il tensore in prima istanza.
+	Rendendo accessibile tutta una nuova classe di problemi applicativi di alte dimensioni.

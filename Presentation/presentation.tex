@@ -55,7 +55,6 @@ I tensori trovano applicazione in contesti ad elevata dimensionalità, come:
 \item Deep Learning
 \item Analisi di segnali
 \item Fisica e chimica computazionali
-\item Soluzione di PDE
 \end{itemize}
 \end{frame}
 
@@ -75,29 +74,29 @@ I tensori sono ingombranti: \alert{$n \times n \times \cdots \times n \rightarro
 \begin{frame}
 \frametitle{Definizioni e strumenti}
 \begin{itemize}
-\item Fibre e fette
+% \item Fibre e fette
 \item Unfolding
 \item Rango
 \item SVD
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Fibre e fette}
-Le \emph{fibre} di un tensore sono vettori di elementi ottenute fissando tutti gli indici tranne uno.
-Analoghe a righe e colonne nelle matrici.
+% \begin{frame}
+% \frametitle{Fibre e fette}
+% Le \emph{fibre} di un tensore sono vettori di elementi ottenute fissando tutti gli indici tranne uno.
+% Analoghe a righe e colonne nelle matrici.
 
-\begin{center}
-	\includegraphics[width=0.4\textwidth]{Img/fibers.jpg}
-\end{center}
+% \begin{center}
+% 	\includegraphics[width=0.4\textwidth]{Img/fibers.jpg}
+% \end{center}
 
-\pause
-Le \emph{fette} di un tensore sono matrici di elementi ottenute fissando tutti gli indici tranne due.
+% \pause
+% Le \emph{fette} di un tensore sono matrici di elementi ottenute fissando tutti gli indici tranne due.
 
-\begin{center}
-	\includegraphics[width=0.4\textwidth]{Img/slices.jpg}
-\end{center}
-\end{frame}
+% \begin{center}
+% 	\includegraphics[width=0.4\textwidth]{Img/slices.jpg}
+% \end{center}
+% \end{frame}
 
 \begin{frame}
 \frametitle{Unfolding}
@@ -182,7 +181,7 @@ Storicamente le decomposizioni principali presentate sono state:
 \end{columns}
 
 \vspace{5mm}
-Teoricamente valide, ma computazionalmente problematiche:
+Entrambe sono computazionalmente problematiche:
 \begin{itemize}
 	\item Mancanza di algoritmi di decomposizione stabili.
 	\item Dipendenza esponenziale del numero di parametri rispetto alla dimensionalità del tensore.
@@ -195,9 +194,9 @@ Teoricamente valide, ma computazionalmente problematiche:
 \frametitle{Una decomposizione migliore è possibile?}
 Vorremmo una decomposizione computazionalmente maneggevole:
 \begin{itemize}
-\item La memoria occupata non deve dipendere esponenzialmente dalla dimensionalità del tensore (fissato l'errore)
-\item Deve avere un algoritmo di approssimazione e decomposizione stabile
-\item Necessario poter eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}
+\item La memoria occupata non deve dipendere esponenzialmente dalla dimensionalità del tensore.
+\item Deve avere un algoritmo di approssimazione e decomposizione stabile.
+\item Necessario poter eseguire le operazioni di algebra lineare di base direttamente nel formato \emph{compresso}.
 \end{itemize}
 \end{frame}
 
@@ -232,12 +231,12 @@ Ad esempio: $\A(2,4,2,3) = \raisebox{-0.5\height}{\includegraphics[width=0.4\tex
 \subsection{Calcolo}
 \begin{frame}
 \frametitle{Come calcolare la TT?}
-%Abbiamo alcuni risultati:
 \begin{teorema}[Oseledets, 2011]
 Sia \A un $d$-tensore e sia, per ogni $k$, $A_k$ il $k$-esimo unfolding.
 Allora esiste una decomposizione TT con ranghi $r_k^{(tt)}$ t.c. $r_k^{(tt)} \leq rk(A_k) \, \forall k$
 \end{teorema}
 
+% \pause
 \vspace{5mm}
 La dimostrazione di questo teorema:
 \begin{itemize}
@@ -277,12 +276,13 @@ Questo risultato:
 			\item Il core corrente $G_k$ è dato dall'opportuno reshape di $U$
 			\item Procediamo considerando come tensore il reshape di $SV^T$
 		\end{enumerate}
+	\item $TT_{\epsilon}(\A) = [G_1, \ldots, G_d]$
 \end{enumerate}
 \end{frame}
 
 \subsection{Operazioni in TT}
 \begin{frame}
-\frametitle{Rounding e algebra lineare}
+\frametitle{Operazioni in TT}
 \`E possibile \emph{arrotondare} ad una nuova precisione un tensore in formato TT:
 \begin{itemize}
 	\item \emph{Rounding}
@@ -301,7 +301,7 @@ Le operazioni di algebra lineare sono facilmente calcolabili in formato TT:
 
 \subsection{Numero di parametri}
 \begin{frame}
-\frametitle{Quanto spazio?}
+\frametitle{Di quanto spazio abbiamo bisogno?}
 \begin{equation*}
 	TT_\epsilon(\A) = 
 	\underbrace{\G_1}_{1 \times n_1 \times r_1}
@@ -314,7 +314,7 @@ Le operazioni di algebra lineare sono facilmente calcolabili in formato TT:
 \vspace{5mm}
 Se $\,r_k \leq r\,$ e $\,n_k \leq n\,$ per ogni $\,k$, otteniamo:
 \begin{equation*}
-	2nr + (d-2)nr^2 = \mathcal{O}(dnr^2)
+	2nr + (d-2)nr^2 = \alert{\mathcal{O}(dnr^2)}
 \end{equation*}
 
 Quindi:
@@ -395,8 +395,8 @@ Possiamo ottenere un tale algoritmo iterativo, chiamato \emph{TT-Cross}, adattan
 \begin{frame}
 \frametitle{Conclusioni}
 \begin{itemize}
-	\item I tensori sono oggetti che ci permettono di trattare problemi multidimensionali.
-	\item La Tensor Train Decomposition ci permette di rendere computazionalmente accessibili questi problemi anche a dimensionalità prima intrattabili.
+	\item I tensori permettono di trattare naturalmente problemi multidimensionali.
+	\item La Tensor Train Decomposition permette di rendere computazionalmente accessibili questi problemi anche a dimensionalità prima intrattabili.
 	\item L'approccio TT-Cross permette di trattare tensori la cui dimensionalità rende impossibile anche solo immagazzinarne la rappresentazione esplicita.
 \end{itemize}
 
